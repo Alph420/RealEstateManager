@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/drawable/ic_add.xml" value="0.371875" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/drawable/ic_baseline_menu_24.xml" value="0.23177083333333334" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/drawable/ic_create.xml" value="0.371875" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/drawable/ic_search.xml" value="0.371875" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/drawable/ic_settings.xml" value="0.23177083333333334" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/layout/activity_second.xml" value="0.25" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/layout/activity_settings.xml" value="0.21458333333333332" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/layout/drawer_layout.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/layout/nav_header.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/menu/drawer_view.xml" value="0.2760416666666667" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/menu/top_app_bar.xml" value="0.26458333333333334" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.30416666666666664" />
+        <entry key="..\:/Users/jujugeeksdu59/Documents/OpenClassRoom/Dev Android/P9/RealEstateManager/app/src/main/res/xml/preferences.xml" value="0.215625" />
+      </map>
+    </option>
+  </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="android.support.annotation.Nullable" />
     <option name="myDefaultNotNull" value="android.support.annotation.NonNull" />

@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Real Estate Manager</string>
+
+
+    <!-- SETTINGS -->
+    <string name="general_header">General</string>
+    <string name="theme">Theme</string>
+
 </resources>
