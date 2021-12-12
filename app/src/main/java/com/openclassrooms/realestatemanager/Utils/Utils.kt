@@ -2,7 +2,6 @@ package com.openclassrooms.realestatemanager.Utils
 
 import android.content.Context
 import android.net.wifi.WifiManager
-import com.openclassrooms.realestatemanager.R
 import java.lang.StringBuilder
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -30,9 +29,9 @@ internal object Utils {
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      * @return
      */
-    fun getTodayDate(): String? {
-        val dateFormat: DateFormat = SimpleDateFormat("yyyy/MM/dd")
-        return dateFormat.format(Date())
+    fun getTodayDate(time: Long): String {
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.format(Date(time))
     }
 
     /**
