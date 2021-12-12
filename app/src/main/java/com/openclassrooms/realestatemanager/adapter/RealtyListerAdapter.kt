@@ -35,7 +35,7 @@ class RealtyListerAdapter(var dataList:List<RealtyModel>) : RecyclerView.Adapter
 
         binding.realtyType.text = realty.kind
         binding.realtyLocation.text = realty.address
-        binding.realtyPrice.text =  context.getString(R.string.forex_symbole).plus(Utils.convertToPrice(realty.price))
+        binding.realtyPrice.text =  context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
 
     }

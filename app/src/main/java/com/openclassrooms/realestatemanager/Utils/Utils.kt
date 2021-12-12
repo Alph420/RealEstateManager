@@ -48,7 +48,7 @@ internal object Utils {
     //endregion
 
 
-    fun convertToPrice(price: Long): String {
+    fun formatPrice(price: Long): String {
         val priceText = StringBuilder()
         when {
             (price.toString().length) <= 6 -> {
