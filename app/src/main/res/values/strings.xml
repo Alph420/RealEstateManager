@@ -6,4 +6,7 @@
     <string name="general_header">General</string>
     <string name="theme">Theme</string>
 
+
+    <string name="forex_symbole">$</string>
+
 </resources>

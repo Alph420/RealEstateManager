@@ -18,11 +18,11 @@ data class RealtyModel (
     @ColumnInfo(name = "room_number")val roomNumber:Int,
     @ColumnInfo(name = "description")val description:String,
     @ColumnInfo(name = "address")val address:String,
-    @ColumnInfo(name = "point_of_interest")val pointOfInterest:List<String>,
+    @ColumnInfo(name = "point_of_interest")val pointOfInterest:String,
     @ColumnInfo(name = "available")val available:Boolean,
-    @ColumnInfo(name = "in_market_date")val inMarketDate: Date,
-    @ColumnInfo(name = "out_market_date")val outMarketDate:Date,
+    @ColumnInfo(name = "in_market_date")val inMarketDate: Long,
+    @ColumnInfo(name = "out_market_date")val outMarketDate:Long,
     @ColumnInfo(name = "estate_agent")val estateAgent:String,
-    //TODO ADD A LIST OF IMAGES/PICTURE
+    @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val pictures:ByteArray
     )
 

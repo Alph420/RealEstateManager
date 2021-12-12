@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_white"
     tools:context="com.openclassrooms.realestatemanager.activity.MainActivity">
 
 
@@ -17,24 +18,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/light_white"
-                app:navigationIcon="@drawable/ic_baseline_menu_24"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/green_50_twice" />
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/realty_recycler_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </com.google.android.material.appbar.AppBarLayout>
+                <com.google.android.material.appbar.MaterialToolbar
+                    android:id="@+id/topAppBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/light_white"
+                    app:navigationIcon="@drawable/ic_baseline_menu_24"
+                    app:title="@string/app_name"
+                    app:titleTextColor="@color/green_50_twice" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/realty_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+                tools:itemCount="5"
+                tools:listitem="@layout/realty_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nvView"
@@ -42,7 +61,6 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/light_white"
-            app:headerLayout="@layout/nav_header"
             app:itemIconTint="@color/green_50_twice"
             app:itemTextColor="@color/light_dark"
             app:menu="@menu/drawer_view">
@@ -56,7 +74,7 @@
                     android:layout_height="75dp"
                     android:layout_marginBottom="8dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_baseline_menu_24"
+                    android:src="@mipmap/ic_launcher_foreground"
                     app:layout_constraintBottom_toTopOf="@id/appBuildVersion"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />

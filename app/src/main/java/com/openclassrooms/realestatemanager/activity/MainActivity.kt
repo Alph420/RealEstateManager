@@ -5,18 +5,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.LEFT
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.database.AppDatabase
+import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
@@ -29,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     private var realtyList: List<RealtyModel> = emptyList()
 
+    private lateinit var adapter:RealtyListerAdapter
+
     companion object {
         private const val TAG = "MainActivity"
     }
@@ -37,9 +40,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        // mainViewModel = ViewModelProvider(this).get(MainViewModel(AppDatabase.getInstance(this))::class.java)
-
-
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
 
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         initViewModel()
         initListeners()
         initObservers()
+        initRecyclerView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -54,6 +55,26 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(R.menu.top_app_bar, menu)
 
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId){
+
+        R.id.addItem -> {
+            //TODO START ACTIVITY CreateRealty
+            true
+        }
+
+        R.id.createItem -> {
+           //TODO START ACTIVITY EditRealty
+            true
+        }
+
+        R.id.searchItem -> {
+            //TODO  SearchRealty
+            true
+        }
+
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun initUI() {
@@ -83,17 +104,31 @@ class MainActivity : AppCompatActivity() {
             }
             return@setNavigationItemSelectedListener true
         }
+
     }
 
     private fun initObservers() {
         mainViewModel.getAll().subscribe(
-            {result ->
-                Log.d(TAG,result.toString())
+            { result ->
+                Log.d(TAG, result.toString())
                 realtyList = result
+                updateView(result)
             },
-            {error ->
+            { error ->
                 Log.e(TAG, error.message.toString())
             }
         )
+    }
+
+    private fun initRecyclerView(){
+        this.adapter = RealtyListerAdapter(realtyList)
+
+        binding.realtyRecyclerView.adapter = this.adapter
+        binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun updateView(result: List<RealtyModel>) {
+        adapter.dataList = result
+        adapter.notifyDataSetChanged()
     }
 }

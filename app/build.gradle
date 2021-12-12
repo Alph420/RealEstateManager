@@ -9,8 +9,8 @@ android {
         applicationId "com.openclassrooms.realestatemanager"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 1
-        versionName "1.0"
+        versionCode 1000
+        versionName "1.0.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
@@ -57,6 +57,10 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:1.1.1"
     // Room
     implementation "android.arch.persistence.room:runtime:1.1.1"
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 }
 repositories {
