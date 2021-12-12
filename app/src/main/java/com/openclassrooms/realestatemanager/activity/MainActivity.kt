@@ -20,6 +20,10 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
+import androidx.recyclerview.widget.DividerItemDecoration
+
+
+
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
@@ -128,6 +132,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.realtyRecyclerView.adapter = this.adapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
+        val dividerItemDecoration = DividerItemDecoration(
+            binding.realtyRecyclerView.context,
+            (binding.realtyRecyclerView.layoutManager as LinearLayoutManager).orientation
+        )
+        binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
     }
 
     private fun checkIfWifiIsAvailable(){

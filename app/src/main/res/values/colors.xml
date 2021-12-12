@@ -7,5 +7,6 @@
     //--- COLOR FOR TWICE MODE ---//
     <color name="green_money_twice">#85bb65</color>
     <color name="purple_money_twice">#c782a0</color>
+    <color name="red_error">#FF0000</color>
 
 </resources>
