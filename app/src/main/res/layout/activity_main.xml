@@ -38,7 +38,7 @@
                     android:background="@color/light_white"
                     app:navigationIcon="@drawable/ic_baseline_menu_24"
                     app:title="@string/app_name"
-                    app:titleTextColor="@color/green_50_twice" />
+                    app:titleTextColor="@color/green_money_twice" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -61,29 +61,20 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="@color/light_white"
-            app:itemIconTint="@color/green_50_twice"
+            app:itemIconTint="@color/green_money_twice"
             app:itemTextColor="@color/light_dark"
+            app:headerLayout="@layout/nav_header"
             app:menu="@menu/drawer_view">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ImageView
-                    android:layout_width="75dp"
-                    android:layout_height="75dp"
-                    android:layout_marginBottom="8dp"
-                    android:contentDescription="@null"
-                    android:src="@mipmap/ic_launcher_foreground"
-                    app:layout_constraintBottom_toTopOf="@id/appBuildVersion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
                 <TextView
                     android:id="@+id/appBuildVersion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp"
+                    android:layout_marginBottom="8dp"
                     android:textColor="@color/light_dark"
                     android:textSize="15sp"
                     android:textStyle="bold"

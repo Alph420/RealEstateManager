@@ -5,6 +5,7 @@
     <color name="light_grey">#707070</color>
 
     //--- COLOR FOR TWICE MODE ---//
-    <color name="green_50_twice">#008b00</color>
+    <color name="green_money_twice">#85bb65</color>
+    <color name="purple_money_twice">#c782a0</color>
 
 </resources>

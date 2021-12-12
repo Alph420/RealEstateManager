@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.Gravity.LEFT
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.Utils.Utils
 import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         initListeners()
         initObservers()
         initRecyclerView()
+        checkIfWifiIsAvailable()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -125,6 +128,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.realtyRecyclerView.adapter = this.adapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun checkIfWifiIsAvailable(){
+        if(Utils.isInternetAvailable(this)){
+            Toast.makeText(this,"Wifi available",Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun updateView(result: List<RealtyModel>) {

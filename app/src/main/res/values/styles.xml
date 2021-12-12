@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/light_white</item>
         <item name="colorPrimaryDark">@color/light_dark</item>
-        <item name="colorAccent">@color/green_50_twice</item>
+        <item name="colorAccent">@color/green_money_twice</item>
     </style>
 
 </resources>

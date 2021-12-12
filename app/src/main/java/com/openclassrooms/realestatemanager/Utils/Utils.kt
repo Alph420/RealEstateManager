@@ -42,10 +42,19 @@ internal object Utils {
      * @return
      */
     fun isInternetAvailable(context: Context): Boolean {
-        val wifi = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
         return wifi.isWifiEnabled
     }
     //endregion
+
+    /**
+     * Conversion d'un prix d'un bien immobilier (Euros vers Dollars)
+     * @param euros
+     * @return
+     */
+    fun convertEurosToDollars(euros: Int): Int {
+        return (euros * 1.131).roundToInt()
+    }
 
 
     fun formatPrice(price: Long): String {
