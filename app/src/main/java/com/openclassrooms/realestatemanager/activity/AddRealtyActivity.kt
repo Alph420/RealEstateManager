@@ -34,9 +34,17 @@ class AddRealtyActivity : AppCompatActivity() {
             startActivityForResult(Intent.createChooser(intent, ""), Constants().SELECT_PICTURE)
         }
 
+        binding.addRealtyValidateBtn.setOnClickListener{
+            saveRealty()
+        }
+
     }
 
     fun initObservers() {
+
+    }
+
+    private fun saveRealty(){
 
     }
 
