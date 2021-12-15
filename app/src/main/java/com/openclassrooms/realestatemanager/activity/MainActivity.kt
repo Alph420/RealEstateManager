@@ -1,6 +1,8 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.content.Intent
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.LEFT
@@ -8,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,8 +26,6 @@ import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 
 
-
-
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
  * Project : RealEstateManager
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
     private var realtyList: List<RealtyModel> = emptyList()
 
-    private lateinit var adapter:RealtyListerAdapter
+    private lateinit var adapter: RealtyListerAdapter
 
     companion object {
         private const val TAG = "MainActivity"
@@ -48,6 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
+        binding.topAppBar.overflowIcon?.colorFilter = PorterDuffColorFilter(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.green_money_twice,
+                null
+            ), PorterDuff.Mode.SRC_ATOP
+        )
 
         initUI()
         initViewModel()
@@ -64,7 +72,7 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId){
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.addItem -> {
             //TODO START ACTIVITY CreateRealty
@@ -72,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         R.id.createItem -> {
-           //TODO START ACTIVITY EditRealty
+            //TODO START ACTIVITY EditRealty
             true
         }
 
@@ -127,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun initRecyclerView(){
+    private fun initRecyclerView() {
         this.adapter = RealtyListerAdapter(realtyList)
 
         binding.realtyRecyclerView.adapter = this.adapter
@@ -139,9 +147,9 @@ class MainActivity : AppCompatActivity() {
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
     }
 
-    private fun checkIfWifiIsAvailable(){
-        if(Utils.isInternetAvailable(this)){
-            Toast.makeText(this,"Wifi available",Toast.LENGTH_LONG).show()
+    private fun checkIfWifiIsAvailable() {
+        if (Utils.isInternetAvailable(this)) {
+            Toast.makeText(this, "Wifi available", Toast.LENGTH_LONG).show()
         }
     }
 

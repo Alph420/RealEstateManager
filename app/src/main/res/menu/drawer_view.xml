@@ -4,12 +4,12 @@
         <item
             android:id="@+id/addItem"
             android:icon="@drawable/ic_add"
-            android:title="Search" />
+            android:title="Add a realty" />
 
         <item
             android:id="@+id/createItem"
             android:icon="@drawable/ic_create"
-            android:title="Create" />
+            android:title="Edit a  realty" />
 
         <item
             android:id="@+id/searchItem"

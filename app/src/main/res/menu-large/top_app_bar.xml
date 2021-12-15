@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="MissingDefaultResource">
+    <item
+        android:id="@+id/searchItem"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/addItem"
+        android:icon="@drawable/ic_add"
+        android:title="Add a realty"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/createItem"
+        android:icon="@drawable/ic_create"
+        android:title="Edit a  realty"
+        app:showAsAction="always" />
+</menu>
