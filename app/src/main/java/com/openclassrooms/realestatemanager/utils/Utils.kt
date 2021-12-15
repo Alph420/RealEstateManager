@@ -1,9 +1,8 @@
-package com.openclassrooms.realestatemanager.Utils
+package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
 import android.net.wifi.WifiManager
 import java.lang.StringBuilder
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt

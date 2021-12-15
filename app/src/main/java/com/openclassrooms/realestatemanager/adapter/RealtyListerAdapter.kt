@@ -8,7 +8,7 @@ import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utils.Utils
+import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.databinding.RealtyItemBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
 

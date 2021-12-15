@@ -14,9 +14,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utils.Utils
+import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
@@ -24,6 +23,7 @@ import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.openclassrooms.realestatemanager.BuildConfig
 
 
 /**
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.addItem -> {
-            //TODO START ACTIVITY CreateRealty
+            startActivity(Intent(this,AddRealtyActivity::class.java))
             true
         }
 
@@ -113,6 +113,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.addItem->{
+                    startActivity(Intent(this,AddRealtyActivity::class.java))
+                }
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
                 }
