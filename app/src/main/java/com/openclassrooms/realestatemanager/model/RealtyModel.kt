@@ -11,14 +11,14 @@ import java.sql.Date
  **/
 @Entity
 data class RealtyModel (
-    @PrimaryKey val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "kind") val kind: String,
     @ColumnInfo(name = "price") val price: Long = 0,
     @ColumnInfo(name = "area")val area:Long = 0,
     @ColumnInfo(name = "room_number")val roomNumber:Int,
     @ColumnInfo(name = "description")val description:String,
     @ColumnInfo(name = "address")val address:String,
-    @ColumnInfo(name = "point_of_interest")val pointOfInterest:String,
+    @ColumnInfo(name = "point_of_interest") var pointOfInterest:String,
     @ColumnInfo(name = "available")val available:Boolean,
     @ColumnInfo(name = "in_market_date")val inMarketDate: Long,
     @ColumnInfo(name = "out_market_date")val outMarketDate:Long,
