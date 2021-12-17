@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import java.text.SimpleDateFormat
 import java.util.*
-
 import android.app.Dialog
-
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.Notifications
+import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
+import com.openclassrooms.realestatemanager.viewmodel.Injection
+import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import java.lang.StringBuilder
 
 
@@ -23,6 +27,7 @@ import java.lang.StringBuilder
 class AddRealtyActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddRealtyBinding
+    private lateinit var addRealtyViewModel: AddRealtyViewModel
 
     private lateinit var realty: RealtyModel
 
@@ -50,8 +55,20 @@ class AddRealtyActivity : AppCompatActivity() {
     //region MultipleChoiceBoxData
 
     private val GENRES = arrayOf(
-        "City Center", "Restaurants", "Metro/Train station", "SuperMarket", "Shcool", "Cinema", "Swimming pool",
-        "Hospital", "Library", "Park", "Nightlife Street", "theater", "Bank", "Pharmacy"
+        "City Center",
+        "Restaurants",
+        "Metro/Train station",
+        "SuperMarket",
+        "Shcool",
+        "Cinema",
+        "Swimming pool",
+        "Hospital",
+        "Library",
+        "Park",
+        "Nightlife Street",
+        "theater",
+        "Bank",
+        "Pharmacy"
     )
     private var isCheckedList = booleanArrayOf(
         false,
@@ -85,6 +102,7 @@ class AddRealtyActivity : AppCompatActivity() {
         realty = RealtyModel(0, "", 0, 0, 0, "", "", "", true, 0, 0, "", ByteArray(0))
 
         initUI()
+        initViewModel()
         initListeners()
         initObservers()
     }
@@ -95,6 +113,12 @@ class AddRealtyActivity : AppCompatActivity() {
         } else {
             binding.addRealtyOutDate.visibility = View.GONE
         }
+    }
+
+    private fun initViewModel() {
+        val mViewModelFactory: ViewModelFactory = Injection.provideViewModelFactory(this)
+        this.addRealtyViewModel =
+            ViewModelProvider(this, mViewModelFactory).get(AddRealtyViewModel::class.java)
     }
 
     private fun initListeners() {
@@ -144,6 +168,16 @@ class AddRealtyActivity : AppCompatActivity() {
     private fun saveRealty() {
         if (verify()) {
             //TODO save realty in db
+            addRealtyViewModel.insertRealty(realty).subscribe(
+                {
+                    //TODO NOTIFY USER TO SUCCESS OF TASK
+                    Notifications().notifyUserInsertSuccess(this.applicationContext)
+                    Log.d(TAG, "insert realty with success")
+                },
+                {
+                    Log.d(TAG, "insert realty failed : ${it.stackTraceToString()}")
+                }
+            )
         }
     }
 
@@ -152,36 +186,50 @@ class AddRealtyActivity : AppCompatActivity() {
         if (binding.addRealtyKind.text.isNullOrEmpty()) {
             binding.addRealtyKind.error = "Missing required field"
             return false
+        } else {
+            realty.kind = binding.addRealtyKind.text.toString()
         }
 
         if (binding.addRealtyPrice.text.isNullOrEmpty()) {
             binding.addRealtyPrice.error = "Missing required field"
             return false
+        } else {
+            realty.price = binding.addRealtyPrice.text.toString().toLong()
         }
 
         if (binding.addRealtyAddress.text.isNullOrEmpty()) {
             binding.addRealtyAddress.error = "Missing required field"
             return false
+        } else {
+            realty.address = binding.addRealtyAddress.text.toString()
         }
 
         if (binding.addRealtyArea.text.isNullOrEmpty()) {
             binding.addRealtyArea.error = "Missing required field"
             return false
+        } else {
+            realty.area = binding.addRealtyArea.text.toString().toLong()
         }
 
         if (binding.addRealtyNbRoom.text.isNullOrEmpty()) {
             binding.addRealtyNbRoom.error = "Missing required field"
             return false
+        } else {
+            realty.roomNumber = binding.addRealtyNbRoom.text.toString().toInt()
         }
 
         if (binding.addRealtyAgent.text.isNullOrEmpty()) {
             binding.addRealtyAgent.error = "Missing required field"
             return false
+        } else {
+            realty.estateAgent = binding.addRealtyAgent.text.toString()
         }
 
         if (binding.addRealtyDescription.text.isNullOrEmpty()) {
             binding.addRealtyDescription.error = "Missing required field"
             return false
+        } else {
+            realty.description = binding.addRealtyDescription.text.toString()
         }
 
         return true
@@ -220,12 +268,10 @@ class AddRealtyActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        finish()
     }
 
     override fun onStop() {
         super.onStop()
-        finish()
     }
 
 }

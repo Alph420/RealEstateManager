@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/light_grey"
     android:layout_height="match_parent">
 
     <ScrollView
@@ -31,6 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/layout_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,6 +45,7 @@
                     android:gravity="center"
                     android:hint="Kind"
                     android:inputType="text"
+                    tools:text="caca"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -52,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/ic_money"
+                    android:textColorHint="@color/light_dark"
                     android:gravity="center"
                     android:hint="Price ($)"
                     android:inputType="number"
@@ -71,35 +75,35 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_realty_price" />
 
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/add_realty_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_area"
+                    android:gravity="center"
+                    android:hint="Area size (m2)"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_realty_address" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/add_realty_nb_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_room"
+                    android:gravity="center"
+                    android:hint="Number of room"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_realty_area" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--SECONDARY REALTY DATA-->
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/add_realty_area"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawableStart="@drawable/ic_area"
-                android:gravity="center"
-                android:hint="Area size (m2)"
-                android:inputType="number"
-                android:maxLength="10"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/main_data" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/add_realty_nb_room"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_room"
-                android:gravity="center"
-                android:hint="Number of room"
-                android:inputType="number"
-                android:maxLength="3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_realty_area" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/interest_point_layout"
@@ -107,13 +111,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:background="@drawable/layout_border"
+
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_realty_nb_room">
+                app:layout_constraintTop_toBottomOf="@id/main_data">
 
                 <TextView
                     android:id="@+id/add_realty_near_place_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_near"
                     android:gravity="center"
                     android:text="Near places"
@@ -144,6 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/layout_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/interest_point_layout">

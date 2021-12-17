@@ -17,13 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 
 
 /**

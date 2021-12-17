@@ -5,7 +5,9 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Created by Julien Jennequin on 10/12/2021 13:22
@@ -21,7 +23,7 @@ interface RealtyDao {
     fun getById(realtyIds: IntArray): List<RealtyModel>*/
 
     @Insert
-    fun insertAll(vararg realty: RealtyModel)
+    fun insertAll(realty: RealtyModel): Completable
 
     @Delete
     fun delete(user: RealtyModel)
