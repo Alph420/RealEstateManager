@@ -13,8 +13,8 @@ class RealtyRepository(private val realtyDao: RealtyDao) {
         realtyDao.getAll()
     }
 
-    public fun insertAll(){
-        realtyDao.insertAll()
+    public fun insertAll(realty: RealtyModel){
+        realtyDao.insertAll(realty)
     }
 
     public fun delete(realty: RealtyModel){
