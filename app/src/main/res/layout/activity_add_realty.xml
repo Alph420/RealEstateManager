@@ -3,14 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/light_grey"
     android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toTopOf="@+id/add_realty_validate_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +40,12 @@
                     android:id="@+id/add_realty_kind"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_kind"
                     android:gravity="center"
                     android:hint="Kind"
                     android:inputType="text"
-                    tools:text="caca"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -54,8 +54,9 @@
                     android:id="@+id/add_realty_price"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_money"
-                    android:textColorHint="@color/light_dark"
                     android:gravity="center"
                     android:hint="Price ($)"
                     android:inputType="number"
@@ -67,6 +68,8 @@
                     android:id="@+id/add_realty_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_location"
                     android:gravity="center"
                     android:hint="Address"
@@ -79,6 +82,8 @@
                     android:id="@+id/add_realty_area"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_area"
                     android:gravity="center"
                     android:hint="Area size (m2)"
@@ -92,6 +97,8 @@
                     android:id="@+id/add_realty_nb_room"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_room"
                     android:gravity="center"
                     android:hint="Number of room"
@@ -104,14 +111,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/interest_point_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/layout_border"
+                app:layout_constraintEnd_toEndOf="parent"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/main_data">
@@ -135,6 +141,8 @@
                     android:id="@+id/add_realty_interest_point"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:choiceMode="multipleChoice"
                     android:gravity="center"
                     android:inputType="textMultiLine"
@@ -162,6 +170,9 @@
                     android:id="@+id/add_realty_date_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_calendar"
                     android:gravity="center"
                     android:text="Dates"
@@ -173,10 +184,14 @@
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/add_realty_date_text"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_realty_date_text">
 
                     <TextView
                         android:id="@+id/add_realty_in_date"
@@ -209,32 +224,45 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/add_realty_agent"
-                android:layout_width="match_parent"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout4"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:drawableStart="@drawable/ic_agent"
-                android:gravity="center"
-                android:hint="Estage agent owner"
-                android:inputType="text"
+                android:background="@drawable/layout_border"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_data" />
+                app:layout_constraintTop_toBottomOf="@+id/date_data">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/add_realty_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_description"
-                android:gravity="center"
-                android:hint="Description"
-                android:inputType="textMultiLine"
-                android:maxLines="15"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_realty_agent" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/add_realty_agent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawableStart="@drawable/ic_agent"
+                    android:gravity="center"
+                    android:hint="Estage agent owner"
+                    android:inputType="text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/add_realty_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawableStart="@drawable/ic_description"
+                    android:gravity="center"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:maxLines="15"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/add_realty_agent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <androidx.appcompat.widget.SwitchCompat
@@ -247,7 +275,51 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/add_realty_description" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/add_realty_is_available">
+
+                <ImageView
+                    android:id="@+id/add_realty_from_camera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_add_image" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/add_realty_from_library"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_add_picture" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear">
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

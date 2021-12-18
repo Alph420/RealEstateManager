@@ -1,19 +1,26 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import java.text.SimpleDateFormat
 import java.util.*
 import android.app.Dialog
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.provider.MediaStore
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import com.openclassrooms.realestatemanager.utils.Notifications
+import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
@@ -24,7 +31,7 @@ import java.lang.StringBuilder
  * Created by Julien Jennequin on 15/12/2021 15:24
  * Project : RealEstateManager
  **/
-class AddRealtyActivity : AppCompatActivity() {
+class AddRealtyActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAddRealtyBinding
     private lateinit var addRealtyViewModel: AddRealtyViewModel
@@ -139,6 +146,14 @@ class AddRealtyActivity : AppCompatActivity() {
             initUI()
         }
 
+        binding.addRealtyFromCamera.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        binding.addRealtyFromLibrary.setOnClickListener {
+            getImageFromLibrary()
+        }
+
         binding.addRealtyValidateBtn.setOnClickListener {
             saveRealty()
         }
@@ -160,18 +175,13 @@ class AddRealtyActivity : AppCompatActivity() {
     }
 
     private fun updateDateInTextView(realtyDateTextView: TextView) {
-        val myFormat = "dd/MM/yyyy" // mention the format you need
-        val sdf = SimpleDateFormat(myFormat, Locale.FRANCE)
-        realtyDateTextView.text = sdf.format(cal.time)
+        realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
 
     private fun saveRealty() {
         if (verify()) {
-            //TODO save realty in db
-            addRealtyViewModel.insertRealty(realty).subscribe(
+            disposeBag += addRealtyViewModel.insertRealty(this, realty).subscribe(
                 {
-                    //TODO NOTIFY USER TO SUCCESS OF TASK
-                    Notifications().notifyUserInsertSuccess(this.applicationContext)
                     Log.d(TAG, "insert realty with success")
                 },
                 {
@@ -266,6 +276,52 @@ class AddRealtyActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    private fun dispatchTakePictureIntent() {
+        val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        getImgFromCameraActivityForResult.launch(callCameraIntent)
+    }
+
+    private fun getImageFromLibrary() {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        getImgFromLibraryActivityForResult.launch(photoPickerIntent)
+    }
+
+    private val getImgFromCameraActivityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { ActivityResult ->
+        if (ActivityResult.resultCode == Activity.RESULT_OK) {
+            ActivityResult.data?.let{ intent ->
+                intent.extras?.let {
+                    realty.pictures = Utils.fromBitmap(it.get("data") as Bitmap)
+
+                    Glide.with(this)
+                        .load(realty.pictures)
+                        .error(R.drawable.ic_error)
+                        .into(binding.addRealtyFromCamera)
+                }
+            }
+        }
+    }
+
+
+    private val getImgFromLibraryActivityForResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { ActivityResult ->
+            if (ActivityResult.resultCode == Activity.RESULT_OK) {
+                ActivityResult.data?.let { intent ->
+                    val imageStream = intent.data?.let { contentResolver.openInputStream(it) }
+                    realty.pictures = Utils.fromBitmap(BitmapFactory.decodeStream(imageStream))
+
+                    Glide.with(this)
+                        .load(realty.pictures)
+                        .error(R.drawable.ic_error)
+                        .into(binding.addRealtyFromLibrary)
+                }
+            }
+        }
+
     override fun onPause() {
         super.onPause()
     }
@@ -274,4 +330,8 @@ class AddRealtyActivity : AppCompatActivity() {
         super.onStop()
     }
 
+
 }
+
+
+//TODO LES PHOTOS SONT ENFAITE TOUTES EN LOCAL ET TU DOIS JUSTE SAVE LE PATH DANS ROOM

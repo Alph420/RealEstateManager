@@ -1,5 +1,7 @@
 package com.openclassrooms.realestatemanager.model
 
+import android.graphics.Bitmap
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -23,6 +25,7 @@ data class RealtyModel (
     @ColumnInfo(name = "in_market_date")var inMarketDate: Long,
     @ColumnInfo(name = "out_market_date")var outMarketDate:Long,
     @ColumnInfo(name = "estate_agent")var estateAgent:String,
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val pictures:ByteArray
+    @ColumnInfo(name = "pictures")var pictures: ByteArray
+
     )
 

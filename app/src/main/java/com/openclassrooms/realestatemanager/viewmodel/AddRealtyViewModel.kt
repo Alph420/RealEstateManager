@@ -1,12 +1,13 @@
 package com.openclassrooms.realestatemanager.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.Notifications
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -19,10 +20,14 @@ class AddRealtyViewModel(private val database: AppDatabase):ViewModel() {
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun insertRealty(realty: RealtyModel): Completable = database.realtyDao().insertAll(realty)
+    fun insertRealty(context: Context, realty: RealtyModel): Completable = database.realtyDao().insertAll(realty)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+        .doOnComplete {
+            Notifications().notifyUserInsertSuccess(context.applicationContext,realty)
+        }
 
 
     fun delete(realty: RealtyModel) = database.realtyDao().delete(realty)
+
 }

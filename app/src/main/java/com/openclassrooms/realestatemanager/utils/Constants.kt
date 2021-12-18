@@ -6,6 +6,5 @@ package com.openclassrooms.realestatemanager.utils
  **/
 class Constants {
 
-    /** For img from device **/
-     val SELECT_PICTURE = 1
+
 }

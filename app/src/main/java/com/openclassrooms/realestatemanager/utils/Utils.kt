@@ -1,7 +1,13 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.wifi.WifiManager
+import androidx.room.TypeConverter
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import java.io.ByteArrayOutputStream
 import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
@@ -12,6 +18,7 @@ import kotlin.math.roundToInt
  * Project : RealEstateManager
  **/
 internal object Utils {
+
     //region Don't touch
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
@@ -120,4 +127,19 @@ internal object Utils {
         return priceText.toString()
     }
 
+    @TypeConverter
+    fun fromBitmap(bitmap: Bitmap): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
+    }
+
+    fun toBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+}
+
+operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+    add(disposable)
 }

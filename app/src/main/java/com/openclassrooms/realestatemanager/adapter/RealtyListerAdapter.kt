@@ -16,10 +16,17 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
  * Created by Julien Jennequin on 11/12/2021 10:34
  * Project : RealEstateManager
  **/
-class RealtyListerAdapter(var dataList:List<RealtyModel>) : RecyclerView.Adapter<RealtyListerAdapter.RealtyViewHolder>() {
+class RealtyListerAdapter(var dataList: List<RealtyModel>) :
+    RecyclerView.Adapter<RealtyListerAdapter.RealtyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealtyViewHolder {
-        return RealtyViewHolder(RealtyItemBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return RealtyViewHolder(
+            RealtyItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: RealtyViewHolder, position: Int) {
@@ -35,16 +42,17 @@ class RealtyListerAdapter(var dataList:List<RealtyModel>) : RecyclerView.Adapter
 
         binding.realtyType.text = realty.kind
         binding.realtyLocation.text = realty.address
-        binding.realtyPrice.text =  context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
+        binding.realtyPrice.text =
+            context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
 
     }
 
     override fun getItemCount(): Int {
-      return dataList.size
+        return dataList.size
     }
 
-    class RealtyViewHolder(val itemRealtyBinding:RealtyItemBinding):
+    class RealtyViewHolder(val itemRealtyBinding: RealtyItemBinding) :
         RecyclerView.ViewHolder(itemRealtyBinding.root)
 
 }

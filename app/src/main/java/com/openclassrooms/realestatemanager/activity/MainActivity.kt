@@ -24,13 +24,15 @@ import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.utils.plusAssign
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
  * Project : RealEstateManager
  **/
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
@@ -46,6 +48,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        //TODO create two xml for tablet and smartphone
+        //TODO and use fragment for display good fragment
+
 
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
@@ -75,7 +81,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.addItem -> {
-            startActivity(Intent(this,AddRealtyActivity::class.java))
+            startActivity(Intent(this, AddRealtyActivity::class.java))
             true
         }
 
@@ -86,6 +92,11 @@ class MainActivity : AppCompatActivity() {
 
         R.id.searchItem -> {
             //TODO  SearchRealty
+            true
+        }
+
+        R.id.settings -> {
+            startActivity(Intent(this, SettingsActivity::class.java))
             true
         }
 
@@ -113,8 +124,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.addItem->{
-                    startActivity(Intent(this,AddRealtyActivity::class.java))
+                R.id.addItem -> {
+                    startActivity(Intent(this, AddRealtyActivity::class.java))
                 }
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
@@ -126,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initObservers() {
-        mainViewModel.getAll().subscribe(
+        disposeBag += mainViewModel.getAll().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
@@ -160,4 +171,5 @@ class MainActivity : AppCompatActivity() {
         adapter.dataList = result
         adapter.notifyDataSetChanged()
     }
+
 }

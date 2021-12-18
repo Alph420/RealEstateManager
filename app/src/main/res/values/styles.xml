@@ -5,6 +5,9 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/green_money_twice</item>
         <item name="colorSecondary">@color/purple_money_twice</item>
+        <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar.Surface</item>
+        <item name="colorControlActivated">@color/green_money_twice</item>
+        <item name="colorInteractiveIcon">@color/purple_money_twice</item>
     </style>
 
 
@@ -12,7 +15,6 @@
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:statusBarColor">@color/light_white</item>
-        <item name="colorPositive">@color/purple_money_twice</item>
     </style>
 
     <!-- This style is where you define the tint color of your overflow menu button -->
