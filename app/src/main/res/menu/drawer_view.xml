@@ -16,6 +16,10 @@
             android:icon="@drawable/ic_search"
             android:title="Search" />
         <item
+            android:id="@+id/simulator"
+            android:icon="@drawable/ic_simulator"
+            android:title="Simulator" />
+        <item
             android:id="@+id/action_settings"
             android:icon="@drawable/ic_settings"
             android:title="Settings" />
