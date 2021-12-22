@@ -49,7 +49,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        //TODO create two xml for tablet and smartphone
         //TODO and use fragment for display good fragment
 
 
@@ -159,6 +158,8 @@ class MainActivity : BaseActivity() {
             (binding.realtyRecyclerView.layoutManager as LinearLayoutManager).orientation
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
+
+
     }
 
     private fun checkIfWifiIsAvailable() {

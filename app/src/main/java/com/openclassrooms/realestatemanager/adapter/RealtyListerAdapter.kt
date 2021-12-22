@@ -45,6 +45,9 @@ class RealtyListerAdapter(var dataList: List<RealtyModel>) :
         binding.realtyPrice.text =
             context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
+        holder.itemView.setOnClickListener {
+
+        }
 
     }
 
