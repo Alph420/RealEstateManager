@@ -6,23 +6,33 @@
     <item
         android:id="@+id/searchItem"
         android:icon="@drawable/ic_search"
+        tools:iconTint="@color/light_white"
         android:title="Search"
         app:showAsAction="always" />
     <item
         android:id="@+id/addItem"
         android:icon="@drawable/ic_add"
+        tools:iconTint="@color/light_white"
         android:title="Add a realty"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/createItem"
         android:icon="@drawable/ic_create"
+        tools:iconTint="@color/light_white"
         android:title="Edit a  realty"
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/simulator"
+        android:icon="@drawable/ic_simulator"
+        tools:iconTint="@color/light_white"
+        android:title="Simulator"
+        app:showAsAction="always"/>
+    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
+        tools:iconTint="@color/light_white"
         android:title="Settings"
         app:showAsAction="always" />
 </menu>

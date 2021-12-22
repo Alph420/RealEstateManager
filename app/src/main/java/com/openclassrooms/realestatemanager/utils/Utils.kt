@@ -65,7 +65,10 @@ internal object Utils {
     fun formatPrice(price: Long): String {
         val priceText = StringBuilder()
         when {
-            (price.toString().length) <= 6 -> {
+            (price.toString().length) <= 3 -> {
+                return price.toString()
+            }
+            (price.toString().length) <= 6 && (price.toString().length) >= 4 -> {
                 priceText
                     .append(price.toString().substring(0, price.toString().length - 3))
                     .append(',')
