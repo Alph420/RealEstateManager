@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
 import androidx.core.widget.doOnTextChanged
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySimulatorBinding
+import com.openclassrooms.realestatemanager.utils.Utils
+import kotlin.math.pow
 
 /**
  * Created by Julien Jennequin on 21/12/2021 10:47
@@ -21,7 +24,7 @@ class SimulatorActivity : BaseActivity() {
     //region variables of calcul
     var amount: Double = 0.0
     var percentagePerYears: Double = 0.0
-    var term: Double = 1.2
+    var term: Double = 1.0
     //endregion
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,14 +40,14 @@ class SimulatorActivity : BaseActivity() {
         binding.simulatorLoan.doOnTextChanged { text, start, before, count ->
             if (!text.isNullOrEmpty()) {
                 amount = text.toString().toDouble()
-                calcul()
+                calculate()
             }
         }
 
         binding.simulatorInteresetRate.doOnTextChanged { text, start, before, count ->
             if (!text.isNullOrEmpty()) {
                 percentagePerYears = text.toString().toDouble() / 100
-                calcul()
+                calculate()
             }
         }
 
@@ -53,7 +56,7 @@ class SimulatorActivity : BaseActivity() {
                 Log.d(TAG, p1.toString())
                 binding.seekBarValue.text = p1.toString()
                 term = p1.toDouble()
-                calcul()
+                calculate()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -65,17 +68,20 @@ class SimulatorActivity : BaseActivity() {
         })
     }
 
-    private fun calcul() {
+    private fun calculate() {
         if (amount > 0 && percentagePerYears != 0.00 && term != 0.00) {
-            val result = ((amount * percentagePerYears) / 12) / (1 - Math.pow(
-                1 + (percentagePerYears / 12),
-                -(term * 12)
-            ))
+            val result =
+                ((amount * percentagePerYears) / 12) / (1 - (1 + (percentagePerYears / 12)).pow(
+                    -(term * 12)
+                ))
 
             val total = result * (term * 12)
 
-            binding.simulatorMonthlyCount.text = result.toInt().toString()
-            binding.simulatorTotalCount.text = total.toInt().toString()
+            binding.simulatorMonthlyCount.text = Utils.formatPrice(result.toLong())
+            binding.simulatorTotalCount.text = Utils.formatPrice(total.toLong())
+        } else {
+            binding.simulatorMonthlyCount.text = "0"
+            binding.simulatorTotalCount.text = "0"
         }
     }
 }
