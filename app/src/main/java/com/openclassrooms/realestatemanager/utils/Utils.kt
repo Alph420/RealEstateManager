@@ -3,8 +3,11 @@ package com.openclassrooms.realestatemanager.utils
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
 import android.net.wifi.WifiManager
 import androidx.room.TypeConverter
+import com.google.firebase.firestore.GeoPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.ByteArrayOutputStream
@@ -139,6 +142,17 @@ internal object Utils {
 
     fun toBitmap(byteArray: ByteArray): Bitmap {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+    fun getLocationFromAddress(context: Context, strAddress: String): GeoPoint {
+        var realtyPosition: GeoPoint
+        var location:Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
+        location.latitude
+        location.longitude
+
+        realtyPosition =  GeoPoint ((location.latitude * 1E6), (location.longitude * 1E6))
+
+        return realtyPosition
     }
 
 }

@@ -18,6 +18,9 @@ class ViewModelFactory(private val database: AppDatabase) : ViewModelProvider.Fa
         if(modelClass.isAssignableFrom(AddRealtyViewModel::class.java)){
             return AddRealtyViewModel(database) as T
         }
+        if(modelClass.isAssignableFrom(RealtyDetailViewModel::class.java)){
+            return RealtyDetailViewModel(database) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

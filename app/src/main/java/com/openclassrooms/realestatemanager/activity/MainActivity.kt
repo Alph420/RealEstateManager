@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -24,6 +23,7 @@ import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
 
 
@@ -35,6 +35,7 @@ class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    var empty = true
 
     private var realtyList: List<RealtyModel> = emptyList()
 
@@ -47,9 +48,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        //TODO and use fragment for display good fragment
-
 
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
@@ -148,6 +146,10 @@ class MainActivity : BaseActivity() {
                 Log.d(TAG, result.toString())
                 realtyList = result
                 updateView(result)
+                if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
+                    setDataOfRetail(result[0])
+                    empty = false
+                }
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -168,16 +170,12 @@ class MainActivity : BaseActivity() {
 
         adapter.setListener(object : RealtyListerAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
-                Toast.makeText(
-                    binding.root.context,
-                    realtyList[position].address,
-                    Toast.LENGTH_LONG
-                ).show()
-                //TODO add data to detail part on tablet
-                if (binding.root.tag == "main_activity_large") {
+                if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
                     setDataOfRetail(realtyList[position])
-                }else{
-                    //TODO start detail activity
+                } else {
+                    val intent = Intent(binding.root.context, RealtyDetailActivity::class.java)
+                    intent.putExtra(Constants().REALTY_ID_EXTRAS, (realtyList[position].id))
+                    startActivity(intent)
                 }
             }
         })
@@ -186,13 +184,16 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setDataOfRetail(realtyModel: RealtyModel) {
-
         binding.realtyDetailArea!!.text = realtyModel.area.toString() + " m2"
         binding.realtyDetailRoom!!.text = realtyModel.roomNumber.toString()
         //binding.realtyDetailBathroom!!.text = realtyModel.area.toString()
         //binding.realtyDetailBedroom!!.text = realtyModel.area.toString()
         binding.realtyDetailDescription!!.text = realtyModel.description
+        binding.realtyDetailLocationAddress!!.text = realtyModel.address
+        Utils.getLocationFromAddress(binding.root.context,realtyModel.address)
     }
+
+
 
     private fun checkIfWifiIsAvailable() {
         if (Utils.isInternetAvailable(this)) {

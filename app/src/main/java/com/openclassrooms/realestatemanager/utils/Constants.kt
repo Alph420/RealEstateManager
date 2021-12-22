@@ -6,5 +6,7 @@ package com.openclassrooms.realestatemanager.utils
  **/
 class Constants {
 
+    val TAG_LARGE_MAIN_ACTIVITY= "main_activity_large"
+    val REALTY_ID_EXTRAS = "realty_id"
 
 }

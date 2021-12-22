@@ -22,6 +22,9 @@ interface RealtyDao {
     /*@Query("SELECT * FROM RealtyModel WHERE uid IN (:realtyIds)")
     fun getById(realtyIds: IntArray): List<RealtyModel>*/
 
+    @Query("SELECT * FROM RealtyModel WHERE id = :id")
+    fun getById(id:String):Observable<RealtyModel>
+
     @Insert
     fun insertAll(realty: RealtyModel): Completable
 
