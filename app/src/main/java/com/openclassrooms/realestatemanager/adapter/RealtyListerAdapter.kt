@@ -18,6 +18,19 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
  **/
 class RealtyListerAdapter(var dataList: List<RealtyModel>) :
     RecyclerView.Adapter<RealtyListerAdapter.RealtyViewHolder>() {
+    //Declarative interface
+    private lateinit var listener: ItemClickListener
+
+    //set method
+    fun setListener(listener: ItemClickListener) {
+        this.listener = listener
+    }
+
+    //Defining interface
+    interface ItemClickListener {
+        //Achieve the click method, passing the subscript.
+        fun onItemClick(position: Int)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RealtyViewHolder {
         return RealtyViewHolder(
@@ -46,7 +59,7 @@ class RealtyListerAdapter(var dataList: List<RealtyModel>) :
             context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
         holder.itemView.setOnClickListener {
-
+            listener.onItemClick(position)
         }
 
     }
@@ -57,5 +70,6 @@ class RealtyListerAdapter(var dataList: List<RealtyModel>) :
 
     class RealtyViewHolder(val itemRealtyBinding: RealtyItemBinding) :
         RecyclerView.ViewHolder(itemRealtyBinding.root)
+
 
 }

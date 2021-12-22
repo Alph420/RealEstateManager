@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
@@ -9,7 +10,6 @@ import android.view.Gravity.LEFT
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.utils.plusAssign
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 
 /**
@@ -167,7 +166,32 @@ class MainActivity : BaseActivity() {
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
 
+        adapter.setListener(object : RealtyListerAdapter.ItemClickListener {
+            override fun onItemClick(position: Int) {
+                Toast.makeText(
+                    binding.root.context,
+                    realtyList[position].address,
+                    Toast.LENGTH_LONG
+                ).show()
+                //TODO add data to detail part on tablet
+                if (binding.root.tag == "main_activity_large") {
+                    setDataOfRetail(realtyList[position])
+                }else{
+                    //TODO start detail activity
+                }
+            }
+        })
 
+
+    }
+
+    private fun setDataOfRetail(realtyModel: RealtyModel) {
+
+        binding.realtyDetailArea!!.text = realtyModel.area.toString() + " m2"
+        binding.realtyDetailRoom!!.text = realtyModel.roomNumber.toString()
+        //binding.realtyDetailBathroom!!.text = realtyModel.area.toString()
+        //binding.realtyDetailBedroom!!.text = realtyModel.area.toString()
+        binding.realtyDetailDescription!!.text = realtyModel.description
     }
 
     private fun checkIfWifiIsAvailable() {

@@ -72,7 +72,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyTwo.put("id", 2)
                 realtyTwo.put("kind", "house")
                 realtyTwo.put("price", "20000")
-                realtyTwo.put("area", 150)
+                realtyTwo.put("area", 1500)
                 realtyTwo.put("room_number", 5)
                 realtyTwo.put(
                     "description",
@@ -91,7 +91,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyThree.put("id", 3)
                 realtyThree.put("kind", "Penthouse")
                 realtyThree.put("price", "300000")
-                realtyThree.put("area", 150)
+                realtyThree.put("area", 550)
                 realtyThree.put("room_number", 5)
                 realtyThree.put(
                     "description",
@@ -110,7 +110,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyFour.put("id", 4)
                 realtyFour.put("kind", "Villa")
                 realtyFour.put("price", "4000000")
-                realtyFour.put("area", 150)
+                realtyFour.put("area", 1250)
                 realtyFour.put("room_number", 5)
                 realtyFour.put(
                     "description",
@@ -129,7 +129,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyFive.put("id", 5)
                 realtyFive.put("kind", "Villa")
                 realtyFive.put("price", "50000000")
-                realtyFive.put("area", 150)
+                realtyFive.put("area", 1505)
                 realtyFive.put("room_number", 5)
                 realtyFive.put(
                     "description",
@@ -141,32 +141,32 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyFive.put("in_market_date", Date().time)
                 realtyFive.put("out_market_date", Date().time)
                 realtyFive.put("estate_agent", "Inspecteur Gadget")
-                realtyFive.put("pictures","https://fr.depositphotos.com/7576104/stock-photo-luxurious-villa.html")
+                realtyFive.put("pictures","https://www.nevadomarbella.com/cms/wp-content/uploads/2014/10/Living-in-Marbella-%E2%80%93-Penthouse-or-Villa-Nevado-Realty-Real-Estate-in-Marbella-700x312.jpg")
 
                 val realtySix= ContentValues()
                 realtySix.put("id", 6)
                 realtySix.put("kind", "Villa")
                 realtySix.put("price", "600000000")
                 realtySix.put("area", 150)
-                realtySix.put("room_number", 5)
+                realtySix.put("room_number", 4)
                 realtySix.put(
                     "description",
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 )
-                realtySix.put("address", "16 rue de lilas")
+                realtySix.put("address", "16 rue de Jaspine")
                 realtySix.put("point_of_interest", "Ecole,Cinema,Theatre")
                 realtySix.put("available", true)
                 realtySix.put("in_market_date", Date().time)
                 realtySix.put("out_market_date", Date().time)
                 realtySix.put("estate_agent", "Inspecteur Gadget")
-                realtySix.put("pictures","https://fr.depositphotos.com/7576104/stock-photo-luxurious-villa.html")
+                realtySix.put("pictures","https://www.nevadomarbella.com/cms/wp-content/uploads/2014/10/Living-in-Marbella-%E2%80%93-Penthouse-or-Villa-Nevado-Realty-Real-Estate-in-Marbella-5-700x448.jpg")
 
                 val realtySeven= ContentValues()
                 realtySeven.put("id", 7)
                 realtySeven.put("kind", "Villa")
                 realtySeven.put("price", "7000000000")
                 realtySeven.put("area", 150)
-                realtySeven.put("room_number", 5)
+                realtySeven.put("room_number", 7)
                 realtySeven.put(
                     "description",
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
@@ -177,7 +177,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtySeven.put("in_market_date", Date().time)
                 realtySeven.put("out_market_date", Date().time)
                 realtySeven.put("estate_agent", "Inspecteur Gadget")
-                realtySeven.put("pictures","https://fr.depositphotos.com/7576104/stock-photo-luxurious-villa.html")
+                realtySeven.put("pictures","https://cdn.villa-finder.com/cache/1024/villas/sky-villa-penthouse/sky-villa-penthouse-17-70a-devasom-sky-villa-two-bedroom-pool-penthouse-5eaf915c2807e.JPG")
 
 
                 db.insert("RealtyModel", OnConflictStrategy.IGNORE, realtyOne)
