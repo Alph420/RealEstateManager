@@ -93,6 +93,10 @@ class MainActivity : BaseActivity() {
             //TODO  SearchRealty
             true
         }
+        R.id.simulator -> {
+            startActivity(Intent(this, SimulatorActivity::class.java))
+            true
+        }
 
         R.id.settings -> {
             startActivity(Intent(this, SettingsActivity::class.java))
@@ -128,6 +132,10 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
+                }
+                R.id.simulator -> {
+                    startActivity(Intent(this, SimulatorActivity::class.java))
+
                 }
             }
             return@setNavigationItemSelectedListener true
