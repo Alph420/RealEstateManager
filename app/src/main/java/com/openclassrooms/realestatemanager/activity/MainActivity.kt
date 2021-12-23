@@ -21,6 +21,12 @@ import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.utils.Constants
@@ -31,15 +37,18 @@ import com.openclassrooms.realestatemanager.utils.plusAssign
  * Created by Julien Jennequin on 02/12/2021 15:32
  * Project : RealEstateManager
  **/
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), OnMapReadyCallback {
 
+    //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    var empty = true
+    private lateinit var adapter: RealtyListerAdapter
+    private lateinit var realty: RealtyModel
+    private lateinit var mMap: GoogleMap
 
     private var realtyList: List<RealtyModel> = emptyList()
-
-    private lateinit var adapter: RealtyListerAdapter
+    private var empty = true
+    //endregion
 
     companion object {
         private const val TAG = "MainActivity"
@@ -51,19 +60,13 @@ class MainActivity : BaseActivity() {
 
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
-        binding.topAppBar.overflowIcon?.colorFilter = PorterDuffColorFilter(
-            ResourcesCompat.getColor(
-                resources,
-                R.color.green_money_twice,
-                null
-            ), PorterDuff.Mode.SRC_ATOP
-        )
 
         initUI()
         initViewModel()
         initListeners()
         initObservers()
         initRecyclerView()
+        initMap()
         checkIfWifiIsAvailable()
     }
 
@@ -104,7 +107,30 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initUI() {
+        binding.topAppBar.overflowIcon?.colorFilter = PorterDuffColorFilter(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.green_money_twice,
+                null
+            ), PorterDuff.Mode.SRC_ATOP
+        )
+
         binding.appBuildVersion.text = BuildConfig.VERSION_NAME
+    }
+
+    private fun initMap() {
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            val mapFragment = supportFragmentManager
+                .findFragmentById(R.id.map) as SupportMapFragment
+            mapFragment.getMapAsync(this)
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        googleMap.uiSettings.isIndoorLevelPickerEnabled = true
+        googleMap.uiSettings.isMyLocationButtonEnabled = false
+        drawMarker(realty)
     }
 
     private fun initViewModel() {
@@ -146,15 +172,20 @@ class MainActivity : BaseActivity() {
                 Log.d(TAG, result.toString())
                 realtyList = result
                 updateView(result)
-                if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
-                    setDataOfRetail(result[0])
-                    empty = false
-                }
+                initDetailPart(result)
             },
             { error ->
                 Log.e(TAG, error.message.toString())
             }
         )
+    }
+
+    private fun initDetailPart(result: List<RealtyModel>) {
+        if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
+            setDataOfRetail(result[0])
+            realty = result[0]
+            empty = false
+        }
     }
 
     private fun initRecyclerView() {
@@ -172,6 +203,9 @@ class MainActivity : BaseActivity() {
             override fun onItemClick(position: Int) {
                 if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
                     setDataOfRetail(realtyList[position])
+                    realty = realtyList[position]
+                    drawMarker(realty)
+
                 } else {
                     val intent = Intent(binding.root.context, RealtyDetailActivity::class.java)
                     intent.putExtra(Constants().REALTY_ID_EXTRAS, (realtyList[position].id))
@@ -190,9 +224,29 @@ class MainActivity : BaseActivity() {
         //binding.realtyDetailBedroom!!.text = realtyModel.area.toString()
         binding.realtyDetailDescription!!.text = realtyModel.description
         binding.realtyDetailLocationAddress!!.text = realtyModel.address
-        Utils.getLocationFromAddress(binding.root.context,realtyModel.address)
+        Utils.getLocationFromAddress(binding.root.context, realtyModel.address)
     }
 
+    private fun drawMarker(realtyModel: RealtyModel) {
+        mMap.let {
+            it.addMarker(
+                MarkerOptions().position(
+                    LatLng(
+                        realtyModel.latitude,
+                        realtyModel.longitude
+                    )
+                )
+            )
+            it.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        realtyModel.latitude,
+                        realtyModel.longitude
+                    ), 15.0F
+                )
+            )
+        }
+    }
 
 
     private fun checkIfWifiIsAvailable() {

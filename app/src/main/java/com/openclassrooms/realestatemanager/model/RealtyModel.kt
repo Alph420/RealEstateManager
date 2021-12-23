@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.firebase.firestore.GeoPoint
 import java.sql.Date
 
 /**
@@ -20,6 +21,8 @@ data class RealtyModel (
     @ColumnInfo(name = "room_number")var roomNumber:Int,
     @ColumnInfo(name = "description")var description:String,
     @ColumnInfo(name = "address")var address:String,
+    @ColumnInfo(name = "longitude")var longitude:Double,
+    @ColumnInfo(name = "latitude")var latitude:Double,
     @ColumnInfo(name = "point_of_interest") var pointOfInterest:String,
     @ColumnInfo(name = "available")var available:Boolean,
     @ColumnInfo(name = "in_market_date")var inMarketDate: Long,

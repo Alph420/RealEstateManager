@@ -145,14 +145,16 @@ internal object Utils {
     }
 
     fun getLocationFromAddress(context: Context, strAddress: String): GeoPoint {
-        var realtyPosition: GeoPoint
-        var location:Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
-        location.latitude
-        location.longitude
+        val realtyPosition: GeoPoint
+        if (Geocoder(context).getFromLocationName(strAddress, 5).size > 0) {
+            val location: Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
+            location.latitude
+            location.longitude
 
-        realtyPosition =  GeoPoint ((location.latitude * 1E6), (location.longitude * 1E6))
-
-        return realtyPosition
+            realtyPosition = GeoPoint(location.latitude, location.longitude)
+            return realtyPosition
+        }
+        return GeoPoint(0.0, 0.0)
     }
 
 }

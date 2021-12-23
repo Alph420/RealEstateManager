@@ -106,7 +106,7 @@ class AddRealtyActivity : BaseActivity() {
         binding = ActivityAddRealtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        realty = RealtyModel(0, "", 0, 0, 0, "", "", "", true, 0, 0, "", ByteArray(0))
+        realty = RealtyModel(0, "", 0, 0, 0, "", "",0.0,0.0, "", true, 0, 0, "", ByteArray(0))
 
         initUI()
         initViewModel()
@@ -212,6 +212,8 @@ class AddRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.addRealtyAddress.text.toString()
+            realty.latitude = Utils.getLocationFromAddress(this,realty.address).latitude
+            realty.longitude = Utils.getLocationFromAddress(this,realty.address).longitude
         }
 
         if (binding.addRealtyArea.text.isNullOrEmpty()) {
