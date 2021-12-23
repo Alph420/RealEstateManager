@@ -84,11 +84,6 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
             true
         }
 
-        R.id.createItem -> {
-            //TODO START ACTIVITY EditRealty
-            true
-        }
-
         R.id.searchItem -> {
             //TODO  SearchRealty
             true
