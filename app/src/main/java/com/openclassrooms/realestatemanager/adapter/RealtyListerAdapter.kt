@@ -58,6 +58,12 @@ class RealtyListerAdapter(var dataList: List<RealtyModel>) :
         binding.realtyPrice.text =
             context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
+        if(!realty.available){
+            binding.realtyAvailable.setImageDrawable(context.getDrawable(R.drawable.ic_not_available))
+        }else{
+            binding.realtyAvailable.setImageDrawable(context.getDrawable(R.drawable.ic_available))
+        }
+
         holder.itemView.setOnClickListener {
             listener.onItemClick(position)
         }

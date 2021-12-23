@@ -13,12 +13,16 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
-        def addConstant = {constantName, constantValue ->
-            manifestPlaceholders += [ (constantName):constantValue]
-            buildConfigField "String", "${constantName}", "\"${constantValue}\""
+        def addConstant = { constantName, constantValue ->
+            manifestPlaceholders += [(constantName): constantValue]
+            buildConfigField "String", "${constantName}", "${constantValue}"
         }
 
-        addConstant("ApiKey","AIzaSyA-VC9Fq656ONcvy4_gcYpcOrDOxDqgfFI")
+        def localPropertiesFile = rootProject.file("local.properties")
+        def localProperties = new Properties()
+        localProperties.load(new FileInputStream(localPropertiesFile))
+
+        addConstant("API_KEY", localProperties['apiKey'])
     }
     buildTypes {
         release {
