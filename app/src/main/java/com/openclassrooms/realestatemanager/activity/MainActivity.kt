@@ -164,6 +164,14 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
             return@setNavigationItemSelectedListener true
         }
 
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.realtyEdit!!.setOnClickListener {
+                val intent = Intent(binding.root.context, EditRealtyActivity::class.java)
+                intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
+                startActivity(intent)
+            }
+        }
+
     }
 
     private fun initObservers() {
@@ -182,9 +190,11 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun initDetailPart(result: List<RealtyModel>) {
         if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
-            setDataOfRetail(result[0])
-            realty = result[0]
-            empty = false
+            if (result.isNotEmpty()){
+                setDataOfRetail(result[0])
+                realty = result[0]
+                empty = false
+            }
         }
     }
 
@@ -220,11 +230,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     private fun setDataOfRetail(realtyModel: RealtyModel) {
         binding.realtyDetailArea!!.text = realtyModel.area.toString() + " m2"
         binding.realtyDetailRoom!!.text = realtyModel.roomNumber.toString()
-        //binding.realtyDetailBathroom!!.text = realtyModel.area.toString()
-        //binding.realtyDetailBedroom!!.text = realtyModel.area.toString()
+        binding.realtyDetailBathroom!!.text = realtyModel.bathRoom.toString()
+        binding.realtyDetailBedroom!!.text = realtyModel.bedRoom.toString()
         binding.realtyDetailDescription!!.text = realtyModel.description
         binding.realtyDetailLocationAddress!!.text = realtyModel.address
-        Utils.getLocationFromAddress(binding.root.context, realtyModel.address)
     }
 
     private fun drawMarker(realtyModel: RealtyModel) {
@@ -258,6 +267,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     private fun updateView(result: List<RealtyModel>) {
         adapter.dataList = result
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
 }

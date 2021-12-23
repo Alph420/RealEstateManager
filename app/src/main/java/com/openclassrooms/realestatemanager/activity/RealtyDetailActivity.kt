@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
@@ -34,11 +35,9 @@ class RealtyDetailActivity : BaseActivity(), OnMapReadyCallback {
     private var realtyId = ""
     //endregion
 
-
     companion object {
         private const val TAG = "RealtyDetailActivity"
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +72,11 @@ class RealtyDetailActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun initListeners() {
-
+        binding.realtyEdit.setOnClickListener {
+            val intent = Intent(binding.root.context, EditRealtyActivity::class.java)
+            intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
+            startActivity(intent)
+        }
     }
 
     private fun initObservers() {
@@ -92,8 +95,8 @@ class RealtyDetailActivity : BaseActivity(), OnMapReadyCallback {
     private fun updateView(realtyModel: RealtyModel) {
         binding.realtyDetailArea.text = realtyModel.area.toString() + " m2"
         binding.realtyDetailRoom.text = realtyModel.roomNumber.toString()
-        //binding.realtyDetailBathroom!!.text = realtyModel.area.toString()
-        //binding.realtyDetailBedroom!!.text = realtyModel.area.toString()
+        binding.realtyDetailBathroom.text = realtyModel.bathRoom.toString()
+        binding.realtyDetailBedroom.text = realtyModel.bedRoom.toString()
         binding.realtyDetailDescription.text = realtyModel.description
         binding.realtyDetailLocationAddress.text = realtyModel.address
     }

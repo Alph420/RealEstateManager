@@ -8,7 +8,7 @@
 
         <item
             android:id="@+id/createItem"
-            android:icon="@drawable/ic_create"
+            android:icon="@drawable/ic_edit"
             android:title="Edit a  realty" />
 
         <item

@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
@@ -106,7 +107,8 @@ class AddRealtyActivity : BaseActivity() {
         binding = ActivityAddRealtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        realty = RealtyModel(0, "", 0, 0, 0, "", "",0.0,0.0, "", true, 0, 0, "", ByteArray(0))
+        realty =
+            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "", ByteArray(0))
 
         initUI()
         initViewModel()
@@ -212,8 +214,8 @@ class AddRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.addRealtyAddress.text.toString()
-            realty.latitude = Utils.getLocationFromAddress(this,realty.address).latitude
-            realty.longitude = Utils.getLocationFromAddress(this,realty.address).longitude
+            realty.latitude = Utils.getLocationFromAddress(this, realty.address).latitude
+            realty.longitude = Utils.getLocationFromAddress(this, realty.address).longitude
         }
 
         if (binding.addRealtyArea.text.isNullOrEmpty()) {
@@ -230,6 +232,20 @@ class AddRealtyActivity : BaseActivity() {
             realty.roomNumber = binding.addRealtyNbRoom.text.toString().toInt()
         }
 
+        if (binding.addRealtyBathRoom.text.isNullOrEmpty()) {
+            binding.addRealtyBathRoom.error = "Missing required field"
+            return false
+        } else {
+            realty.bathRoom = binding.addRealtyBathRoom.text.toString().toInt()
+        }
+
+        if (binding.addRealtyBedRoom.text.isNullOrEmpty()) {
+            binding.addRealtyBedRoom.error = "Missing required field"
+            return false
+        } else {
+            realty.bedRoom = binding.addRealtyBedRoom.text.toString().toInt()
+        }
+
         if (binding.addRealtyAgent.text.isNullOrEmpty()) {
             binding.addRealtyAgent.error = "Missing required field"
             return false
@@ -243,6 +259,15 @@ class AddRealtyActivity : BaseActivity() {
         } else {
             realty.description = binding.addRealtyDescription.text.toString()
         }
+
+        if (!binding.addRealtyOutDate.text.isNullOrEmpty()) {
+            if (binding.addRealtyInDate.text.isNullOrEmpty()) {
+                binding.addRealtyInDate.error = "Missing required field"
+                return false
+            }
+        }
+
+        realty.available = binding.addRealtyIsAvailable.isChecked
 
         return true
 
@@ -293,7 +318,7 @@ class AddRealtyActivity : BaseActivity() {
         ActivityResultContracts.StartActivityForResult()
     ) { ActivityResult ->
         if (ActivityResult.resultCode == Activity.RESULT_OK) {
-            ActivityResult.data?.let{ intent ->
+            ActivityResult.data?.let { intent ->
                 intent.extras?.let {
                     realty.pictures = Utils.fromBitmap(it.get("data") as Bitmap)
 
@@ -314,6 +339,8 @@ class AddRealtyActivity : BaseActivity() {
             if (ActivityResult.resultCode == Activity.RESULT_OK) {
                 ActivityResult.data?.let { intent ->
                     val imageStream = intent.data?.let { contentResolver.openInputStream(it) }
+                    //TODO IMPLEMENT NEW PICTURE MODEL WITH ROOM
+                    // realty.pictures = PicturesModel(0,)
                     realty.pictures = Utils.fromBitmap(BitmapFactory.decodeStream(imageStream))
 
                     Glide.with(this)

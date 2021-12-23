@@ -2,9 +2,7 @@ package com.openclassrooms.realestatemanager.model
 
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.google.firebase.firestore.GeoPoint
 import java.sql.Date
 
@@ -19,6 +17,8 @@ data class RealtyModel (
     @ColumnInfo(name = "price") var price: Long = 0,
     @ColumnInfo(name = "area")var area:Long = 0,
     @ColumnInfo(name = "room_number")var roomNumber:Int,
+    @ColumnInfo(name = "bathroom_number")var bathRoom:Int,
+    @ColumnInfo(name = "bedroom_number")var bedRoom:Int,
     @ColumnInfo(name = "description")var description:String,
     @ColumnInfo(name = "address")var address:String,
     @ColumnInfo(name = "longitude")var longitude:Double,
@@ -29,6 +29,20 @@ data class RealtyModel (
     @ColumnInfo(name = "out_market_date")var outMarketDate:Long,
     @ColumnInfo(name = "estate_agent")var estateAgent:String,
     @ColumnInfo(name = "pictures")var pictures: ByteArray
+    //, @ColumnInfo(name = "pictures")var pictures: PicturesModel
 
     )
+
+
+//TEST
+data class RealtyAndPicture(
+    @Embedded
+    val realty:RealtyModel,
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "realty"
+    )
+    val Media:List<RealtyModel>
+
+)
 

@@ -54,7 +54,9 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyOne.put("kind", "house")
                 realtyOne.put("price", "1000")
                 realtyOne.put("area", 150)
-                realtyOne.put("room_number", 5)
+                realtyOne.put("room_number", 6)
+                realtyOne.put("bathroom_number", 2)
+                realtyOne.put("bedroom_number", 4)
                 realtyOne.put(
                     "description",
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."

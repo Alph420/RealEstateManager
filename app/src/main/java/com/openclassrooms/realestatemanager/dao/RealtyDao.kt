@@ -1,9 +1,6 @@
 package com.openclassrooms.realestatemanager.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -27,6 +24,9 @@ interface RealtyDao {
 
     @Insert
     fun insertAll(realty: RealtyModel): Completable
+
+    @Update
+    fun updateRealty(realty:RealtyModel):Completable
 
     @Delete
     fun delete(user: RealtyModel)

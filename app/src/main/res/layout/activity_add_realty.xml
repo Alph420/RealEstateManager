@@ -93,21 +93,56 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/add_realty_address" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/add_realty_nb_room"
-                    android:layout_width="match_parent"
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    android:drawableStart="@drawable/ic_room"
-                    android:gravity="center"
-                    android:hint="Number of room"
-                    android:inputType="number"
-                    android:maxLength="3"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/add_realty_area" />
+                    app:layout_constraintTop_toBottomOf="@+id/add_realty_area">
 
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/add_realty_bath_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_room"
+                        android:gravity="center"
+                        android:hint="Bathroom"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/add_realty_nb_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_room"
+                        android:gravity="center"
+                        android:hint="Room"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:textSize="16sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/add_realty_area" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/add_realty_bed_room"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_room"
+                        android:gravity="center"
+                        android:hint="Bedroom"
+                        android:inputType="number"
+                        android:textSize="16sp" />
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
