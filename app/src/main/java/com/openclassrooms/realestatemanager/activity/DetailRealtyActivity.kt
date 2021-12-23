@@ -24,7 +24,7 @@ import com.openclassrooms.realestatemanager.R
  * Created by Julien Jennequin on 22/12/2021 11:51
  * Project : RealEstateManager
  **/
-class RealtyDetailActivity : BaseActivity(), OnMapReadyCallback {
+class DetailRealtyActivity : BaseActivity(), OnMapReadyCallback {
 
     //region PROPERTIES
     private lateinit var binding: ActivityDetailBinding

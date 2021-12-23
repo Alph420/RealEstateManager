@@ -41,7 +41,7 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name=".activity.RealtyDetailActivity"
+            android:name=".activity.DetailRealtyActivity"
             android:label="@string/app_name" />
 
         <activity

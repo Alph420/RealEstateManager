@@ -212,7 +212,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
                     drawMarker(realty)
 
                 } else {
-                    val intent = Intent(binding.root.context, RealtyDetailActivity::class.java)
+                    val intent = Intent(binding.root.context, DetailRealtyActivity::class.java)
                     intent.putExtra(Constants().REALTY_ID_EXTRAS, (realtyList[position].id))
                     startActivity(intent)
                 }
