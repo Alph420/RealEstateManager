@@ -15,12 +15,6 @@
         app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/createItem"
-        android:icon="@drawable/ic_edit"
-        android:title="Edit a  realty"
-        app:showAsAction="collapseActionView" />
-
-    <item
         android:id="@+id/simulator"
         android:icon="@drawable/ic_simulator"
         android:title="Simulator"

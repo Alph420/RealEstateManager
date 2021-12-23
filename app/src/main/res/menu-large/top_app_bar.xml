@@ -17,13 +17,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/createItem"
-        android:icon="@drawable/ic_edit"
-        tools:iconTint="@color/light_white"
-        android:title="Edit a  realty"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/simulator"
         android:icon="@drawable/ic_simulator"
         tools:iconTint="@color/light_white"
