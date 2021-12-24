@@ -12,6 +12,8 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
+import org.osmdroid.config.Configuration.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
@@ -31,20 +33,25 @@ import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
  * Project : RealEstateManager
  **/
-class MainActivity : BaseActivity(), OnMapReadyCallback {
+class MainActivity : BaseActivity() {
 
     //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: RealtyListerAdapter
     private lateinit var realty: RealtyModel
-    private lateinit var mMap: GoogleMap
+    private lateinit var mMap: MapView
 
     private var realtyList: List<RealtyModel> = emptyList()
     private var empty = true
@@ -66,7 +73,9 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         initListeners()
         initObservers()
         initRecyclerView()
-        initMap()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            initMap()
+        }
         checkIfWifiIsAvailable()
     }
 
@@ -114,18 +123,14 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun initMap() {
-        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
-            val mapFragment = supportFragmentManager
-                .findFragmentById(R.id.map) as SupportMapFragment
-            mapFragment.getMapAsync(this)
-        }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        googleMap.uiSettings.isIndoorLevelPickerEnabled = true
-        googleMap.uiSettings.isMyLocationButtonEnabled = false
-        drawMarker(realty)
+        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        mMap = binding.map!!
+        mMap.setTileSource(TileSourceFactory.MAPNIK)
+        mMap.isTilesScaledToDpi = true
+        mMap.setMultiTouchControls(true)
+        mMap.minZoomLevel = 4.0
+        mMap.maxZoomLevel = 21.0
+        mMap.isVerticalMapRepetitionEnabled = false
     }
 
     private fun initViewModel() {
@@ -185,9 +190,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun initDetailPart(result: List<RealtyModel>) {
         if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
-            if (result.isNotEmpty()){
-                setDataOfRetail(result[0])
+            if (result.isNotEmpty()) {
                 realty = result[0]
+                setDataOfRetail()
+                drawMarker()
                 empty = false
             }
         }
@@ -207,10 +213,9 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         adapter.setListener(object : RealtyListerAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
                 if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
-                    setDataOfRetail(realtyList[position])
                     realty = realtyList[position]
-                    drawMarker(realty)
-
+                    setDataOfRetail()
+                    drawMarker()
                 } else {
                     val intent = Intent(binding.root.context, DetailRealtyActivity::class.java)
                     intent.putExtra(Constants().REALTY_ID_EXTRAS, (realtyList[position].id))
@@ -222,34 +227,22 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     }
 
-    private fun setDataOfRetail(realtyModel: RealtyModel) {
-        binding.realtyDetailArea!!.text = realtyModel.area.toString() + " m2"
-        binding.realtyDetailRoom!!.text = realtyModel.roomNumber.toString()
-        binding.realtyDetailBathroom!!.text = realtyModel.bathRoom.toString()
-        binding.realtyDetailBedroom!!.text = realtyModel.bedRoom.toString()
-        binding.realtyDetailDescription!!.text = realtyModel.description
-        binding.realtyDetailLocationAddress!!.text = realtyModel.address
+    private fun setDataOfRetail() {
+        binding.realtyDetailArea!!.text = realty.area.toString() + " m2"
+        binding.realtyDetailRoom!!.text = realty.roomNumber.toString()
+        binding.realtyDetailBathroom!!.text = realty.bathRoom.toString()
+        binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
+        binding.realtyDetailDescription!!.text = realty.description
+        binding.realtyDetailLocationAddress!!.text = realty.address
     }
 
-    private fun drawMarker(realtyModel: RealtyModel) {
-        mMap.let {
-            it.addMarker(
-                MarkerOptions().position(
-                    LatLng(
-                        realtyModel.latitude,
-                        realtyModel.longitude
-                    )
-                )
-            )
-            it.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        realtyModel.latitude,
-                        realtyModel.longitude
-                    ), 15.0F
-                )
-            )
-        }
+    private fun drawMarker() {
+        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+        mMap.controller.setZoom(15.0)
+        val startMarker = Marker(mMap)
+        startMarker.position = GeoPoint(realty.latitude, realty.longitude)
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        mMap.overlays.add(startMarker)
     }
 
 
@@ -266,6 +259,16 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     override fun onResume() {
         super.onResume()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.map!!.onResume()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.map!!.onPause()
+        }
     }
 
 }

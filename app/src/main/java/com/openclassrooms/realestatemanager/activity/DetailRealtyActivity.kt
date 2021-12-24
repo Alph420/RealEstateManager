@@ -107,29 +107,10 @@ class DetailRealtyActivity : BaseActivity() {
         binding.realtyDetailBedroom.text = realtyModel.bedRoom.toString()
         binding.realtyDetailDescription.text = realtyModel.description
         binding.realtyDetailLocationAddress.text = realtyModel.address
-        drawMarker(realty)
+        drawMarker()
     }
 
-    private fun drawMarker(realtyModel: RealtyModel) {
-        /* mMap.let {
-             it.addMarker(
-                 MarkerOptions().position(
-                     LatLng(
-                         realtyModel.latitude,
-                         realtyModel.longitude
-                     )
-                 )
-             )
-             it.moveCamera(
-                 CameraUpdateFactory.newLatLngZoom(
-                     LatLng(
-                         realtyModel.latitude,
-                         realtyModel.longitude
-                     ), 15.0F
-                 )
-             )
-         }*/
-
+    private fun drawMarker() {
         mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
         mMap.controller.setZoom(15.0)
         val startMarker = Marker(mMap)
