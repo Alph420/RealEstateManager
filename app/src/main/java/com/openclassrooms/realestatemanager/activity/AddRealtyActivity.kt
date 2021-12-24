@@ -49,6 +49,7 @@ class AddRealtyActivity : BaseActivity() {
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDateInTextView(binding.addRealtyInDate)
+            realty.inMarketDate = cal.time.time
         }
 
     private val dateOutSetListener =
@@ -57,6 +58,8 @@ class AddRealtyActivity : BaseActivity() {
             cal.set(Calendar.MONTH, monthOfYear)
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDateInTextView(binding.addRealtyOutDate)
+            realty.outMarketDate = cal.time.time
+
         }
     //endregion
 
@@ -175,10 +178,10 @@ class AddRealtyActivity : BaseActivity() {
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
-
     private fun updateDateInTextView(realtyDateTextView: TextView) {
         realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
+
 
     private fun saveRealty() {
         if (verify()) {
@@ -258,6 +261,10 @@ class AddRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.description = binding.addRealtyDescription.text.toString()
+        }
+
+        if (binding.addRealtyInDate.text.isNullOrEmpty()){
+            binding.addRealtyInDate.error = "Missing required field"
         }
 
         if (!binding.addRealtyOutDate.text.isNullOrEmpty()) {

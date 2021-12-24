@@ -1,7 +1,10 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.databinding.ActivityEditRealtyBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
@@ -9,6 +12,7 @@ import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.*
+import java.util.*
 
 /**
  * Created by Julien Jennequin on 23/12/2021 14:40
@@ -27,6 +31,30 @@ class EditRealtyActivity : BaseActivity() {
 
     //endregion
 
+    //region Date
+
+    var cal = Calendar.getInstance()
+
+    private val dateInSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInTextView(binding.editRealtyInDate)
+            realty.inMarketDate = cal.time.time
+        }
+
+    private val dateOutSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInTextView(binding.editRealtyOutDate)
+            realty.outMarketDate = cal.time.time
+
+        }
+    //endregion
+
     companion object {
         private const val TAG = "EditRealtyActivity"
     }
@@ -41,14 +69,19 @@ class EditRealtyActivity : BaseActivity() {
             it.get(Constants().REALTY_ID_EXTRAS).toString()
         }.toString()
 
-        initUI()
         initViewModel()
         initListeners()
         initObservers()
     }
 
     private fun initUI() {
+        binding.editRealtyIsAvailable.isChecked = realty.available
 
+        if (!binding.editRealtyIsAvailable.isChecked) {
+            binding.editRealtyOutDate.visibility = View.VISIBLE
+        } else {
+            binding.editRealtyOutDate.visibility = View.GONE
+        }
     }
 
     private fun initViewModel() {
@@ -58,6 +91,17 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun initListeners() {
+        binding.editRealtyInDate.setOnClickListener {
+            datePickerDialog(dateInSetListener)
+        }
+
+        binding.editRealtyOutDate.setOnClickListener {
+            datePickerDialog(dateOutSetListener)
+        }
+        binding.editRealtyIsAvailable.setOnClickListener {
+            realty.available = binding.editRealtyIsAvailable.isChecked
+            initUI()
+        }
         binding.editRealtyValidateBtn.setOnClickListener {
             saveRealty()
         }
@@ -69,12 +113,23 @@ class EditRealtyActivity : BaseActivity() {
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result
+                initUI()
                 updateView(result)
             },
             { error ->
                 Log.e(TAG, error.message.toString())
             }
         )
+    }
+
+    private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
+        DatePickerDialog(
+            this,
+            dateInSetListener,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
     private fun saveRealty() {
@@ -182,12 +237,14 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyNbRoom.setText(realty.roomNumber.toString())
         binding.editRealtyBedRoom.setText(realty.bedRoom.toString())
         binding.editRealtyInterestPoint.setText(realty.pointOfInterest)
-        binding.editRealtyInDate.text = realty.inMarketDate.toString()
-        binding.editRealtyOutDate.text = realty.outMarketDate.toString()
+        binding.editRealtyInDate.text = Utils.getTodayDate(realty.inMarketDate)
+        binding.editRealtyOutDate.text = Utils.getTodayDate(realty.outMarketDate)
         binding.editRealtyAgent.setText(realty.estateAgent)
         binding.editRealtyDescription.setText(realty.description)
+    }
 
-
+    private fun updateDateInTextView(realtyDateTextView: TextView) {
+        realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
 
 }

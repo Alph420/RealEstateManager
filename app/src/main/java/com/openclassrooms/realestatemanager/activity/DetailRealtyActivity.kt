@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
+import org.osmdroid.config.Configuration.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
@@ -18,18 +19,23 @@ import com.openclassrooms.realestatemanager.viewmodel.RealtyDetailViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.database.AppDatabase.Companion.getInstance
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 
 /**
  * Created by Julien Jennequin on 22/12/2021 11:51
  * Project : RealEstateManager
  **/
-class DetailRealtyActivity : BaseActivity(), OnMapReadyCallback {
+class DetailRealtyActivity : BaseActivity() {
 
     //region PROPERTIES
     private lateinit var binding: ActivityDetailBinding
     private lateinit var realtyDetailViewModel: RealtyDetailViewModel
-    private lateinit var mMap: GoogleMap
+    private lateinit var mMap: MapView
     private lateinit var realty: RealtyModel
 
     private var realtyId = ""
@@ -49,20 +55,22 @@ class DetailRealtyActivity : BaseActivity(), OnMapReadyCallback {
             it.get(Constants().REALTY_ID_EXTRAS).toString()
         }.toString()
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
 
         initViewModel()
         initListeners()
         initObservers()
+        initMap()
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
-        googleMap.uiSettings.isIndoorLevelPickerEnabled = true
-        googleMap.uiSettings.isMyLocationButtonEnabled = false
-        drawMarker(realty)
+    private fun initMap() {
+        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        mMap = binding.map
+        mMap.setTileSource(TileSourceFactory.MAPNIK)
+        mMap.isTilesScaledToDpi = true
+        mMap.setMultiTouchControls(true)
+        mMap.minZoomLevel = 4.0
+        mMap.maxZoomLevel = 21.0
+        mMap.isVerticalMapRepetitionEnabled = false
     }
 
     private fun initViewModel() {
@@ -99,26 +107,44 @@ class DetailRealtyActivity : BaseActivity(), OnMapReadyCallback {
         binding.realtyDetailBedroom.text = realtyModel.bedRoom.toString()
         binding.realtyDetailDescription.text = realtyModel.description
         binding.realtyDetailLocationAddress.text = realtyModel.address
+        drawMarker(realty)
     }
 
     private fun drawMarker(realtyModel: RealtyModel) {
-        mMap.let {
-            it.addMarker(
-                MarkerOptions().position(
-                    LatLng(
-                        realtyModel.latitude,
-                        realtyModel.longitude
-                    )
-                )
-            )
-            it.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    LatLng(
-                        realtyModel.latitude,
-                        realtyModel.longitude
-                    ), 15.0F
-                )
-            )
-        }
+        /* mMap.let {
+             it.addMarker(
+                 MarkerOptions().position(
+                     LatLng(
+                         realtyModel.latitude,
+                         realtyModel.longitude
+                     )
+                 )
+             )
+             it.moveCamera(
+                 CameraUpdateFactory.newLatLngZoom(
+                     LatLng(
+                         realtyModel.latitude,
+                         realtyModel.longitude
+                     ), 15.0F
+                 )
+             )
+         }*/
+
+        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+        mMap.controller.setZoom(15.0)
+        val startMarker = Marker(mMap)
+        startMarker.position = GeoPoint(realty.latitude, realty.longitude)
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        mMap.overlays.add(startMarker)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.map.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.map.onPause()
     }
 }
