@@ -1,10 +1,13 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import org.osmdroid.config.Configuration.*
@@ -24,6 +27,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.lang.StringBuilder
 
 
 /**
@@ -62,17 +66,6 @@ class DetailRealtyActivity : BaseActivity() {
         initMap()
     }
 
-    private fun initMap() {
-        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
-        mMap = binding.map
-        mMap.setTileSource(TileSourceFactory.MAPNIK)
-        mMap.isTilesScaledToDpi = true
-        mMap.setMultiTouchControls(true)
-        mMap.minZoomLevel = 4.0
-        mMap.maxZoomLevel = 21.0
-        mMap.isVerticalMapRepetitionEnabled = false
-    }
-
     private fun initViewModel() {
         val mViewModelFactory: ViewModelFactory = Injection.provideViewModelFactory(this)
         this.realtyDetailViewModel =
@@ -85,6 +78,11 @@ class DetailRealtyActivity : BaseActivity() {
             intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
             startActivity(intent)
         }
+
+        binding.realtyDetailCenter.setOnClickListener {
+            mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+            mMap.controller.setZoom(14.0)
+        }
     }
 
     private fun initObservers() {
@@ -92,7 +90,7 @@ class DetailRealtyActivity : BaseActivity() {
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result
-                updateView(result)
+                updateView()
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -100,23 +98,41 @@ class DetailRealtyActivity : BaseActivity() {
         )
     }
 
-    private fun updateView(realtyModel: RealtyModel) {
-        binding.realtyDetailArea.text = realtyModel.area.toString() + " m2"
-        binding.realtyDetailRoom.text = realtyModel.roomNumber.toString()
-        binding.realtyDetailBathroom.text = realtyModel.bathRoom.toString()
-        binding.realtyDetailBedroom.text = realtyModel.bedRoom.toString()
-        binding.realtyDetailDescription.text = realtyModel.description
-        binding.realtyDetailLocationAddress.text = realtyModel.address
+    private fun initMap() {
+        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        mMap = binding.map
+        mMap.setTileSource(TileSourceFactory.MAPNIK)
+        mMap.isTilesScaledToDpi = true
+        mMap.setMultiTouchControls(true)
+        mMap.minZoomLevel = 4.0
+        mMap.maxZoomLevel = 21.0
+        mMap.isVerticalMapRepetitionEnabled = false
+    }
+
+    private fun updateView() {
+        Glide.with(this)
+            .load(realty.pictures)
+            .error(R.drawable.ic_error)
+            .into(binding.recyclerView)
+
+
+        binding.realtyDetailArea.text = realty.area.toString() + " m2"
+        binding.realtyDetailRoom.text = realty.roomNumber.toString()
+        binding.realtyDetailBathroom.text = realty.bathRoom.toString()
+        binding.realtyDetailBedroom.text = realty.bedRoom.toString()
+        binding.realtyDetailDescription.text = realty.description
+        binding.realtyDetailLocationAddress.text = realty.address
         drawMarker()
     }
 
     private fun drawMarker() {
-        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
-        mMap.controller.setZoom(15.0)
         val startMarker = Marker(mMap)
         startMarker.position = GeoPoint(realty.latitude, realty.longitude)
-        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        startMarker.title = "${realty.kind}, ${realty.address}"
         mMap.overlays.add(startMarker)
+
+        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+        mMap.controller.setZoom(12.0)
     }
 
     override fun onResume() {

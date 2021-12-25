@@ -30,18 +30,5 @@ data class RealtyModel(
     @ColumnInfo(name = "estate_agent") var estateAgent: String,
     @ColumnInfo(name = "pictures") var pictures: ByteArray
     //, @ColumnInfo(name = "pictures")var pictures: PicturesModel
-
-)
-
-//TEST
-data class RealtyAndPicture(
-    @Embedded
-    val realty: RealtyModel,
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "realty"
-    )
-    val Media: List<RealtyModel>
-
 )
 

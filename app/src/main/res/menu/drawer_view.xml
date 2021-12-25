@@ -2,13 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="none">
         <item
+            android:id="@+id/searchItem"
+            android:icon="@drawable/ic_search"
+            android:title="Search" />
+        <item
             android:id="@+id/addItem"
             android:icon="@drawable/ic_add"
             android:title="Add a realty" />
         <item
-            android:id="@+id/searchItem"
-            android:icon="@drawable/ic_search"
-            android:title="Search" />
+            android:id="@+id/mapItem"
+            android:icon="@drawable/ic_near"
+            android:title="Map" />
         <item
             android:id="@+id/simulator"
             android:icon="@drawable/ic_simulator"

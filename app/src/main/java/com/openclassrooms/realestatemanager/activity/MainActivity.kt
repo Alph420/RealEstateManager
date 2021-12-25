@@ -107,6 +107,11 @@ class MainActivity : BaseActivity() {
             true
         }
 
+        R.id.mapItem -> {
+            startActivity(Intent(this, MapActivity::class.java))
+            true
+        }
+
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -159,6 +164,9 @@ class MainActivity : BaseActivity() {
                 R.id.simulator -> {
                     startActivity(Intent(this, SimulatorActivity::class.java))
 
+                }
+                R.id.mapItem -> {
+                    startActivity(Intent(this, MapActivity::class.java))
                 }
             }
             return@setNavigationItemSelectedListener true
