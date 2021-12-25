@@ -1,33 +1,25 @@
 package com.openclassrooms.realestatemanager.activity
 
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.bumptech.glide.Glide
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.openclassrooms.realestatemanager.adapter.PictureListAdapter
 import org.osmdroid.config.Configuration.*
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
+import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.RealtyDetailViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.database.AppDatabase.Companion.getInstance
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.lang.StringBuilder
 
 
 /**
@@ -39,10 +31,12 @@ class DetailRealtyActivity : BaseActivity() {
     //region PROPERTIES
     private lateinit var binding: ActivityDetailBinding
     private lateinit var realtyDetailViewModel: RealtyDetailViewModel
+    private lateinit var adapter: PictureListAdapter
     private lateinit var mMap: MapView
-    private lateinit var realty: RealtyModel
+    private lateinit var realty: Realty
 
     private var realtyId = ""
+    private var picturesList = emptyList<String>()
     //endregion
 
     companion object {
@@ -60,10 +54,11 @@ class DetailRealtyActivity : BaseActivity() {
         }.toString()
 
 
+        initMap()
         initViewModel()
         initListeners()
         initObservers()
-        initMap()
+        initRecyclerView()
     }
 
     private fun initViewModel() {
@@ -86,7 +81,7 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += realtyDetailViewModel.getById(realtyId).subscribe(
+        disposeBag += realtyDetailViewModel.getRealtyData(realtyId).subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result
@@ -96,6 +91,12 @@ class DetailRealtyActivity : BaseActivity() {
                 Log.e(TAG, error.message.toString())
             }
         )
+    }
+
+    private fun initRecyclerView() {
+        this.adapter = PictureListAdapter(picturesList)
+
+        binding.recyclerView.adapter = this.adapter
     }
 
     private fun initMap() {
@@ -109,13 +110,13 @@ class DetailRealtyActivity : BaseActivity() {
         mMap.isVerticalMapRepetitionEnabled = false
     }
 
+    private fun updatePictures() {
+        adapter.dataList = realty.path
+        adapter.notifyDataSetChanged()
+    }
+
     private fun updateView() {
-        Glide.with(this)
-            .load(realty.pictures)
-            .error(R.drawable.ic_error)
-            .into(binding.recyclerView)
-
-
+        //TODO ADD PICTURES
         binding.realtyDetailArea.text = realty.area.toString() + " m2"
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()
@@ -123,6 +124,7 @@ class DetailRealtyActivity : BaseActivity() {
         binding.realtyDetailDescription.text = realty.description
         binding.realtyDetailLocationAddress.text = realty.address
         drawMarker()
+        updatePictures()
     }
 
     private fun drawMarker() {

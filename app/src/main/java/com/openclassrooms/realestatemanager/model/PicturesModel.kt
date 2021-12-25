@@ -14,12 +14,12 @@ import androidx.room.PrimaryKey
     foreignKeys = [ForeignKey(
         entity = RealtyModel::class,
         parentColumns = arrayOf("id"),
-        childColumns = arrayOf("realtyId"),
+        childColumns = arrayOf("realty_id"),
         onDelete = ForeignKey.CASCADE
     )]
 )
 data class PicturesModel(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(index = true) val realtyId: String,
-    @ColumnInfo(name = "pictures") var pictures: ByteArray
-    )
+    @ColumnInfo(index = true, name = "realty_id") val realtyId: Int,
+    @ColumnInfo(name = "pictures") var path: String
+)

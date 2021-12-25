@@ -3,10 +3,6 @@ package com.openclassrooms.realestatemanager.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.databinding.RealtyItemBinding
@@ -16,8 +12,8 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
  * Created by Julien Jennequin on 11/12/2021 10:34
  * Project : RealEstateManager
  **/
-class RealtyListerAdapter(var dataList: List<RealtyModel>) :
-    RecyclerView.Adapter<RealtyListerAdapter.RealtyViewHolder>() {
+class RealtyListAdapter(var dataList: List<RealtyModel>) :
+    RecyclerView.Adapter<RealtyListAdapter.RealtyViewHolder>() {
     //Declarative interface
     private lateinit var listener: ItemClickListener
 
@@ -47,11 +43,8 @@ class RealtyListerAdapter(var dataList: List<RealtyModel>) :
         val context = binding.root.context
         val realty = dataList[position]
 
-        Glide.with(binding.pictures)
-            .load(realty.pictures)
-            .error(R.drawable.ic_error)
-            .transform(MultiTransformation(CenterCrop(), RoundedCorners(10)))
-            .into(binding.pictures)
+        //TODO ADD PICTURES
+
 
         binding.realtyType.text = realty.kind
         binding.realtyLocation.text = realty.address

@@ -13,11 +13,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  **/
 class MainViewModel(private val database: AppDatabase) : ViewModel() {
 
-    fun getAll(): Observable<List<RealtyModel>> = database.realtyDao().getAll()
+    fun getAll(): Observable<List<RealtyModel>> = database.realtyDao().getAllRealty()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 
-    fun insertAll(realty: RealtyModel) = database.realtyDao().insertAll(realty)
+    fun insertAll(realty: RealtyModel) = database.realtyDao().insertRealty(realty)
 
     fun delete(realty: RealtyModel) = database.realtyDao().delete(realty)
 

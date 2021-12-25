@@ -9,7 +9,6 @@ import java.util.*
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.provider.MediaStore
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,8 +17,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Notifications
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
@@ -38,6 +38,7 @@ class AddRealtyActivity : BaseActivity() {
     private lateinit var addRealtyViewModel: AddRealtyViewModel
 
     private lateinit var realty: RealtyModel
+    private var picturesList: MutableList<String> = arrayListOf()
 
     //region Date
     var cal = Calendar.getInstance()
@@ -110,7 +111,7 @@ class AddRealtyActivity : BaseActivity() {
         setContentView(binding.root)
 
         realty =
-            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "", ByteArray(0))
+            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "")
 
         initUI()
         initViewModel()
@@ -185,16 +186,19 @@ class AddRealtyActivity : BaseActivity() {
 
     private fun saveRealty() {
         if (verify()) {
-            disposeBag += addRealtyViewModel.insertRealty(this, realty).subscribe(
-                {
-                    Log.d(TAG, "insert realty with success")
-                },
-                {
-                    Log.d(TAG, "insert realty failed : ${it.stackTraceToString()}")
-                }
-            )
+            disposeBag += addRealtyViewModel.insertRealty(realty, picturesList)
+                .subscribe(
+                    {
+                        Log.d(TAG, "insert realty and pictures with success")
+                        Notifications().notifyUserInsertSuccess(this.applicationContext, realty)
+                    },
+                    {
+                        Log.d(TAG, "insert realty failed : ${it.stackTraceToString()}")
+                    }
+                )
         }
     }
+
 
     private fun verify(): Boolean {
 
@@ -327,12 +331,15 @@ class AddRealtyActivity : BaseActivity() {
         if (ActivityResult.resultCode == Activity.RESULT_OK) {
             ActivityResult.data?.let { intent ->
                 intent.extras?.let {
-                    realty.pictures = Utils.fromBitmap(it.get("data") as Bitmap)
+                    val photo = it.get("data") as Bitmap
 
                     Glide.with(this)
-                        .load(realty.pictures)
+                        .load(photo)
                         .error(R.drawable.ic_error)
                         .into(binding.addRealtyFromCamera)
+
+                    val uriOfPhoto = Utils.getImageUri(this, photo)
+                    picturesList.add(uriOfPhoto.toString())
                 }
             }
         }
@@ -346,14 +353,14 @@ class AddRealtyActivity : BaseActivity() {
             if (ActivityResult.resultCode == Activity.RESULT_OK) {
                 ActivityResult.data?.let { intent ->
                     val imageStream = intent.data?.let { contentResolver.openInputStream(it) }
-                    //TODO IMPLEMENT NEW PICTURE MODEL WITH ROOM
-                    // realty.pictures = PicturesModel(0,)
-                    realty.pictures = Utils.fromBitmap(BitmapFactory.decodeStream(imageStream))
-
+                    val photo = imageStream as Bitmap
                     Glide.with(this)
-                        .load(realty.pictures)
+                        .load(photo)
                         .error(R.drawable.ic_error)
-                        .into(binding.addRealtyFromLibrary)
+                        .into(binding.addRealtyFromCamera)
+
+                    val uriOfPhoto = Utils.getImageUri(this, photo)
+                    picturesList.add(uriOfPhoto.toString())
                 }
             }
         }

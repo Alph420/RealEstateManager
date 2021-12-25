@@ -6,6 +6,7 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -14,7 +15,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  **/
 class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
 
-    fun getById(realtyId: String): Observable<RealtyModel> = database.realtyDao().getById(realtyId)
+    fun getById(realtyId: String): Single<RealtyModel> = database.realtyDao().getById(realtyId)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 

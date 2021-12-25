@@ -17,23 +17,16 @@ import org.osmdroid.config.Configuration.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
-import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
+import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
-import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -49,7 +42,7 @@ class MainActivity : BaseActivity() {
     //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter: RealtyListerAdapter
+    private lateinit var adapter: RealtyListAdapter
     private lateinit var realty: RealtyModel
     private lateinit var mMap: MapView
 
@@ -187,8 +180,8 @@ class MainActivity : BaseActivity() {
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
-                updateView(result)
-                initDetailPart(result)
+                updateView()
+                initDetailPart()
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -196,10 +189,10 @@ class MainActivity : BaseActivity() {
         )
     }
 
-    private fun initDetailPart(result: List<RealtyModel>) {
+    private fun initDetailPart() {
         if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
-            if (result.isNotEmpty()) {
-                realty = result[0]
+            if (realtyList.isNotEmpty()) {
+                realty = realtyList[0]
                 setDataOfRetail()
                 drawMarker()
                 empty = false
@@ -208,7 +201,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        this.adapter = RealtyListerAdapter(realtyList)
+        this.adapter = RealtyListAdapter(realtyList)
 
         binding.realtyRecyclerView.adapter = this.adapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -218,7 +211,7 @@ class MainActivity : BaseActivity() {
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
 
-        adapter.setListener(object : RealtyListerAdapter.ItemClickListener {
+        adapter.setListener(object : RealtyListAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
                 if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
                     realty = realtyList[position]
@@ -260,8 +253,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun updateView(result: List<RealtyModel>) {
-        adapter.dataList = result
+    private fun updateView() {
+        adapter.dataList = realtyList
         adapter.notifyDataSetChanged()
     }
 
