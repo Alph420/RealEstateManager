@@ -17,6 +17,12 @@
         app:showAsAction="always" />
 
     <item
+        android:id="@+id/mapItem"
+        android:icon="@drawable/ic_near"
+        android:title="Map"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/simulator"
         android:icon="@drawable/ic_simulator"
         tools:iconTint="@color/light_white"

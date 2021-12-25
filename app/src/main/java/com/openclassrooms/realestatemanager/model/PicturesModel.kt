@@ -20,7 +20,6 @@ import androidx.room.PrimaryKey
 )
 data class PicturesModel(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(index = true) val realtyId: String
-
-
+    @ColumnInfo(index = true) val realtyId: String,
+    @ColumnInfo(name = "pictures") var pictures: ByteArray
     )

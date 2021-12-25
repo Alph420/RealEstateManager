@@ -69,6 +69,10 @@ class SimulatorActivity : BaseActivity() {
     }
 
     private fun calculate() {
+        // link of algo
+        // https://www.creditexpert.fr/credit-immobilier/calculer-mensualites/#:~:text=Avec%20%C2%AB%20m%20%C2%BB%20pour%20le%20montant,12))%5E%2Dn%5D.
+        //m = [(M*t)/12] / [1-(1+(t/12))^-n]
+
         if (amount > 0 && percentagePerYears != 0.00 && term != 0.00) {
             val result =
                 ((amount * percentagePerYears) / 12) / (1 - (1 + (percentagePerYears / 12)).pow(

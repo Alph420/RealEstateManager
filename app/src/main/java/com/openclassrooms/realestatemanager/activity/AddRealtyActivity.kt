@@ -40,7 +40,6 @@ class AddRealtyActivity : BaseActivity() {
     private lateinit var realty: RealtyModel
 
     //region Date
-
     var cal = Calendar.getInstance()
 
     private val dateInSetListener =
@@ -178,6 +177,7 @@ class AddRealtyActivity : BaseActivity() {
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
+
     private fun updateDateInTextView(realtyDateTextView: TextView) {
         realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
@@ -263,7 +263,7 @@ class AddRealtyActivity : BaseActivity() {
             realty.description = binding.addRealtyDescription.text.toString()
         }
 
-        if (binding.addRealtyInDate.text.isNullOrEmpty()){
+        if (binding.addRealtyInDate.text.isNullOrEmpty()) {
             binding.addRealtyInDate.error = "Missing required field"
         }
 

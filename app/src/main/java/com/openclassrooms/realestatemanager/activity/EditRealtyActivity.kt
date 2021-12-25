@@ -1,10 +1,12 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.databinding.ActivityEditRealtyBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
@@ -12,6 +14,7 @@ import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.*
+import java.lang.StringBuilder
 import java.util.*
 
 /**
@@ -53,6 +56,42 @@ class EditRealtyActivity : BaseActivity() {
             realty.outMarketDate = cal.time.time
 
         }
+    //endregion
+
+    //region MultipleChoiceBoxData
+
+    private val GENRES = arrayOf(
+        "City Center",
+        "Restaurants",
+        "Metro/Train station",
+        "SuperMarket",
+        "Shcool",
+        "Cinema",
+        "Swimming pool",
+        "Hospital",
+        "Library",
+        "Park",
+        "Nightlife Street",
+        "theater",
+        "Bank",
+        "Pharmacy"
+    )
+    private var isCheckedList = booleanArrayOf(
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    )
     //endregion
 
     companion object {
@@ -104,6 +143,10 @@ class EditRealtyActivity : BaseActivity() {
         }
         binding.editRealtyValidateBtn.setOnClickListener {
             saveRealty()
+        }
+
+        binding.interestPointLayout.setOnClickListener {
+            showMultiCheckBoxesDialog()
         }
 
     }
@@ -226,6 +269,36 @@ class EditRealtyActivity : BaseActivity() {
 
         return true
 
+    }
+
+    private fun showMultiCheckBoxesDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMultiChoiceItems(
+            GENRES, isCheckedList
+        ) { _, index, isChecked ->
+            isCheckedList[index] = isChecked
+        }
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            val interestPoints = StringBuilder()
+            realty.pointOfInterest = ""
+            for (i in GENRES.indices) {
+                if (isCheckedList[i]) {
+                    realty.pointOfInterest =
+                        interestPoints.append(GENRES[i]).append(", ").toString()
+
+                }
+            }
+
+            if (realty.pointOfInterest.isNotEmpty()) {
+                realty.pointOfInterest = interestPoints.substring(0, interestPoints.length - 2)
+                binding.editRealtyInterestPoint.setText(realty.pointOfInterest)
+            } else {
+                binding.editRealtyInterestPoint.hint = ""
+            }
+        }
+        val dialog: Dialog = builder.create()
+        dialog.show()
     }
 
     private fun updateView(realty: RealtyModel) {
