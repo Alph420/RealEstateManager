@@ -7,6 +7,7 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -14,10 +15,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * Project : RealEstateManager
  **/
 class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
-
-    fun getAll(): Observable<List<RealtyModel>> = database.realtyDao().getAllRealty()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
 
     fun insertRealty(
         realty: RealtyModel, pictureList: List<String>,
@@ -31,9 +28,8 @@ class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             }
             .subscribeOn(Schedulers.io())
 
-    fun delete(realty: RealtyModel) = database.realtyDao().delete(realty)
 
-    fun insertPictures(picturesModel: List<PicturesModel>): Completable =
+    private fun insertPictures(picturesModel: List<PicturesModel>): Completable =
         database.pictureDao().insertAll(picturesModel)
             .subscribeOn(Schedulers.io())
 

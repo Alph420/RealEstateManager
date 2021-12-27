@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.Manifest
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +21,6 @@ import org.osmdroid.views.overlay.Marker
 import androidx.core.app.ActivityCompat
 
 import android.content.pm.PackageManager
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 
 import androidx.lifecycle.Observer
@@ -75,7 +73,7 @@ class MapActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += mapViewModel.getAll().subscribe(
+        disposeBag += mapViewModel.getAllRealty().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result

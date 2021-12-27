@@ -372,9 +372,4 @@ class AddRealtyActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
     }
-
-
 }
-
-
-//TODO LES PHOTOS SONT ENFAITE TOUTES EN LOCAL ET TU DOIS JUSTE SAVE LE PATH DANS ROOM

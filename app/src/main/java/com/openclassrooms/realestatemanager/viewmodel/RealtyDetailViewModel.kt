@@ -16,7 +16,8 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
 
 
     fun getRealtyData(realtyId: String): Single<Realty> =
-        database.realtyDao().getById(realtyId)
+        database.realtyDao()
+            .getById(realtyId)
             .subscribeOn(Schedulers.io())
             .flatMap { realty ->
                 getPictures(realty.id).map { listOfPath ->
@@ -42,7 +43,7 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
                 }
             }
 
-    fun getPictures(id: Int): Single<List<String>> = database.pictureDao()
+    private fun getPictures(id: Int): Single<List<String>> = database.pictureDao()
         .getPictures(id)
         .map { pictureList ->
             pictureList.map { picture ->

@@ -25,6 +25,7 @@ import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -43,10 +44,10 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter: RealtyListAdapter
-    private lateinit var realty: RealtyModel
+    private lateinit var realty: Realty
     private lateinit var mMap: MapView
 
-    private var realtyList: List<RealtyModel> = emptyList()
+    private var realtyList: List<Realty> = emptyList()
     private var empty = true
     //endregion
 

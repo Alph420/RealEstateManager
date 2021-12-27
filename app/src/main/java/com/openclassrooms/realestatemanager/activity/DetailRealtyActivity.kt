@@ -116,7 +116,6 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        //TODO ADD PICTURES
         binding.realtyDetailArea.text = realty.area.toString() + " m2"
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()

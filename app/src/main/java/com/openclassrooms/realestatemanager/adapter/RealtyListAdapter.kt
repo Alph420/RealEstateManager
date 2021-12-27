@@ -6,13 +6,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.databinding.RealtyItemBinding
+import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
 
 /**
  * Created by Julien Jennequin on 11/12/2021 10:34
  * Project : RealEstateManager
  **/
-class RealtyListAdapter(var dataList: List<RealtyModel>) :
+class RealtyListAdapter(var dataList: List<Realty>) :
     RecyclerView.Adapter<RealtyListAdapter.RealtyViewHolder>() {
     //Declarative interface
     private lateinit var listener: ItemClickListener
@@ -22,9 +23,7 @@ class RealtyListAdapter(var dataList: List<RealtyModel>) :
         this.listener = listener
     }
 
-    //Defining interface
     interface ItemClickListener {
-        //Achieve the click method, passing the subscript.
         fun onItemClick(position: Int)
     }
 
