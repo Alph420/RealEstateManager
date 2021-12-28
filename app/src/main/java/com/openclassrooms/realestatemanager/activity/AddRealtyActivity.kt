@@ -346,7 +346,7 @@ class AddRealtyActivity : BaseActivity() {
             ActivityResult.data?.let { intent ->
                 intent.extras?.let {
                     val photo = it.get("data") as Bitmap
-                    val uriOfPhoto = Utils.getImageUriFromBitmap(this, photo)
+                    val uriOfPhoto = Utils.getImageUri(this, photo)
                     popup(uriOfPhoto)
                 }
             }

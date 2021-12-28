@@ -162,7 +162,6 @@ internal object Utils {
         return GeoPoint(0.0, 0.0)
     }
 
-
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
