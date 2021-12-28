@@ -376,16 +376,13 @@ class AddRealtyActivity : BaseActivity() {
         var picture = PicturesModel(0, 0, "", picturePath.toString())
         builder.setTitle("Picture name")
 
-        // Set up the input
         val input = EditText(this)
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setHint("Enter picture name")
+        input.hint = "Enter picture name"
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
         // Set up the buttons
         builder.setPositiveButton("OK", { dialog, which ->
-            // Here you get get input text from the Edittext
             picture.name = input.text.toString()
             picturesList.add(picture)
         })
