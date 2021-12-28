@@ -44,6 +44,7 @@ class MainViewModel(private val database: AppDatabase) : ViewModel() {
                     )
                 }
             }
+            .observeOn(AndroidSchedulers.mainThread())
 
 
     fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
