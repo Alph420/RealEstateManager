@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.text.InputType
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
@@ -182,12 +183,6 @@ class AddRealtyActivity : BaseActivity() {
         binding.recyclerView.adapter = this.mAdapter
     }
 
-
-    private fun updatePictures() {
-        mAdapter.dataList = picturesList
-        mAdapter.notifyDataSetChanged()
-    }
-
     private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
         DatePickerDialog(
             this,
@@ -351,7 +346,7 @@ class AddRealtyActivity : BaseActivity() {
             ActivityResult.data?.let { intent ->
                 intent.extras?.let {
                     val photo = it.get("data") as Bitmap
-                    val uriOfPhoto = Utils.getImageUri(this, photo)
+                    val uriOfPhoto = Utils.getImageUriFromBitmap(this, photo)
                     popup(uriOfPhoto)
                 }
             }
@@ -373,7 +368,7 @@ class AddRealtyActivity : BaseActivity() {
 
     private fun popup(picturePath: Uri) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        var picture = PicturesModel(0, 0, "", picturePath.toString())
+        val picture = PicturesModel(0, 0, "", picturePath.toString())
         builder.setTitle("Picture name")
 
         val input = EditText(this)
@@ -382,14 +377,18 @@ class AddRealtyActivity : BaseActivity() {
         builder.setView(input)
 
         // Set up the buttons
-        builder.setPositiveButton("OK", { dialog, which ->
-            picture.name = input.text.toString()
-            picturesList.add(picture)
-        })
-        builder.setNegativeButton("Cancel", { dialog, which ->
-            //TODO CANCEL OPERATION
+        builder.setPositiveButton("OK") { dialog, _ ->
+            if (input.text.isEmpty()) {
+                Toast.makeText(this, "Each picture need description", Toast.LENGTH_LONG).show()
+            } else {
+                picture.name = input.text.toString()
+                picturesList.add(picture)
+                dialog.cancel()
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, which ->
             dialog.cancel()
-        })
+        }
 
         builder.show()
     }
