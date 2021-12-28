@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -16,7 +15,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  **/
 class MainViewModel(private val database: AppDatabase) : ViewModel() {
 
-    //TODO ADD PICTURE
+    //TODO ADD PICTURE IN RX CHAIN
     fun getAll(): Observable<List<Realty>> =
         database.realtyDao()
             .getAllRealty()

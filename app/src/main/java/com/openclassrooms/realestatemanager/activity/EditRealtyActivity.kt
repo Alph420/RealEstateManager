@@ -36,7 +36,7 @@ class EditRealtyActivity : BaseActivity() {
 
     //region Date
 
-    var cal = Calendar.getInstance()
+    private var cal: Calendar = Calendar.getInstance()
 
     private val dateInSetListener =
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->

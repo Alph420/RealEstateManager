@@ -2,18 +2,17 @@ package com.openclassrooms.realestatemanager.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
-import android.os.Bundle
-import android.view.View
-import android.widget.TextView
-import java.util.*
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Bundle
 import android.provider.MediaStore
 import android.text.InputType
 import android.util.Log
+import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -28,7 +27,7 @@ import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
-import java.lang.StringBuilder
+import java.util.*
 
 
 /**
@@ -48,7 +47,7 @@ class AddRealtyActivity : BaseActivity() {
     //endregion
 
     //region Date
-    var cal = Calendar.getInstance()
+    private var cal: Calendar = Calendar.getInstance()
 
     private val dateInSetListener =
         DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
@@ -386,7 +385,7 @@ class AddRealtyActivity : BaseActivity() {
                 dialog.cancel()
             }
         }
-        builder.setNegativeButton("Cancel") { dialog, which ->
+        builder.setNegativeButton("Cancel") { dialog, _ ->
             dialog.cancel()
         }
 
@@ -394,11 +393,4 @@ class AddRealtyActivity : BaseActivity() {
     }
 
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-    }
 }
