@@ -2,7 +2,7 @@ package com.openclassrooms.realestatemanager.app
 
 import android.content.Context
 import androidx.multidex.MultiDexApplication
-import com.openclassrooms.realestatemanager.Utils.AndroidUtils
+import com.openclassrooms.realestatemanager.utils.AndroidUtils
 
 /**
  * Created by Julien Jennequin on 10/12/2021 12:39

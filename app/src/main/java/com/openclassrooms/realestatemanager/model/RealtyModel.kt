@@ -1,8 +1,9 @@
 package com.openclassrooms.realestatemanager.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.room.*
+import com.google.firebase.firestore.GeoPoint
 import java.sql.Date
 
 /**
@@ -10,19 +11,22 @@ import java.sql.Date
  * Project : RealEstateManager
  **/
 @Entity
-data class RealtyModel (
-    @PrimaryKey val id: Int,
-    @ColumnInfo(name = "kind") val kind: String,
-    @ColumnInfo(name = "price") val price: Long = 0,
-    @ColumnInfo(name = "area")val area:Long = 0,
-    @ColumnInfo(name = "room_number")val roomNumber:Int,
-    @ColumnInfo(name = "description")val description:String,
-    @ColumnInfo(name = "address")val address:String,
-    @ColumnInfo(name = "point_of_interest")val pointOfInterest:String,
-    @ColumnInfo(name = "available")val available:Boolean,
-    @ColumnInfo(name = "in_market_date")val inMarketDate: Long,
-    @ColumnInfo(name = "out_market_date")val outMarketDate:Long,
-    @ColumnInfo(name = "estate_agent")val estateAgent:String,
-    @ColumnInfo(typeAffinity = ColumnInfo.BLOB) val pictures:ByteArray
-    )
+data class RealtyModel(
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    @ColumnInfo(name = "kind") var kind: String,
+    @ColumnInfo(name = "price") var price: Long = 0,
+    @ColumnInfo(name = "area") var area: Long = 0,
+    @ColumnInfo(name = "room_number") var roomNumber: Int,
+    @ColumnInfo(name = "bathroom_number") var bathRoom: Int,
+    @ColumnInfo(name = "bedroom_number") var bedRoom: Int,
+    @ColumnInfo(name = "description") var description: String,
+    @ColumnInfo(name = "address") var address: String,
+    @ColumnInfo(name = "longitude") var longitude: Double,
+    @ColumnInfo(name = "latitude") var latitude: Double,
+    @ColumnInfo(name = "point_of_interest") var pointOfInterest: String,
+    @ColumnInfo(name = "available") var available: Boolean,
+    @ColumnInfo(name = "in_market_date") var inMarketDate: Long,
+    @ColumnInfo(name = "out_market_date") var outMarketDate: Long,
+    @ColumnInfo(name = "estate_agent") var estateAgent: String,
+)
 

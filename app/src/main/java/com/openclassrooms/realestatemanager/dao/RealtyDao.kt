@@ -1,11 +1,10 @@
 package com.openclassrooms.realestatemanager.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 
 /**
  * Created by Julien Jennequin on 10/12/2021 13:22
@@ -15,13 +14,16 @@ import io.reactivex.rxjava3.core.Observable
 interface RealtyDao {
 
     @Query("SELECT * FROM RealtyModel")
-    fun getAll():Observable<List<RealtyModel>>
+    fun getAllRealty(): Observable<List<RealtyModel>>
 
-    /*@Query("SELECT * FROM RealtyModel WHERE uid IN (:realtyIds)")
-    fun getById(realtyIds: IntArray): List<RealtyModel>*/
+    @Query("SELECT * FROM RealtyModel WHERE id = :id")
+    fun getById(id: String): Single<RealtyModel>
 
     @Insert
-    fun insertAll(vararg realty: RealtyModel)
+    fun insertRealty(realty: RealtyModel): Single<Long>
+
+    @Update
+    fun updateRealty(realty: RealtyModel): Completable
 
     @Delete
     fun delete(user: RealtyModel)

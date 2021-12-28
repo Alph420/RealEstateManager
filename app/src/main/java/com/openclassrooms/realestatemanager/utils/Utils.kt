@@ -1,18 +1,32 @@
-package com.openclassrooms.realestatemanager.Utils
+package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.location.Address
+import android.location.Geocoder
+import android.net.Uri
 import android.net.wifi.WifiManager
+import androidx.room.TypeConverter
+import com.google.firebase.firestore.GeoPoint
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import java.io.ByteArrayOutputStream
 import java.lang.StringBuilder
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
+import android.provider.MediaStore.Images
+import android.provider.MediaStore
+
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:35
  * Project : RealEstateManager
  **/
 internal object Utils {
+
     //region Don't touch
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
@@ -59,7 +73,10 @@ internal object Utils {
     fun formatPrice(price: Long): String {
         val priceText = StringBuilder()
         when {
-            (price.toString().length) <= 6 -> {
+            (price.toString().length) <= 3 -> {
+                return price.toString()
+            }
+            (price.toString().length) <= 6 && (price.toString().length) >= 4 -> {
                 priceText
                     .append(price.toString().substring(0, price.toString().length - 3))
                     .append(',')
@@ -121,4 +138,52 @@ internal object Utils {
         return priceText.toString()
     }
 
+    @TypeConverter
+    fun fromBitmap(bitmap: Bitmap): ByteArray {
+        val outputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+        return outputStream.toByteArray()
+    }
+
+    fun toBitmap(byteArray: ByteArray): Bitmap {
+        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
+    }
+
+    fun getLocationFromAddress(context: Context, strAddress: String): GeoPoint {
+        val realtyPosition: GeoPoint
+        if (Geocoder(context).getFromLocationName(strAddress, 5).size > 0) {
+            val location: Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
+            location.latitude
+            location.longitude
+
+            realtyPosition = GeoPoint(location.latitude, location.longitude)
+            return realtyPosition
+        }
+        return GeoPoint(0.0, 0.0)
+    }
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(context: Context,uri: Uri): String {
+        var path = ""
+        if (context.contentResolver != null) {
+            val cursor: Cursor? =  context.contentResolver.query(uri, null, null, null, null)
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx: Int = cursor.getColumnIndex(Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
+    }
+}
+
+operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
+    add(disposable)
 }

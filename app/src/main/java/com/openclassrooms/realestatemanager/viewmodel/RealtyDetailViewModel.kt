@@ -4,24 +4,24 @@ import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
- * Created by Julien Jennequin on 10/12/2021 13:56
+ * Created by Julien Jennequin on 22/12/2021 12:05
  * Project : RealEstateManager
  **/
-class MainViewModel(private val database: AppDatabase) : ViewModel() {
+class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
 
-    //TODO ADD PICTURE IN RX CHAIN
-    fun getAll(): Observable<List<Realty>> =
+    fun getRealtyData(realtyId: String): Single<Realty> =
         database.realtyDao()
-            .getAllRealty()
+            .getById(realtyId)
             .subscribeOn(Schedulers.io())
-            .map { realtyList ->
-                realtyList.map { realty ->
+            .flatMap { realty ->
+                getPictures(realty.id).map { listOfPath ->
                     Realty(
                         realty.id,
                         realty.kind,
@@ -39,16 +39,15 @@ class MainViewModel(private val database: AppDatabase) : ViewModel() {
                         realty.inMarketDate,
                         realty.outMarketDate,
                         realty.estateAgent,
-                        emptyList()
+                        listOfPath
                     )
                 }
             }
             .observeOn(AndroidSchedulers.mainThread())
 
 
-    fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
+    private fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
         .getPictures(id)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
 
 }

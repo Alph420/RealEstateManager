@@ -9,35 +9,46 @@ import android.view.Gravity.LEFT
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
+import org.osmdroid.config.Configuration.*
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.Utils.Utils
-import com.openclassrooms.realestatemanager.adapter.RealtyListerAdapter
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.Utils
+import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
+import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.plusAssign
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.overlay.Marker
 
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:32
  * Project : RealEstateManager
  **/
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
+    //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var adapter: RealtyListAdapter
+    private lateinit var realty: Realty
+    private lateinit var mMap: MapView
 
-    private var realtyList: List<RealtyModel> = emptyList()
-
-    private lateinit var adapter: RealtyListerAdapter
+    private var realtyList: List<Realty> = emptyList()
+    private var empty = true
+    //endregion
 
     companion object {
         private const val TAG = "MainActivity"
@@ -49,19 +60,15 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         setSupportActionBar(binding.topAppBar)
-        binding.topAppBar.overflowIcon?.colorFilter = PorterDuffColorFilter(
-            ResourcesCompat.getColor(
-                resources,
-                R.color.green_money_twice,
-                null
-            ), PorterDuff.Mode.SRC_ATOP
-        )
 
         initUI()
         initViewModel()
         initListeners()
         initObservers()
         initRecyclerView()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            initMap()
+        }
         checkIfWifiIsAvailable()
     }
 
@@ -75,12 +82,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
 
         R.id.addItem -> {
-            //TODO START ACTIVITY CreateRealty
-            true
-        }
-
-        R.id.createItem -> {
-            //TODO START ACTIVITY EditRealty
+            startActivity(Intent(this, AddRealtyActivity::class.java))
             true
         }
 
@@ -88,12 +90,45 @@ class MainActivity : AppCompatActivity() {
             //TODO  SearchRealty
             true
         }
+        R.id.simulator -> {
+            startActivity(Intent(this, SimulatorActivity::class.java))
+            true
+        }
+
+        R.id.settings -> {
+            startActivity(Intent(this, SettingsActivity::class.java))
+            true
+        }
+
+        R.id.mapItem -> {
+            startActivity(Intent(this, MapActivity::class.java))
+            true
+        }
 
         else -> super.onOptionsItemSelected(item)
     }
 
     private fun initUI() {
+        binding.topAppBar.overflowIcon?.colorFilter = PorterDuffColorFilter(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.green_money_twice,
+                null
+            ), PorterDuff.Mode.SRC_ATOP
+        )
+
         binding.appBuildVersion.text = BuildConfig.VERSION_NAME
+    }
+
+    private fun initMap() {
+        getInstance().load(this, PreferenceManager.getDefaultSharedPreferences(this))
+        mMap = binding.map!!
+        mMap.setTileSource(TileSourceFactory.MAPNIK)
+        mMap.isTilesScaledToDpi = true
+        mMap.setMultiTouchControls(true)
+        mMap.minZoomLevel = 4.0
+        mMap.maxZoomLevel = 21.0
+        mMap.isVerticalMapRepetitionEnabled = false
     }
 
     private fun initViewModel() {
@@ -113,21 +148,50 @@ class MainActivity : AppCompatActivity() {
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.addItem -> {
+                    startActivity(Intent(this, AddRealtyActivity::class.java))
+                }
                 R.id.action_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
+                }
+                R.id.simulator -> {
+                    startActivity(Intent(this, SimulatorActivity::class.java))
+
+                }
+                R.id.mapItem -> {
+                    startActivity(Intent(this, MapActivity::class.java))
                 }
             }
             return@setNavigationItemSelectedListener true
         }
 
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.realtyEdit!!.setOnClickListener {
+                val intent = Intent(binding.root.context, EditRealtyActivity::class.java)
+                intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
+                startActivity(intent)
+            }
+        }
+
     }
 
     private fun initObservers() {
-        mainViewModel.getAll().subscribe(
+        disposeBag += mainViewModel.getAll().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
-                updateView(result)
+                updateView()
+                initDetailPart()
+                realtyList.forEach { realty ->
+                    disposeBag += mainViewModel.getPictures(realty.id).subscribe(
+                        { result ->
+                            realty.pictures = result
+                        },
+                        { error ->
+                            Log.e(TAG, error.message.toString())
+                        }
+                    )
+                }
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -135,8 +199,19 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private fun initDetailPart() {
+        if (empty && binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
+            if (realtyList.isNotEmpty()) {
+                realty = realtyList[0]
+                setDataOfRetail()
+                drawMarker()
+                empty = false
+            }
+        }
+    }
+
     private fun initRecyclerView() {
-        this.adapter = RealtyListerAdapter(realtyList)
+        this.adapter = RealtyListAdapter(realtyList)
 
         binding.realtyRecyclerView.adapter = this.adapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -145,7 +220,42 @@ class MainActivity : AppCompatActivity() {
             (binding.realtyRecyclerView.layoutManager as LinearLayoutManager).orientation
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
+
+        adapter.setListener(object : RealtyListAdapter.ItemClickListener {
+            override fun onItemClick(position: Int) {
+                if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
+                    realty = realtyList[position]
+                    setDataOfRetail()
+                    drawMarker()
+                } else {
+                    val intent = Intent(binding.root.context, DetailRealtyActivity::class.java)
+                    intent.putExtra(Constants().REALTY_ID_EXTRAS, (realtyList[position].id))
+                    startActivity(intent)
+                }
+            }
+        })
+
+
     }
+
+    private fun setDataOfRetail() {
+        binding.realtyDetailArea!!.text = realty.area.toString() + " m2"
+        binding.realtyDetailRoom!!.text = realty.roomNumber.toString()
+        binding.realtyDetailBathroom!!.text = realty.bathRoom.toString()
+        binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
+        binding.realtyDetailDescription!!.text = realty.description
+        binding.realtyDetailLocationAddress!!.text = realty.address
+    }
+
+    private fun drawMarker() {
+        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+        mMap.controller.setZoom(15.0)
+        val startMarker = Marker(mMap)
+        startMarker.position = GeoPoint(realty.latitude, realty.longitude)
+        startMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+        mMap.overlays.add(startMarker)
+    }
+
 
     private fun checkIfWifiIsAvailable() {
         if (Utils.isInternetAvailable(this)) {
@@ -153,8 +263,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateView(result: List<RealtyModel>) {
-        adapter.dataList = result
+    private fun updateView() {
+        adapter.dataList = realtyList
         adapter.notifyDataSetChanged()
     }
+
+    override fun onResume() {
+        super.onResume()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.map!!.onResume()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
+            binding.map!!.onPause()
+        }
+    }
+
 }
