@@ -14,19 +14,16 @@ import io.reactivex.rxjava3.core.Single
 interface RealtyDao {
 
     @Query("SELECT * FROM RealtyModel")
-    fun getAll():Observable<List<RealtyModel>>
-
-    /*@Query("SELECT * FROM RealtyModel WHERE uid IN (:realtyIds)")
-    fun getById(realtyIds: IntArray): List<RealtyModel>*/
+    fun getAllRealty(): Observable<List<RealtyModel>>
 
     @Query("SELECT * FROM RealtyModel WHERE id = :id")
-    fun getById(id:String):Observable<RealtyModel>
+    fun getById(id: String): Single<RealtyModel>
 
     @Insert
-    fun insertAll(realty: RealtyModel): Completable
+    fun insertRealty(realty: RealtyModel): Single<Long>
 
     @Update
-    fun updateRealty(realty:RealtyModel):Completable
+    fun updateRealty(realty: RealtyModel): Completable
 
     @Delete
     fun delete(user: RealtyModel)

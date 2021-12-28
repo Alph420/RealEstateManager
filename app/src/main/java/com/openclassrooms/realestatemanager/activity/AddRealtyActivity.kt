@@ -9,17 +9,19 @@ import java.util.*
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Notifications
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.AddRealtyViewModel
@@ -34,10 +36,15 @@ import java.lang.StringBuilder
  **/
 class AddRealtyActivity : BaseActivity() {
 
+    //region PROPERTIES
+
     private lateinit var binding: ActivityAddRealtyBinding
     private lateinit var addRealtyViewModel: AddRealtyViewModel
-
+    private lateinit var mAdapter: PictureModelAdapter
     private lateinit var realty: RealtyModel
+
+    private var picturesList: MutableList<PicturesModel> = arrayListOf()
+    //endregion
 
     //region Date
     var cal = Calendar.getInstance()
@@ -110,12 +117,13 @@ class AddRealtyActivity : BaseActivity() {
         setContentView(binding.root)
 
         realty =
-            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "", ByteArray(0))
+            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "")
 
         initUI()
         initViewModel()
         initListeners()
         initObservers()
+        initRecyclerView()
     }
 
     private fun initUI() {
@@ -168,6 +176,18 @@ class AddRealtyActivity : BaseActivity() {
 
     }
 
+    private fun initRecyclerView() {
+        this.mAdapter = PictureModelAdapter(picturesList)
+
+        binding.recyclerView.adapter = this.mAdapter
+    }
+
+
+    private fun updatePictures() {
+        mAdapter.dataList = picturesList
+        mAdapter.notifyDataSetChanged()
+    }
+
     private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
         DatePickerDialog(
             this,
@@ -185,16 +205,19 @@ class AddRealtyActivity : BaseActivity() {
 
     private fun saveRealty() {
         if (verify()) {
-            disposeBag += addRealtyViewModel.insertRealty(this, realty).subscribe(
-                {
-                    Log.d(TAG, "insert realty with success")
-                },
-                {
-                    Log.d(TAG, "insert realty failed : ${it.stackTraceToString()}")
-                }
-            )
+            disposeBag += addRealtyViewModel.insertRealty(realty, picturesList)
+                .subscribe(
+                    {
+                        Log.d(TAG, "insert realty and pictures with success")
+                        Notifications().notifyUserInsertSuccess(this.applicationContext, realty)
+                    },
+                    {
+                        Log.d(TAG, "insert realty failed : ${it.stackTraceToString()}")
+                    }
+                )
         }
     }
+
 
     private fun verify(): Boolean {
 
@@ -327,17 +350,13 @@ class AddRealtyActivity : BaseActivity() {
         if (ActivityResult.resultCode == Activity.RESULT_OK) {
             ActivityResult.data?.let { intent ->
                 intent.extras?.let {
-                    realty.pictures = Utils.fromBitmap(it.get("data") as Bitmap)
-
-                    Glide.with(this)
-                        .load(realty.pictures)
-                        .error(R.drawable.ic_error)
-                        .into(binding.addRealtyFromCamera)
+                    val photo = it.get("data") as Bitmap
+                    val uriOfPhoto = Utils.getImageUri(this, photo)
+                    popup(uriOfPhoto)
                 }
             }
         }
     }
-
 
     private val getImgFromLibraryActivityForResult =
         registerForActivityResult(
@@ -345,18 +364,36 @@ class AddRealtyActivity : BaseActivity() {
         ) { ActivityResult ->
             if (ActivityResult.resultCode == Activity.RESULT_OK) {
                 ActivityResult.data?.let { intent ->
-                    val imageStream = intent.data?.let { contentResolver.openInputStream(it) }
-                    //TODO IMPLEMENT NEW PICTURE MODEL WITH ROOM
-                    // realty.pictures = PicturesModel(0,)
-                    realty.pictures = Utils.fromBitmap(BitmapFactory.decodeStream(imageStream))
-
-                    Glide.with(this)
-                        .load(realty.pictures)
-                        .error(R.drawable.ic_error)
-                        .into(binding.addRealtyFromLibrary)
+                    intent.data?.let {
+                        popup(it)
+                    }
                 }
             }
         }
+
+    private fun popup(picturePath: Uri) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        var picture = PicturesModel(0, 0, "", picturePath.toString())
+        builder.setTitle("Picture name")
+
+        val input = EditText(this)
+        input.hint = "Enter picture name"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", { dialog, which ->
+            picture.name = input.text.toString()
+            picturesList.add(picture)
+        })
+        builder.setNegativeButton("Cancel", { dialog, which ->
+            //TODO CANCEL OPERATION
+            dialog.cancel()
+        })
+
+        builder.show()
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -365,9 +402,4 @@ class AddRealtyActivity : BaseActivity() {
     override fun onStop() {
         super.onStop()
     }
-
-
 }
-
-
-//TODO LES PHOTOS SONT ENFAITE TOUTES EN LOCAL ET TU DOIS JUSTE SAVE LE PATH DANS ROOM

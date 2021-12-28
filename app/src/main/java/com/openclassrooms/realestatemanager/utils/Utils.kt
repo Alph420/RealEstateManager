@@ -1,10 +1,12 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.net.wifi.WifiManager
 import androidx.room.TypeConverter
 import com.google.firebase.firestore.GeoPoint
@@ -15,6 +17,9 @@ import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
+import android.provider.MediaStore.Images
+import android.provider.MediaStore
+
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:35
@@ -157,6 +162,27 @@ internal object Utils {
         return GeoPoint(0.0, 0.0)
     }
 
+
+    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+    fun getRealPathFromURI(context: Context,uri: Uri): String {
+        var path = ""
+        if (context.contentResolver != null) {
+            val cursor: Cursor? =  context.contentResolver.query(uri, null, null, null, null)
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx: Int = cursor.getColumnIndex(Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
+    }
 }
 
 operator fun CompositeDisposable.plusAssign(disposable: Disposable) {

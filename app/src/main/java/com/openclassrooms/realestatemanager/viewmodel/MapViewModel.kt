@@ -15,6 +15,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import org.osmdroid.util.GeoPoint
 
@@ -26,7 +27,7 @@ class MapViewModel(private val database: AppDatabase) : ViewModel() {
 
     val mLocationLiveData = MutableLiveData<GeoPoint>()
 
-    fun getAll(): Observable<List<RealtyModel>> = database.realtyDao().getAll()
+    fun getAllRealty(): Observable<List<RealtyModel>> = database.realtyDao().getAllRealty()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 

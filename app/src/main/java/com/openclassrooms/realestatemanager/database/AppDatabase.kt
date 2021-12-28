@@ -10,6 +10,8 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
 import androidx.room.Room
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.openclassrooms.realestatemanager.app.RealEstateManagerApplication
+import com.openclassrooms.realestatemanager.dao.PictureDao
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import io.reactivex.rxjava3.core.Observable
 import java.util.*
 
@@ -19,11 +21,12 @@ import java.util.*
  * Project : RealEstateManager
  **/
 
-@Database(entities = [RealtyModel::class], version = 1, exportSchema = false)
+@Database(entities = [RealtyModel::class,PicturesModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // --- DAO ---
     abstract fun realtyDao(): RealtyDao
+    abstract fun pictureDao(): PictureDao
 
 
     companion object {
@@ -69,7 +72,6 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyOne.put("in_market_date", Date().time)
                 realtyOne.put("out_market_date", Date().time)
                 realtyOne.put("estate_agent", "Inspecteur Gadget")
-                realtyOne.put("pictures","https://www.myistria.com/UserDocsImages/app/objekti/855/slika_hd/13062018044716_Villa-in-Central%20Istria-Villa%20Stokovci%20II20.jpg")
 
 
                 db.insert("RealtyModel", OnConflictStrategy.IGNORE, realtyOne)
