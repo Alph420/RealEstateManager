@@ -6,7 +6,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 31
     defaultConfig {
-        applicationId "com.openclassrooms.realestatemanager"
+        applicationId "com.alphacorporations.realestatemanager"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1000
@@ -22,7 +22,6 @@ android {
         def localProperties = new Properties()
         localProperties.load(new FileInputStream(localPropertiesFile))
 
-        addConstant("API_KEY", localProperties['apiKey'])
     }
     buildTypes {
         release {
