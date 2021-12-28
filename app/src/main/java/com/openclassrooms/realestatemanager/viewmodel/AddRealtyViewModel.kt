@@ -17,16 +17,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
 
     fun insertRealty(
-        realty: RealtyModel, pictureList: List<String>,
+        realty: RealtyModel, pictureList: List<PicturesModel>,
     ): Completable =
         database.realtyDao()
             .insertRealty(realty)
+            .subscribeOn(Schedulers.io())
             .flatMapCompletable { realtyId ->
-                insertPictures(pictureList.map { path ->
-                    PicturesModel(0, realtyId.toInt(), path)
+                insertPictures(pictureList.map { picture ->
+                    PicturesModel(0, realtyId.toInt(), picture.name, picture.path)
                 })
             }
-            .subscribeOn(Schedulers.io())
 
 
     private fun insertPictures(picturesModel: List<PicturesModel>): Completable =

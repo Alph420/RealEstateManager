@@ -3,14 +3,15 @@ package com.openclassrooms.realestatemanager.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.openclassrooms.realestatemanager.adapter.PictureListAdapter
+import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import org.osmdroid.config.Configuration.*
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.Injection
@@ -31,12 +32,12 @@ class DetailRealtyActivity : BaseActivity() {
     //region PROPERTIES
     private lateinit var binding: ActivityDetailBinding
     private lateinit var realtyDetailViewModel: RealtyDetailViewModel
-    private lateinit var adapter: PictureListAdapter
+    private lateinit var mAdapter: PictureModelAdapter
     private lateinit var mMap: MapView
     private lateinit var realty: Realty
 
     private var realtyId = ""
-    private var picturesList = emptyList<String>()
+    private var picturesList = emptyList<PicturesModel>()
     //endregion
 
     companion object {
@@ -94,9 +95,9 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun initRecyclerView() {
-        this.adapter = PictureListAdapter(picturesList)
+        this.mAdapter = PictureModelAdapter(picturesList)
 
-        binding.recyclerView.adapter = this.adapter
+        binding.recyclerView.adapter = this.mAdapter
     }
 
     private fun initMap() {
@@ -111,8 +112,13 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updatePictures() {
-        adapter.dataList = realty.path
-        adapter.notifyDataSetChanged()
+        if(realty.pictures.isEmpty()){
+            binding.emptyView.visibility = View.VISIBLE
+        }else{
+            binding.emptyView.visibility = View.INVISIBLE
+            mAdapter.dataList = realty.pictures
+            mAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun updateView() {
@@ -127,13 +133,17 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun drawMarker() {
-        val startMarker = Marker(mMap)
-        startMarker.position = GeoPoint(realty.latitude, realty.longitude)
-        startMarker.title = "${realty.kind}, ${realty.address}"
-        mMap.overlays.add(startMarker)
+        if (realty.latitude != 0.0 && realty.longitude != 0.0) {
+            val startMarker = Marker(mMap)
+            startMarker.position = GeoPoint(realty.latitude, realty.longitude)
+            startMarker.title = "${realty.kind}, ${realty.address}"
+            mMap.overlays.add(startMarker)
 
-        mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
-        mMap.controller.setZoom(12.0)
+            mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+            mMap.controller.setZoom(12.0)
+        } else {
+            Toast.makeText(this, "Realty location not available", Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onResume() {

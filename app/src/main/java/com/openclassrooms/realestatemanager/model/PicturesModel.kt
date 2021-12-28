@@ -21,5 +21,6 @@ import androidx.room.PrimaryKey
 data class PicturesModel(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(index = true, name = "realty_id") val realtyId: Int,
+    @ColumnInfo( name = "name") var name: String,
     @ColumnInfo(name = "pictures") var path: String
 )

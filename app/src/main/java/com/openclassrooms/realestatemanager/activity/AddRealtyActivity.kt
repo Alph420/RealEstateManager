@@ -9,13 +9,15 @@ import java.util.*
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
@@ -34,11 +36,15 @@ import java.lang.StringBuilder
  **/
 class AddRealtyActivity : BaseActivity() {
 
+    //region PROPERTIES
+
     private lateinit var binding: ActivityAddRealtyBinding
     private lateinit var addRealtyViewModel: AddRealtyViewModel
-
+    private lateinit var mAdapter: PictureModelAdapter
     private lateinit var realty: RealtyModel
-    private var picturesList: MutableList<String> = arrayListOf()
+
+    private var picturesList: MutableList<PicturesModel> = arrayListOf()
+    //endregion
 
     //region Date
     var cal = Calendar.getInstance()
@@ -117,6 +123,7 @@ class AddRealtyActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
+        initRecyclerView()
     }
 
     private fun initUI() {
@@ -167,6 +174,18 @@ class AddRealtyActivity : BaseActivity() {
 
     private fun initObservers() {
 
+    }
+
+    private fun initRecyclerView() {
+        this.mAdapter = PictureModelAdapter(picturesList)
+
+        binding.recyclerView.adapter = this.mAdapter
+    }
+
+
+    private fun updatePictures() {
+        mAdapter.dataList = picturesList
+        mAdapter.notifyDataSetChanged()
     }
 
     private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
@@ -332,19 +351,12 @@ class AddRealtyActivity : BaseActivity() {
             ActivityResult.data?.let { intent ->
                 intent.extras?.let {
                     val photo = it.get("data") as Bitmap
-
-                    Glide.with(this)
-                        .load(photo)
-                        .error(R.drawable.ic_error)
-                        .into(binding.addRealtyFromCamera)
-
                     val uriOfPhoto = Utils.getImageUri(this, photo)
-                    picturesList.add(uriOfPhoto.toString())
+                    popup(uriOfPhoto)
                 }
             }
         }
     }
-
 
     private val getImgFromLibraryActivityForResult =
         registerForActivityResult(
@@ -352,18 +364,39 @@ class AddRealtyActivity : BaseActivity() {
         ) { ActivityResult ->
             if (ActivityResult.resultCode == Activity.RESULT_OK) {
                 ActivityResult.data?.let { intent ->
-                    val imageStream = intent.data?.let { contentResolver.openInputStream(it) }
-                    val photo = imageStream as Bitmap
-                    Glide.with(this)
-                        .load(photo)
-                        .error(R.drawable.ic_error)
-                        .into(binding.addRealtyFromCamera)
-
-                    val uriOfPhoto = Utils.getImageUri(this, photo)
-                    picturesList.add(uriOfPhoto.toString())
+                    intent.data?.let {
+                        popup(it)
+                    }
                 }
             }
         }
+
+    private fun popup(picturePath: Uri) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        var picture = PicturesModel(0, 0, "", picturePath.toString())
+        builder.setTitle("Picture name")
+
+        // Set up the input
+        val input = EditText(this)
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setHint("Enter picture name")
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", { dialog, which ->
+            // Here you get get input text from the Edittext
+            picture.name = input.text.toString()
+            picturesList.add(picture)
+        })
+        builder.setNegativeButton("Cancel", { dialog, which ->
+            //TODO CANCEL OPERATION
+            dialog.cancel()
+        })
+
+        builder.show()
+    }
+
 
     override fun onPause() {
         super.onPause()

@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
@@ -183,6 +182,16 @@ class MainActivity : BaseActivity() {
                 realtyList = result
                 updateView()
                 initDetailPart()
+                realtyList.forEach { realty ->
+                    disposeBag += mainViewModel.getPictures(realty.id).subscribe(
+                        { result ->
+                            realty.pictures = result
+                        },
+                        { error ->
+                            Log.e(TAG, error.message.toString())
+                        }
+                    )
+                }
             },
             { error ->
                 Log.e(TAG, error.message.toString())

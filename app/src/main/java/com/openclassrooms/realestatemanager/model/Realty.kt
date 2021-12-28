@@ -24,5 +24,5 @@ data class Realty(
      var inMarketDate: Long,
      var outMarketDate: Long,
      var estateAgent: String,
-     var path:List<String>
+     var pictures:List<PicturesModel>
 )

@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.databinding.RealtyItemBinding
@@ -42,17 +43,21 @@ class RealtyListAdapter(var dataList: List<Realty>) :
         val context = binding.root.context
         val realty = dataList[position]
 
-        //TODO ADD PICTURES
-
+        if (realty.pictures.isNotEmpty()) {
+            Glide.with(context)
+                .load(realty.pictures[0].path)
+                .error(R.drawable.ic_error)
+                .into(binding.pictures)
+        }
 
         binding.realtyType.text = realty.kind
         binding.realtyLocation.text = realty.address
         binding.realtyPrice.text =
             context.getString(R.string.forex_symbole).plus(Utils.formatPrice(realty.price))
 
-        if(!realty.available){
+        if (!realty.available) {
             binding.realtyAvailable.setImageDrawable(context.getDrawable(R.drawable.ic_not_available))
-        }else{
+        } else {
             binding.realtyAvailable.setImageDrawable(context.getDrawable(R.drawable.ic_available))
         }
 
