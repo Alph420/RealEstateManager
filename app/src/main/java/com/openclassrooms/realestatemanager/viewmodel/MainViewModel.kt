@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 class MainViewModel(private val database: AppDatabase) : ViewModel() {
 
     //TODO ADD PICTURE
-    fun getAll(): Single<List<Realty>> =
+    fun getAll(): Observable<List<Realty>> =
         database.realtyDao()
             .getAllRealty()
             .subscribeOn(Schedulers.io())
@@ -45,6 +45,10 @@ class MainViewModel(private val database: AppDatabase) : ViewModel() {
                 }
             }
 
+
     fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
         .getPictures(id)
+        .subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+
 }

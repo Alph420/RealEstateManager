@@ -27,7 +27,7 @@ class MapViewModel(private val database: AppDatabase) : ViewModel() {
 
     val mLocationLiveData = MutableLiveData<GeoPoint>()
 
-    fun getAllRealty(): Single<List<RealtyModel>> = database.realtyDao().getAllRealty()
+    fun getAllRealty(): Observable<List<RealtyModel>> = database.realtyDao().getAllRealty()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
 

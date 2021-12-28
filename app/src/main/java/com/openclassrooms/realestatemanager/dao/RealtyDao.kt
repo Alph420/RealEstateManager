@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.core.Single
 interface RealtyDao {
 
     @Query("SELECT * FROM RealtyModel")
-    fun getAllRealty(): Single<List<RealtyModel>>
+    fun getAllRealty(): Observable<List<RealtyModel>>
 
     @Query("SELECT * FROM RealtyModel WHERE id = :id")
     fun getById(id: String): Single<RealtyModel>
