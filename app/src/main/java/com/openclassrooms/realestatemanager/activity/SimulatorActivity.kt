@@ -88,4 +88,9 @@ class SimulatorActivity : BaseActivity() {
             binding.simulatorTotalCount.text = "0"
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
 }

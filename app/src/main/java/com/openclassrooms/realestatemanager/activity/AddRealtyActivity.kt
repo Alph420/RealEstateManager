@@ -392,5 +392,10 @@ class AddRealtyActivity : BaseActivity() {
         builder.show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
+
 
 }

@@ -87,7 +87,8 @@ class MainActivity : BaseActivity() {
         }
 
         R.id.searchItem -> {
-            //TODO  SearchRealty
+            startActivity(Intent(this, SearchActivity::class.java))
+
             true
         }
         R.id.simulator -> {
@@ -148,6 +149,9 @@ class MainActivity : BaseActivity() {
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.searchItem -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                }
                 R.id.addItem -> {
                     startActivity(Intent(this, AddRealtyActivity::class.java))
                 }
@@ -156,7 +160,6 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.simulator -> {
                     startActivity(Intent(this, SimulatorActivity::class.java))
-
                 }
                 R.id.mapItem -> {
                     startActivity(Intent(this, MapActivity::class.java))
