@@ -183,18 +183,19 @@ class MainActivity : BaseActivity() {
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
-                updateView()
-                initDetailPart()
+
                 realtyList.forEach { realty ->
                     disposeBag += mainViewModel.getPictures(realty.id).subscribe(
                         { result ->
                             realty.pictures = result
+                            updateView()
                         },
                         { error ->
                             Log.e(TAG, error.message.toString())
                         }
                     )
                 }
+                initDetailPart()
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -284,5 +285,4 @@ class MainActivity : BaseActivity() {
             binding.map!!.onPause()
         }
     }
-
 }
