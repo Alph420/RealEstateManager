@@ -33,13 +33,12 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var adapter: RealtyListAdapter
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var bottomSheetBinding:FragmentBottomSheetBinding
+    private lateinit var bottomSheetBinding: FragmentBottomSheetBinding
 
     private var realtyList: List<Realty> = emptyList()
 
     var i = 0
     //endregion
-
 
     companion object {
         private const val TAG = "SearchActivity"
@@ -47,7 +46,6 @@ class SearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySearchBinding.inflate(layoutInflater)
         bottomSheetBinding = FragmentBottomSheetBinding.inflate(LayoutInflater.from(this))
 
@@ -98,7 +96,7 @@ class SearchActivity : BaseActivity() {
             }
         })
 
-        bottomSheetBinding.compteur.setOnClickListener{
+        bottomSheetBinding.compteur.setOnClickListener {
             binding.textCompteur.text = i++.toString()
             Log.d(TAG, "i : $i")
 
@@ -153,8 +151,7 @@ class SearchActivity : BaseActivity() {
         adapter.notifyDataSetChanged()
     }
 
-    fun initFilterSheet(){
-
+    fun initFilterSheet() {
 
 
     }
@@ -163,5 +160,4 @@ class SearchActivity : BaseActivity() {
         super.onDestroy()
         finish()
     }
-
 }
