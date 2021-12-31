@@ -16,7 +16,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  **/
 class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
 
-    fun getRealtyData(realtyId: String): Single<Realty> =
+    fun getRealtyData(realtyId: String): Observable<Realty> =
         database.realtyDao()
             .getById(realtyId)
             .subscribeOn(Schedulers.io())
@@ -46,7 +46,7 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
             .observeOn(AndroidSchedulers.mainThread())
 
 
-    private fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
+    private fun getPictures(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
         .getPictures(id)
         .subscribeOn(Schedulers.io())
 

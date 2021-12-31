@@ -176,6 +176,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initObservers() {
+        //TODO IMPROVE RX CHAIN
         disposeBag += mainViewModel.getAll().subscribe(
             { result ->
                 Log.d(TAG, result.toString())

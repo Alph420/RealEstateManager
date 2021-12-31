@@ -391,6 +391,4 @@ class AddRealtyActivity : BaseActivity() {
 
         builder.show()
     }
-
-
 }
