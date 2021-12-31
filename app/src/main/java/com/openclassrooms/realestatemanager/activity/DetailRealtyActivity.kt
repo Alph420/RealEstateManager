@@ -21,6 +21,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import java.lang.StringBuilder
 
 
 /**
@@ -122,12 +123,17 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updateView() {
+        var string = StringBuilder()
+
         binding.realtyDetailArea.text = realty.area.toString() + " m2"
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom.text = realty.bedRoom.toString()
         binding.realtyDetailDescription.text = realty.description
         binding.realtyDetailLocationAddress.text = realty.address
+
+        binding.realtyDetailNearPlaces.text = realty.pointOfInterest.replace(", ","\n")
+
         drawMarker()
         updatePictures()
     }
