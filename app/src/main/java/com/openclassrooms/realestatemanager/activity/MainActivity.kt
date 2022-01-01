@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Gravity.LEFT
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
@@ -23,7 +24,9 @@ import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
+import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
@@ -42,11 +45,13 @@ class MainActivity : BaseActivity() {
     //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter: RealtyListAdapter
+    private lateinit var realtyAdapter: RealtyListAdapter
+    private lateinit var pictureRealtyAdapter: PictureModelAdapter
     private lateinit var realty: Realty
     private lateinit var mMap: MapView
 
     private var realtyList: List<Realty> = emptyList()
+    private var picturesList = emptyList<PicturesModel>()
     private var empty = true
     //endregion
 
@@ -65,9 +70,10 @@ class MainActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
-        initRecyclerView()
+        initRealyRecylerView()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             initMap()
+            initPictureRecyclerView()
         }
         checkIfWifiIsAvailable()
     }
@@ -179,6 +185,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initObservers() {
+        //TODO IMPROVE RX CHAIN
         disposeBag += mainViewModel.getAll().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
@@ -189,6 +196,7 @@ class MainActivity : BaseActivity() {
                         { result ->
                             realty.pictures = result
                             updateView()
+                            initDetailPart()
                         },
                         { error ->
                             Log.e(TAG, error.message.toString())
@@ -214,10 +222,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initRecyclerView() {
-        this.adapter = RealtyListAdapter(realtyList)
+    private fun initRealyRecylerView() {
+        this.realtyAdapter = RealtyListAdapter(realtyList)
 
-        binding.realtyRecyclerView.adapter = this.adapter
+        binding.realtyRecyclerView.adapter = this.realtyAdapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
         val dividerItemDecoration = DividerItemDecoration(
             binding.realtyRecyclerView.context,
@@ -225,7 +233,7 @@ class MainActivity : BaseActivity() {
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
 
-        adapter.setListener(object : RealtyListAdapter.ItemClickListener {
+        realtyAdapter.setListener(object : RealtyListAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
                 if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
                     realty = realtyList[position]
@@ -240,13 +248,21 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    private fun initPictureRecyclerView() {
+        this.pictureRealtyAdapter = PictureModelAdapter(picturesList)
+
+        binding.recyclerView!!.adapter = this.pictureRealtyAdapter
+    }
+
     private fun setDataOfRetail() {
+        updatePictures()
         binding.realtyDetailArea!!.text = realty.area.toString() + " m2"
         binding.realtyDetailRoom!!.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom!!.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
         binding.realtyDetailDescription!!.text = realty.description
         binding.realtyDetailLocationAddress!!.text = realty.address
+        binding.realtyDetailNearPlaces!!.text = realty.pointOfInterest.replace(", ", "\n")
     }
 
     private fun drawMarker() {
@@ -266,8 +282,20 @@ class MainActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        adapter.dataList = realtyList
-        adapter.notifyDataSetChanged()
+        realtyAdapter.dataList = realtyList
+        realtyAdapter.notifyDataSetChanged()
+    }
+
+    private fun updatePictures() {
+        pictureRealtyAdapter.dataList = realty.pictures
+
+        if (realty.pictures.isEmpty()) {
+            binding.emptyView!!.visibility = View.VISIBLE
+        } else {
+            binding.emptyView!!.visibility = View.INVISIBLE
+        }
+        pictureRealtyAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {

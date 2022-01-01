@@ -318,7 +318,7 @@ class AddRealtyActivity : BaseActivity() {
 
             if (realty.pointOfInterest.isNotEmpty()) {
                 realty.pointOfInterest = interestPoints.substring(0, interestPoints.length - 2)
-                binding.addRealtyInterestPoint.hint = realty.pointOfInterest
+                binding.addRealtyInterestPoint.setText(realty.pointOfInterest)
             } else {
                 binding.addRealtyInterestPoint.hint = ""
             }
@@ -391,11 +391,4 @@ class AddRealtyActivity : BaseActivity() {
 
         builder.show()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        finish()
-    }
-
-
 }

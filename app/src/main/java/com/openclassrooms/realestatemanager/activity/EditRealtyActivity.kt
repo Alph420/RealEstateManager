@@ -1,15 +1,26 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.text.InputType
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityEditRealtyBinding
-import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.model.PicturesModel
+import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
@@ -24,14 +35,13 @@ import java.util.*
 class EditRealtyActivity : BaseActivity() {
 
     //region PROPERTIES
-
     private lateinit var binding: ActivityEditRealtyBinding
-
+    private lateinit var mAdapter: PictureModelAdapter
     private lateinit var editRealtyViewModel: EditRealtyViewModel
-    private lateinit var realty: RealtyModel
+    private lateinit var realty: Realty
 
     private var realtyId = ""
-
+    private var picturesList: MutableList<PicturesModel> = arrayListOf()
     //endregion
 
     //region Date
@@ -111,6 +121,7 @@ class EditRealtyActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
+        initRecyclerView()
     }
 
     private fun initUI() {
@@ -149,20 +160,34 @@ class EditRealtyActivity : BaseActivity() {
             showMultiCheckBoxesDialog()
         }
 
+        binding.editRealtyFromCamera.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        binding.editRealtyFromLibrary.setOnClickListener {
+            getImageFromLibrary()
+        }
+
     }
 
     private fun initObservers() {
-        disposeBag += editRealtyViewModel.getById(realtyId).subscribe(
+        disposeBag += editRealtyViewModel.getRealtyData(realtyId).subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result
                 initUI()
-                updateView(result)
+                updateView()
             },
             { error ->
                 Log.e(TAG, error.message.toString())
             }
         )
+    }
+
+    private fun initRecyclerView() {
+        this.mAdapter = PictureModelAdapter(picturesList)
+
+        binding.recyclerView.adapter = this.mAdapter
     }
 
     private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
@@ -176,10 +201,22 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun saveRealty() {
+        //TODO IMPROVE RX CHAIN
         if (verify()) {
             disposeBag += editRealtyViewModel.updateRealty(realty).subscribe(
                 {
                     Log.d(TAG, "update realty with success")
+                    editRealtyViewModel.insertPictures(realty, picturesList).subscribe(
+                        {
+                            Log.d(TAG, "update image of realty with success")
+                        },
+                        {
+                            Log.d(
+                                TAG,
+                                "update realty image failed : ${it.stackTraceToString()}"
+                            )
+                        }
+                    )
                 },
                 {
                     Log.d(
@@ -301,7 +338,73 @@ class EditRealtyActivity : BaseActivity() {
         dialog.show()
     }
 
-    private fun updateView(realty: RealtyModel) {
+    private fun dispatchTakePictureIntent() {
+        val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        getImgFromCameraActivityForResult.launch(callCameraIntent)
+    }
+
+    private fun getImageFromLibrary() {
+        val photoPickerIntent = Intent(Intent.ACTION_PICK)
+        photoPickerIntent.type = "image/*"
+        getImgFromLibraryActivityForResult.launch(photoPickerIntent)
+    }
+
+    private val getImgFromCameraActivityForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { ActivityResult ->
+        if (ActivityResult.resultCode == Activity.RESULT_OK) {
+            ActivityResult.data?.let { intent ->
+                intent.extras?.let {
+                    val photo = it.get("data") as Bitmap
+                    val uriOfPhoto = Utils.getImageUri(this, photo)
+                    popup(uriOfPhoto)
+                }
+            }
+        }
+    }
+
+    private val getImgFromLibraryActivityForResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { ActivityResult ->
+            if (ActivityResult.resultCode == Activity.RESULT_OK) {
+                ActivityResult.data?.let { intent ->
+                    intent.data?.let {
+                        popup(it)
+                    }
+                }
+            }
+        }
+
+    private fun popup(picturePath: Uri) {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val picture = PicturesModel(0, 0, "", picturePath.toString())
+        builder.setTitle("Picture name")
+
+        val input = EditText(this)
+        input.hint = "Enter picture name"
+        input.inputType = InputType.TYPE_CLASS_TEXT
+        builder.setView(input)
+
+        // Set up the buttons
+        builder.setPositiveButton("OK") { dialog, _ ->
+            if (input.text.isEmpty()) {
+                Toast.makeText(this, "Each picture need description", Toast.LENGTH_LONG).show()
+            } else {
+                picture.name = input.text.toString()
+                picturesList.add(picture)
+                updateRecyclerView()
+                dialog.cancel()
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        builder.show()
+    }
+
+    private fun updateView() {
         binding.editRealtyKind.setText(realty.kind)
         binding.editRealtyPrice.setText(realty.price.toString())
         binding.editRealtyAddress.setText(realty.address)
@@ -314,6 +417,17 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyOutDate.text = Utils.getTodayDate(realty.outMarketDate)
         binding.editRealtyAgent.setText(realty.estateAgent)
         binding.editRealtyDescription.setText(realty.description)
+        updatePictures()
+    }
+
+    private fun updatePictures() {
+        mAdapter.dataList = realty.pictures
+        mAdapter.notifyDataSetChanged()
+    }
+
+    private fun updateRecyclerView() {
+        mAdapter.dataList = realty.pictures + picturesList
+        mAdapter.notifyDataSetChanged()
     }
 
     private fun updateDateInTextView(realtyDateTextView: TextView) {

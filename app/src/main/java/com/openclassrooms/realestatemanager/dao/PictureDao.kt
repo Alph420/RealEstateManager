@@ -18,7 +18,7 @@ import io.reactivex.rxjava3.core.Single
 interface PictureDao {
 
     @Query("SELECT * FROM PicturesModel WHERE realty_id = :id")
-    fun getPictures(id: Int): Single<List<PicturesModel>>
+    fun getPictures(id: Int): Observable<List<PicturesModel>>
 
     @Insert
     fun insertAll(picture: List<PicturesModel>): Completable
