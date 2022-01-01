@@ -60,4 +60,9 @@ class SettingsActivity:AppCompatActivity(){
         finish()
         return super.onSupportNavigateUp()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
 }

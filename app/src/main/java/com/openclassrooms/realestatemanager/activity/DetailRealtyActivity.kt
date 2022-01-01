@@ -161,4 +161,9 @@ class DetailRealtyActivity : BaseActivity() {
         super.onPause()
         binding.map.onPause()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
 }

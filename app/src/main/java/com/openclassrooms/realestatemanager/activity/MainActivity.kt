@@ -93,7 +93,8 @@ class MainActivity : BaseActivity() {
         }
 
         R.id.searchItem -> {
-            //TODO  SearchRealty
+            startActivity(Intent(this, SearchActivity::class.java))
+
             true
         }
         R.id.simulator -> {
@@ -154,6 +155,9 @@ class MainActivity : BaseActivity() {
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.searchItem -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                }
                 R.id.addItem -> {
                     startActivity(Intent(this, AddRealtyActivity::class.java))
                 }
@@ -162,7 +166,6 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.simulator -> {
                     startActivity(Intent(this, SimulatorActivity::class.java))
-
                 }
                 R.id.mapItem -> {
                     startActivity(Intent(this, MapActivity::class.java))
@@ -187,6 +190,7 @@ class MainActivity : BaseActivity() {
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
+
                 realtyList.forEach { realty ->
                     disposeBag += mainViewModel.getPictures(realty.id).subscribe(
                         { result ->
@@ -199,6 +203,7 @@ class MainActivity : BaseActivity() {
                         }
                     )
                 }
+                initDetailPart()
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -241,8 +246,6 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
-
-
     }
 
     private fun initPictureRecyclerView() {
@@ -308,5 +311,4 @@ class MainActivity : BaseActivity() {
             binding.map!!.onPause()
         }
     }
-
 }

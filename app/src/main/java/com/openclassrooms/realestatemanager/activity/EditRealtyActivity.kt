@@ -434,4 +434,9 @@ class EditRealtyActivity : BaseActivity() {
         realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
+    }
+
 }

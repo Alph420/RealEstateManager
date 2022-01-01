@@ -27,6 +27,9 @@ class ViewModelFactory(private val database: AppDatabase) : ViewModelProvider.Fa
         if (modelClass.isAssignableFrom(MapViewModel::class.java)){
             return MapViewModel(database) as T
         }
+        if (modelClass.isAssignableFrom(SearchViewModel::class.java)){
+            return SearchViewModel(database) as T
+        }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
