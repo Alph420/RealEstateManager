@@ -51,9 +51,6 @@ class SearchActivity : BaseActivity() {
 
         setContentView(binding.root)
 
-
-        //TODO GET ALL KIND IN DB TO SHOW USER HOW MANY KIND IS PRESENT IN DB
-        //
         initViewModel()
         initListener()
         iniObserver()
