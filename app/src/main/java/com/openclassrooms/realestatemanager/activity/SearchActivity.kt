@@ -102,6 +102,8 @@ class SearchActivity : BaseActivity() {
         })
 
         binding.include.filterValidateSearch.setOnClickListener {
+            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+            //TODO ADD POINT OF INTEREST
             var filter = FilterConstraint(
                 binding.include.filterKind.selectedItem.toString(),
                 binding.include.filterMinPrice.text.toString().toInt(),
@@ -118,6 +120,23 @@ class SearchActivity : BaseActivity() {
                 binding.include.filterIsAvailable.isChecked
             )
             filter(filter)
+
+        }
+
+        binding.include.filterReset.setOnClickListener {
+            binding.include.filterKind.setSelection(0)
+            binding.include.filterMinPrice.setText(0.toString())
+            binding.include.filterMaxPrice.setText(0.toString())
+            binding.include.filterMinArea.setText(0.toString())
+            binding.include.filterMaxArea.setText(0.toString())
+            binding.include.filterMinRoom.setText(0.toString())
+            binding.include.filterMaxRoom.setText(0.toString())
+            binding.include.filterMinBathroom.setText(0.toString())
+            binding.include.filterMaxBathroom.setText(0.toString())
+            binding.include.filterMinBedroom.setText(0.toString())
+            binding.include.filterMaxBedroom.setText(0.toString())
+            binding.include.filterCheckForAvailability.isChecked = false
+            refreshFilteredList(realtyList.toMutableList())
         }
     }
 
@@ -221,13 +240,18 @@ class SearchActivity : BaseActivity() {
             }
         }
 
-        listForLoop.forEach {
-            if (it.available != filter.available) listToModify.remove(it)
+        if(binding.include.filterCheckForAvailability.isChecked){
+            listForLoop.forEach {
+                if (it.available != filter.available) listToModify.remove(it)
+            }
         }
 
-        adapter.dataList = listToModify
-        adapter.notifyDataSetChanged()
+        refreshFilteredList(listToModify)
+    }
 
+    private fun refreshFilteredList(filteredResult: MutableList<Realty>) {
+        adapter.dataList = filteredResult
+        adapter.notifyDataSetChanged()
     }
 
     private fun updateView() {

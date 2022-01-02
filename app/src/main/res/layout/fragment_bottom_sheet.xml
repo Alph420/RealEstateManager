@@ -233,6 +233,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
+        <CheckBox
+            android:id="@+id/filter_check_for_availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView14"
+            app:layout_constraintStart_toEndOf="@+id/textView14"
+            app:layout_constraintTop_toTopOf="@+id/textView14" />
+
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
@@ -272,6 +281,20 @@
             tools:text="Adventure, Animation, Documentary, Drama, Documentary" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/filter_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="RESET FILTER"
+        android:textColor="@color/green_money_twice"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/filter_validate_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_filter_view" />
 
     <Button
         android:id="@+id/filter_validate_search"
