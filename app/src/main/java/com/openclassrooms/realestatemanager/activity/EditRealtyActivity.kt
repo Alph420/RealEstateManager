@@ -201,22 +201,10 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun saveRealty() {
-        //TODO IMPROVE RX CHAIN
         if (verify()) {
-            disposeBag += editRealtyViewModel.updateRealty(realty).subscribe(
+            disposeBag += editRealtyViewModel.updateRealty(realty, picturesList).subscribe(
                 {
-                    Log.d(TAG, "update realty with success")
-                    editRealtyViewModel.insertPictures(realty, picturesList).subscribe(
-                        {
-                            Log.d(TAG, "update image of realty with success")
-                        },
-                        {
-                            Log.d(
-                                TAG,
-                                "update realty image failed : ${it.stackTraceToString()}"
-                            )
-                        }
-                    )
+                    Log.d(TAG, "update realty and insert picture with success")
                 },
                 {
                     Log.d(

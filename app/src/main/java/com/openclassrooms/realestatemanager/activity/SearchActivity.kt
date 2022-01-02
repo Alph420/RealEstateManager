@@ -3,10 +3,8 @@ package com.openclassrooms.realestatemanager.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.RelativeLayout
-import androidx.core.content.ContextCompat
+import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,12 +12,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
-import com.openclassrooms.realestatemanager.databinding.FragmentBottomSheetBinding
+import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.Injection
-import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.SearchViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 
@@ -33,11 +30,15 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
     private lateinit var adapter: RealtyListAdapter
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var bottomSheetBinding: FragmentBottomSheetBinding
 
     private var realtyList: List<Realty> = emptyList()
 
-    var i = 0
+    //endregion
+
+    //region MultipleChoiceBoxData
+    lateinit var kindAdapter: ArrayAdapter<String>
+    private val kind = mutableListOf<String>()
+    private var isCheckedList = mutableListOf<Boolean>()
     //endregion
 
     companion object {
@@ -47,15 +48,16 @@ class SearchActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
-        bottomSheetBinding = FragmentBottomSheetBinding.inflate(LayoutInflater.from(this))
 
         setContentView(binding.root)
 
+
+        //TODO GET ALL KIND IN DB TO SHOW USER HOW MANY KIND IS PRESENT IN DB
+        //
         initViewModel()
         initListener()
         iniObserver()
         initRecyclerView()
-        initFilterSheet()
     }
 
     private fun initViewModel() {
@@ -65,29 +67,35 @@ class SearchActivity : BaseActivity() {
     }
 
 
-    fun initListener() {
+    private fun initListener() {
         val bottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomSheetParent)
 
-
-        binding.fitlerUp.setOnClickListener {
+        binding.bottomSheetParent.setOnClickListener {
             when (bottomSheetBehaviour.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+                    binding.include.bottomFilterView.visibility = View.INVISIBLE
                     binding.fitlerUp.rotation = (90).toFloat()
                 }
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
+                    binding.include.bottomFilterView.visibility = View.VISIBLE
                     binding.fitlerUp.rotation = (270).toFloat()
 
                 }
             }
         }
 
-
         bottomSheetBehaviour.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                Log.d(TAG, "slideOffset onSlide $slideOffset")
+                if (slideOffset == 0.00000F) {
+                    binding.include.bottomFilterView.visibility = View.INVISIBLE
+                    binding.fitlerUp.rotation = (90).toFloat()
+                } else {
+                    binding.include.bottomFilterView.visibility = View.VISIBLE
+                    binding.fitlerUp.rotation = (270).toFloat()
+                }
 
             }
 
@@ -96,29 +104,32 @@ class SearchActivity : BaseActivity() {
             }
         })
 
-        bottomSheetBinding.compteur.setOnClickListener {
-            binding.textCompteur.text = i++.toString()
-            Log.d(TAG, "i : $i")
-
+        binding.include.filterValidateSearch.setOnClickListener {
+            var filter = FilterConstraint(
+                binding.include.filterKind.selectedItem.toString(),
+                binding.include.filterMinPrice.text.toString().toInt(),
+                binding.include.filterMaxPrice.text.toString().toInt(),
+                binding.include.filterMinArea.text.toString().toDouble(),
+                binding.include.filterMaxArea.text.toString().toDouble(),
+                binding.include.filterMinRoom.text.toString().toInt(),
+                binding.include.filterMaxRoom.text.toString().toInt(),
+                binding.include.filterMinBathroom.text.toString().toInt(),
+                binding.include.filterMaxBathroom.text.toString().toInt(),
+                binding.include.filterMinBedroom.text.toString().toInt(),
+                binding.include.filterMaxBedroom.text.toString().toInt(),
+                "",
+                binding.include.filterIsAvailable.isChecked
+            )
+            filter(filter)
         }
     }
 
-    fun iniObserver() {
-        disposeBag += searchViewModel.getAll().subscribe(
+    private fun iniObserver() {
+        disposeBag += searchViewModel.getAllRealty().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
                 updateView()
-                realtyList.forEach { realty ->
-                    disposeBag += searchViewModel.getPictures(realty.id).subscribe(
-                        { result ->
-                            realty.pictures = result
-                        },
-                        { error ->
-                            Log.e(TAG, error.message.toString())
-                        }
-                    )
-                }
             },
             { error ->
                 Log.e(TAG, error.message.toString())
@@ -146,15 +157,102 @@ class SearchActivity : BaseActivity() {
         })
     }
 
+    private fun filter(filter: FilterConstraint) {
+        val listForLoop = mutableListOf<Realty>()
+        val listToModify = mutableListOf<Realty>()
+
+        realtyList.forEach {
+            if (filter.kind == "all") {
+                listForLoop.add(it)
+                listToModify.add(it)
+            } else if (it.kind.lowercase() == filter.kind) {
+                listForLoop.add(it)
+                listToModify.add(it)
+            }
+        }
+
+        if (filter.minPrice != 0) {
+            listForLoop.forEach {
+                if (it.price < filter.minPrice) listToModify.remove(it)
+            }
+        }
+
+        if (filter.maxPrice != 0) {
+            listForLoop.forEach {
+                if (it.price > filter.maxPrice) listToModify.remove(it)
+            }
+        }
+
+        if (filter.minArea != 0.0) {
+            listForLoop.forEach {
+                if (it.area < filter.minArea) listToModify.remove(it)
+            }
+        }
+        if (filter.maxArea != 0.0) {
+            listForLoop.forEach {
+                if (it.area > filter.maxArea) listToModify.remove(it)
+            }
+        }
+        if (filter.minRoom != 0) {
+            listForLoop.forEach {
+                if (it.roomNumber < filter.minRoom) listToModify.remove(it)
+            }
+        }
+        if (filter.maxRoom != 0) {
+            listForLoop.forEach {
+                if (it.roomNumber > filter.maxRoom) listToModify.remove(it)
+            }
+        }
+        if (filter.minBathroom != 0) {
+            listForLoop.forEach {
+                if (it.bathRoom < filter.minBathroom) listToModify.remove(it)
+            }
+        }
+        if (filter.maxBathroom != 0) {
+            listForLoop.forEach {
+                if (it.bathRoom > filter.maxBathroom) listToModify.remove(it)
+            }
+        }
+        if (filter.minBedroom != 0) {
+            listForLoop.forEach {
+                if (it.bedRoom < filter.minBedroom) listToModify.remove(it)
+            }
+        }
+        if (filter.maxBedroom != 0) {
+            listForLoop.forEach {
+                if (it.bedRoom > filter.maxBedroom) listToModify.remove(it)
+            }
+        }
+
+        listForLoop.forEach {
+            if (it.available != filter.available) listToModify.remove(it)
+        }
+
+        adapter.dataList = listToModify
+        adapter.notifyDataSetChanged()
+
+    }
+
     private fun updateView() {
         adapter.dataList = realtyList
         adapter.notifyDataSetChanged()
+        setFilterData()
     }
 
-    fun initFilterSheet() {
+    private fun setFilterData() {
+        kind.add("all")
+        realtyList.forEach {
+            kind.add(it.kind.lowercase())
+            isCheckedList.add(false)
+        }
+        val distinct = kind.toSet().toList()
 
-
+        this.kindAdapter =
+            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, distinct)
+        binding.include.filterKind.adapter = kindAdapter
+        kindAdapter.notifyDataSetChanged()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

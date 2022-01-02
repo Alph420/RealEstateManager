@@ -31,13 +31,14 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent">
 
         <!-- Bottom sheet layout -->
         <RelativeLayout
             android:id="@+id/bottom_sheet_parent"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="500dp"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
             app:behavior_hideable="false"
@@ -45,6 +46,7 @@
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <include
+                android:id="@+id/include"
                 layout="@layout/fragment_bottom_sheet"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />

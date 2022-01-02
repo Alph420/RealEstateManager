@@ -123,8 +123,6 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        var string = StringBuilder()
-
         binding.realtyDetailArea.text = realty.area.toString() + " m2"
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()

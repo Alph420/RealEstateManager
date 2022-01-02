@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -18,7 +16,7 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
 
     fun getRealtyData(realtyId: String): Observable<Realty> =
         database.realtyDao()
-            .getById(realtyId)
+            .getRealtyById(realtyId)
             .subscribeOn(Schedulers.io())
             .flatMap { realty ->
                 getPictures(realty.id).map { listOfPath ->
@@ -47,7 +45,7 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
 
 
     private fun getPictures(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
-        .getPictures(id)
+        .getPicturesById(id)
         .subscribeOn(Schedulers.io())
 
 }

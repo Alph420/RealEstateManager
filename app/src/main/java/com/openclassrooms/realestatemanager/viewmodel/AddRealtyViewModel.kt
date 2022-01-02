@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
@@ -30,7 +27,7 @@ class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
 
 
     private fun insertPictures(picturesModel: List<PicturesModel>): Completable =
-        database.pictureDao().insertAll(picturesModel)
+        database.pictureDao().insertPictures(picturesModel)
             .subscribeOn(Schedulers.io())
 
 }

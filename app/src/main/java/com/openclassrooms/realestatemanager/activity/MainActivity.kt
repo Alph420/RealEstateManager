@@ -185,24 +185,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        //TODO IMPROVE RX CHAIN
-        disposeBag += mainViewModel.getAll().subscribe(
+        disposeBag += mainViewModel.getAllRealty().subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realtyList = result
-
-                realtyList.forEach { realty ->
-                    disposeBag += mainViewModel.getPictures(realty.id).subscribe(
-                        { result ->
-                            realty.pictures = result
-                            updateView()
-                            initDetailPart()
-                        },
-                        { error ->
-                            Log.e(TAG, error.message.toString())
-                        }
-                    )
-                }
+                updateView()
+                initDetailPart()
                 initDetailPart()
             },
             { error ->

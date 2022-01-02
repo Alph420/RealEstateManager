@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="colorInteractiveIcon" format="color" />
+    <attr name="colorBtnValidate" format="color" />
+    <attr name="colorTextValidate" format="color" />
 </resources>

@@ -67,7 +67,7 @@ class MapViewModel(private val database: AppDatabase) : ViewModel() {
                 }
             }
             .addOnFailureListener {
-                Log.d("MapViewModel", "Fasiled to get user position")
+                Log.d("MapViewModel", "Failed to get user position")
             }
     }
 }

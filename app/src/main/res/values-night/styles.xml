@@ -3,5 +3,8 @@
     <!-- dark mode-->
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="colorTextValidate">@color/white</item>
+        <item name="colorBtnValidate">@color/dark</item>
+
     </style>
 </resources>

@@ -219,7 +219,7 @@ class AddRealtyActivity : BaseActivity() {
             binding.addRealtyKind.error = "Missing required field"
             return false
         } else {
-            realty.kind = binding.addRealtyKind.text.toString()
+            realty.kind = binding.addRealtyKind.text.toString().lowercase()
         }
 
         if (binding.addRealtyPrice.text.isNullOrEmpty()) {

@@ -14,7 +14,9 @@
     <!-- light mode -->
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-        <item name="android:statusBarColor">@color/light_white</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="colorTextValidate">@color/dark</item>
+        <item name="colorBtnValidate">@color/white</item>
     </style>
 
     <!-- This style is where you define the tint color of your overflow menu button -->
