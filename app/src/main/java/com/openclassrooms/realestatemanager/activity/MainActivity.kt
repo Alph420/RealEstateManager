@@ -250,7 +250,7 @@ class MainActivity : BaseActivity() {
         binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
         binding.realtyDetailDescription!!.text = realty.description
         binding.realtyDetailLocationAddress!!.text = realty.address
-        binding.realtyDetailNearPlaces!!.text = realty.pointOfInterest.replace(", ", "\n")
+        binding.realtyDetailNearPlaces!!.text = realty.pointOfInterest.toString().replace("[","").replace("]","").replace(", ","\n")
     }
 
     private fun drawMarker() {

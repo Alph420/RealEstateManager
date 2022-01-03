@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
@@ -19,6 +18,9 @@ import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.SearchViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
+import android.app.Dialog
+import androidx.appcompat.app.AlertDialog
+import com.openclassrooms.realestatemanager.R
 
 /**
  * Created by Julien Jennequin on 29/12/2021 17:27
@@ -31,14 +33,19 @@ class SearchActivity : BaseActivity() {
     private lateinit var adapter: RealtyListAdapter
     private lateinit var searchViewModel: SearchViewModel
 
+    private val interestPoints = StringBuilder()
+    private var interestPointsList = emptyList<String>()
     private var realtyList: List<Realty> = emptyList()
+    //endregion
 
+    //region spinnerKindChoice
+    private lateinit var kindAdapter: ArrayAdapter<String>
+    private val kind = mutableListOf<String>()
+    private var isCheckedList = mutableListOf<Boolean>()
     //endregion
 
     //region MultipleChoiceBoxData
-    lateinit var kindAdapter: ArrayAdapter<String>
-    private val kind = mutableListOf<String>()
-    private var isCheckedList = mutableListOf<Boolean>()
+
     //endregion
 
     companion object {
@@ -102,25 +109,26 @@ class SearchActivity : BaseActivity() {
         })
 
         binding.include.filterValidateSearch.setOnClickListener {
-            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-            //TODO ADD POINT OF INTEREST
-            var filter = FilterConstraint(
-                binding.include.filterKind.selectedItem.toString(),
-                binding.include.filterMinPrice.text.toString().toInt(),
-                binding.include.filterMaxPrice.text.toString().toInt(),
-                binding.include.filterMinArea.text.toString().toDouble(),
-                binding.include.filterMaxArea.text.toString().toDouble(),
-                binding.include.filterMinRoom.text.toString().toInt(),
-                binding.include.filterMaxRoom.text.toString().toInt(),
-                binding.include.filterMinBathroom.text.toString().toInt(),
-                binding.include.filterMaxBathroom.text.toString().toInt(),
-                binding.include.filterMinBedroom.text.toString().toInt(),
-                binding.include.filterMaxBedroom.text.toString().toInt(),
-                "",
-                binding.include.filterIsAvailable.isChecked
-            )
-            filter(filter)
-
+            if (verify()) {
+                bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+                //TODO ADD POINT OF INTEREST
+                val filter = FilterConstraint(
+                    binding.include.filterKind.selectedItem.toString(),
+                    binding.include.filterMinPrice.text.toString().toInt(),
+                    binding.include.filterMaxPrice.text.toString().toInt(),
+                    binding.include.filterMinArea.text.toString().toDouble(),
+                    binding.include.filterMaxArea.text.toString().toDouble(),
+                    binding.include.filterMinRoom.text.toString().toInt(),
+                    binding.include.filterMaxRoom.text.toString().toInt(),
+                    binding.include.filterMinBathroom.text.toString().toInt(),
+                    binding.include.filterMaxBathroom.text.toString().toInt(),
+                    binding.include.filterMinBedroom.text.toString().toInt(),
+                    binding.include.filterMaxBedroom.text.toString().toInt(),
+                    interestPointsList,
+                    binding.include.filterIsAvailable.isChecked
+                )
+                filter(filter)
+            }
         }
 
         binding.include.filterReset.setOnClickListener {
@@ -136,7 +144,13 @@ class SearchActivity : BaseActivity() {
             binding.include.filterMinBedroom.setText(0.toString())
             binding.include.filterMaxBedroom.setText(0.toString())
             binding.include.filterCheckForAvailability.isChecked = false
+            binding.include.filterNearPlace.text = ""
             refreshFilteredList(realtyList.toMutableList())
+        }
+
+        binding.include.filterNearPlace.setOnClickListener {
+            binding.include.filterNearPlace.text = ""
+            showNearPlaceChoice()
         }
     }
 
@@ -171,6 +185,60 @@ class SearchActivity : BaseActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun verify(): Boolean {
+        if (binding.include.filterMinPrice.text.isNullOrEmpty()) {
+            binding.include.filterMinPrice.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMaxPrice.text.isNullOrEmpty()) {
+            binding.include.filterMaxPrice.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMinArea.text.isNullOrEmpty()) {
+            binding.include.filterMinArea.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMaxArea.text.isNullOrEmpty()) {
+            binding.include.filterMaxArea.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMinRoom.text.isNullOrEmpty()) {
+            binding.include.filterMinRoom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMaxRoom.text.isNullOrEmpty()) {
+            binding.include.filterMaxRoom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMinBathroom.text.isNullOrEmpty()) {
+            binding.include.filterMinBathroom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMaxBathroom.text.isNullOrEmpty()) {
+            binding.include.filterMaxBathroom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMinBedroom.text.isNullOrEmpty()) {
+            binding.include.filterMinBedroom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        if (binding.include.filterMaxBedroom.text.isNullOrEmpty()) {
+            binding.include.filterMaxBedroom.error = "Missing field put 0 for no filter"
+            return false
+        }
+
+        return true
     }
 
     private fun filter(filter: FilterConstraint) {
@@ -240,7 +308,13 @@ class SearchActivity : BaseActivity() {
             }
         }
 
-        if(binding.include.filterCheckForAvailability.isChecked){
+        if (filter.pointOfInterest.isNotEmpty()) {
+            listForLoop.forEach {
+                if (!it.pointOfInterest.containsAll(filter.pointOfInterest)) listToModify.remove(it)
+            }
+        }
+
+        if (binding.include.filterCheckForAvailability.isChecked) {
             listForLoop.forEach {
                 if (it.available != filter.available) listToModify.remove(it)
             }
@@ -250,8 +324,14 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun refreshFilteredList(filteredResult: MutableList<Realty>) {
+        if (filteredResult.isEmpty()) {
+            binding.emptyView.visibility = View.VISIBLE
+        } else {
+            binding.emptyView.visibility = View.INVISIBLE
+        }
         adapter.dataList = filteredResult
         adapter.notifyDataSetChanged()
+
     }
 
     private fun updateView() {
@@ -272,6 +352,54 @@ class SearchActivity : BaseActivity() {
             ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, distinct)
         binding.include.filterKind.adapter = kindAdapter
         kindAdapter.notifyDataSetChanged()
+    }
+
+    private fun showNearPlaceChoice() {
+        val genreCheckedList = booleanArrayOf(
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        )
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+
+        builder.setMultiChoiceItems(
+            resources.getStringArray(R.array.genres),
+            genreCheckedList
+        ) { _, index, isChecked ->
+            genreCheckedList[index] = isChecked
+        }
+
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            for (i in resources.getStringArray(R.array.genres).indices) {
+                if (genreCheckedList[i]) {
+                    interestPoints.append(resources.getStringArray(R.array.genres)[i]).append(", ")
+                        .toString()
+                }
+            }
+            binding.include.filterNearPlace.text =
+                interestPoints.substring(0, interestPoints.length - 2)
+            if (interestPoints.isNotEmpty()) {
+                interestPointsList =
+                    interestPoints.toString().substring(0, interestPoints.length - 2).split(", ")
+            } else {
+                binding.include.filterNearPlace.hint = ""
+            }
+        }
+        val dialog: Dialog = builder.create()
+        dialog.show()
     }
 
 

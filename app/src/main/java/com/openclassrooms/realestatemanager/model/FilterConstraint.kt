@@ -16,6 +16,6 @@ data class FilterConstraint(
     var maxBathroom: Int,
     var minBedroom: Int,
     var maxBedroom: Int,
-    var pointOfInterest: String,
+    var pointOfInterest: List<String>,
     var available: Boolean,
     )

@@ -19,7 +19,7 @@ data class Realty(
      var address: String,
      var longitude: Double,
      var latitude: Double,
-     var pointOfInterest: String,
+     var pointOfInterest: List<String>,
      var available: Boolean,
      var inMarketDate: Long,
      var outMarketDate: Long,

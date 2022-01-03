@@ -35,7 +35,7 @@ class MainViewModel(private val database: AppDatabase) : ViewModel() {
                             realty.address,
                             realty.longitude,
                             realty.latitude,
-                            realty.pointOfInterest,
+                            realty.pointOfInterest.split(", "),
                             realty.available,
                             realty.inMarketDate,
                             realty.outMarketDate,

@@ -306,18 +306,17 @@ class EditRealtyActivity : BaseActivity() {
         builder.setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
             val interestPoints = StringBuilder()
-            realty.pointOfInterest = ""
+            realty.pointOfInterest = emptyList()
             for (i in GENRES.indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(GENRES[i]).append(", ").toString()
-
+                        interestPoints.append(GENRES[i]).append(", ").toString().split(", ")
                 }
             }
 
             if (realty.pointOfInterest.isNotEmpty()) {
-                realty.pointOfInterest = interestPoints.substring(0, interestPoints.length - 2)
-                binding.editRealtyInterestPoint.setText(realty.pointOfInterest)
+                realty.pointOfInterest = interestPoints.substring(0, interestPoints.length - 2).split(", ")
+                binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString())
             } else {
                 binding.editRealtyInterestPoint.hint = ""
             }
@@ -400,7 +399,7 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyBathRoom.setText(realty.bathRoom.toString())
         binding.editRealtyNbRoom.setText(realty.roomNumber.toString())
         binding.editRealtyBedRoom.setText(realty.bedRoom.toString())
-        binding.editRealtyInterestPoint.setText(realty.pointOfInterest)
+        binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString())
         binding.editRealtyInDate.text = Utils.getTodayDate(realty.inMarketDate)
         binding.editRealtyOutDate.text = Utils.getTodayDate(realty.outMarketDate)
         binding.editRealtyAgent.setText(realty.estateAgent)

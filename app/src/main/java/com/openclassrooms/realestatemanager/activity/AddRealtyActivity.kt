@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityAddRealtyBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
@@ -70,23 +71,6 @@ class AddRealtyActivity : BaseActivity() {
     //endregion
 
     //region MultipleChoiceBoxData
-
-    private val GENRES = arrayOf(
-        "City Center",
-        "Restaurants",
-        "Metro/Train station",
-        "SuperMarket",
-        "Shcool",
-        "Cinema",
-        "Swimming pool",
-        "Hospital",
-        "Library",
-        "Park",
-        "Nightlife Street",
-        "theater",
-        "Bank",
-        "Pharmacy"
-    )
     private var isCheckedList = booleanArrayOf(
         false,
         false,
@@ -104,7 +88,6 @@ class AddRealtyActivity : BaseActivity() {
         false
     )
     //endregion
-
 
     companion object {
         private const val TAG = "AddRealtyActivity"
@@ -299,20 +282,21 @@ class AddRealtyActivity : BaseActivity() {
 
     private fun showMultiCheckBoxesDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        val interestPoints = StringBuilder()
+
         builder.setMultiChoiceItems(
-            GENRES, isCheckedList
+            resources.getStringArray(R.array.genres), isCheckedList
         ) { _, index, isChecked ->
             isCheckedList[index] = isChecked
         }
         builder.setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
-            val interestPoints = StringBuilder()
             realty.pointOfInterest = ""
-            for (i in GENRES.indices) {
+
+            for (i in resources.getStringArray(R.array.genres).indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(GENRES[i]).append(", ").toString()
-
+                        interestPoints.append(resources.getStringArray(R.array.genres)[i]).append(", ").toString()
                 }
             }
 
