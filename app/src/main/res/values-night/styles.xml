@@ -3,6 +3,6 @@
     <!-- dark mode-->
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="grey">@color/grey</item>
+        <item name="green">@color/green_money_twice</item>
     </style>
 </resources>
