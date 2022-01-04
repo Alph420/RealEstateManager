@@ -33,7 +33,7 @@ class SearchActivity : BaseActivity() {
     private lateinit var adapter: RealtyListAdapter
     private lateinit var searchViewModel: SearchViewModel
 
-    private val interestPoints = StringBuilder()
+    private var interestPoints = StringBuilder()
     private var interestPointsList = emptyList<String>()
     private var realtyList: List<Realty> = emptyList()
     //endregion
@@ -150,6 +150,7 @@ class SearchActivity : BaseActivity() {
 
         binding.include.filterNearPlace.setOnClickListener {
             binding.include.filterNearPlace.text = ""
+            interestPoints.clear()
             showNearPlaceChoice()
         }
     }
@@ -389,11 +390,12 @@ class SearchActivity : BaseActivity() {
                         .toString()
                 }
             }
-            binding.include.filterNearPlace.text =
-                interestPoints.substring(0, interestPoints.length - 2)
+
             if (interestPoints.isNotEmpty()) {
                 interestPointsList =
                     interestPoints.toString().substring(0, interestPoints.length - 2).split(", ")
+                binding.include.filterNearPlace.text =
+                    interestPoints.substring(0, interestPoints.length - 2)
             } else {
                 binding.include.filterNearPlace.hint = ""
             }

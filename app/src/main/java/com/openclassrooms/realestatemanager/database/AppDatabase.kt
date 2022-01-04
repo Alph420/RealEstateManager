@@ -67,7 +67,7 @@ abstract class AppDatabase : RoomDatabase() {
                 realtyOne.put("address", "16 rue de lilas")
                 realtyOne.put("longitude",0.0)
                 realtyOne.put("latitude",0.0)
-                realtyOne.put("point_of_interest", "Ecole,Cinema,Theatre")
+                realtyOne.put("point_of_interest", "School, Cinema, Library")
                 realtyOne.put("available", true)
                 realtyOne.put("in_market_date", Date().time)
                 realtyOne.put("out_market_date", Date().time)
