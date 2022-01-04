@@ -111,7 +111,7 @@ class SearchActivity : BaseActivity() {
         binding.include.filterValidateSearch.setOnClickListener {
             if (verify()) {
                 bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-                //TODO ADD POINT OF INTEREST
+                //TODO ADD FILTER ON DATE
                 val filter = FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterMinPrice.text.toString().toInt(),
