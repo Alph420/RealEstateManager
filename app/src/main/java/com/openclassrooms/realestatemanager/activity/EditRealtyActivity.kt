@@ -205,6 +205,7 @@ class EditRealtyActivity : BaseActivity() {
             disposeBag += editRealtyViewModel.updateRealty(realty, picturesList).subscribe(
                 {
                     Log.d(TAG, "update realty and insert picture with success")
+                    picturesList.clear()
                 },
                 {
                     Log.d(
