@@ -169,10 +169,10 @@ internal object Utils {
         return Uri.parse(path)
     }
 
-    fun getRealPathFromURI(context: Context,uri: Uri): String {
+    fun getRealPathFromURI(context: Context, uri: Uri): String {
         var path = ""
         if (context.contentResolver != null) {
-            val cursor: Cursor? =  context.contentResolver.query(uri, null, null, null, null)
+            val cursor: Cursor? = context.contentResolver.query(uri, null, null, null, null)
             if (cursor != null) {
                 cursor.moveToFirst()
                 val idx: Int = cursor.getColumnIndex(Images.ImageColumns.DATA)
@@ -181,6 +181,11 @@ internal object Utils {
             }
         }
         return path
+    }
+
+    fun getDateFromString(date: String): Long {
+        return if (date.isEmpty()) 0L
+        else SimpleDateFormat("dd/MM/yyyy").parse(date).time
     }
 }
 

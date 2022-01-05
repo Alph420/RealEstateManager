@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.activity
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
-import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
@@ -19,8 +19,13 @@ import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.SearchViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import android.app.Dialog
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
+import com.openclassrooms.realestatemanager.utils.Utils
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Julien Jennequin on 29/12/2021 17:27
@@ -42,6 +47,26 @@ class SearchActivity : BaseActivity() {
     private lateinit var kindAdapter: ArrayAdapter<String>
     private val kind = mutableListOf<String>()
     private var isCheckedList = mutableListOf<Boolean>()
+    //endregion
+
+    //region Date
+    private var cal: Calendar = Calendar.getInstance()
+
+    private val dateInSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInTextView(binding.include.filterInDate)
+        }
+
+    private val dateOutSetListener =
+        DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+            cal.set(Calendar.YEAR, year)
+            cal.set(Calendar.MONTH, monthOfYear)
+            cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInTextView(binding.include.filterOutDate)
+        }
     //endregion
 
     //region MultipleChoiceBoxData
@@ -69,7 +94,6 @@ class SearchActivity : BaseActivity() {
         this.searchViewModel =
             ViewModelProvider(this, mViewModelFactory).get(SearchViewModel::class.java)
     }
-
 
     private fun initListener() {
         val bottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomSheetParent)
@@ -111,7 +135,6 @@ class SearchActivity : BaseActivity() {
         binding.include.filterValidateSearch.setOnClickListener {
             if (verify()) {
                 bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-                //TODO ADD FILTER ON DATE
                 val filter = FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterMinPrice.text.toString().toInt(),
@@ -125,33 +148,30 @@ class SearchActivity : BaseActivity() {
                     binding.include.filterMinBedroom.text.toString().toInt(),
                     binding.include.filterMaxBedroom.text.toString().toInt(),
                     interestPointsList,
-                    binding.include.filterIsAvailable.isChecked
+                    binding.include.filterIsAvailable.isChecked,
+                    Utils.getDateFromString(binding.include.filterInDate.text.toString()),
+                    Utils.getDateFromString(binding.include.filterOutDate.text.toString())
                 )
                 filter(filter)
             }
         }
 
         binding.include.filterReset.setOnClickListener {
-            binding.include.filterKind.setSelection(0)
-            binding.include.filterMinPrice.setText(0.toString())
-            binding.include.filterMaxPrice.setText(0.toString())
-            binding.include.filterMinArea.setText(0.toString())
-            binding.include.filterMaxArea.setText(0.toString())
-            binding.include.filterMinRoom.setText(0.toString())
-            binding.include.filterMaxRoom.setText(0.toString())
-            binding.include.filterMinBathroom.setText(0.toString())
-            binding.include.filterMaxBathroom.setText(0.toString())
-            binding.include.filterMinBedroom.setText(0.toString())
-            binding.include.filterMaxBedroom.setText(0.toString())
-            binding.include.filterCheckForAvailability.isChecked = false
-            binding.include.filterNearPlace.text = ""
-            refreshFilteredList(realtyList.toMutableList())
+            resetField()
         }
 
         binding.include.filterNearPlace.setOnClickListener {
             binding.include.filterNearPlace.text = ""
             interestPoints.clear()
             showNearPlaceChoice()
+        }
+
+        binding.include.filterInDate.setOnClickListener {
+            datePickerDialog(dateInSetListener)
+        }
+
+        binding.include.filterOutDate.setOnClickListener {
+            datePickerDialog(dateOutSetListener)
         }
     }
 
@@ -186,6 +206,16 @@ class SearchActivity : BaseActivity() {
                 startActivity(intent)
             }
         })
+    }
+
+    private fun datePickerDialog(dateInSetListener: DatePickerDialog.OnDateSetListener) {
+        DatePickerDialog(
+            this,
+            dateInSetListener,
+            cal.get(Calendar.YEAR),
+            cal.get(Calendar.MONTH),
+            cal.get(Calendar.DAY_OF_MONTH)
+        ).show()
     }
 
     private fun verify(): Boolean {
@@ -238,6 +268,20 @@ class SearchActivity : BaseActivity() {
             binding.include.filterMaxBedroom.error = "Missing field put 0 for no filter"
             return false
         }
+
+      /*  if (binding.include.filterInDate.text.isNullOrEmpty()) {
+            binding.include.filterInDate.error = "Missing field put 0 for no filter"
+            return false
+        } else {
+            binding.include.filterInDate.error = null
+        }
+
+        if (binding.include.filterOutDate.text.isNullOrEmpty()) {
+            binding.include.filterOutDate.error = "Missing field put 0 for no filter"
+            return false
+        } else {
+            binding.include.filterOutDate.error = null
+        }*/
 
         return true
     }
@@ -321,7 +365,38 @@ class SearchActivity : BaseActivity() {
             }
         }
 
+        if (filter.inMarketDate != 0L) {
+            listForLoop.forEach {
+                if (it.inMarketDate < filter.inMarketDate) listToModify.remove(it)
+            }
+        }
+
+        if (filter.outMarketDate != 0L) {
+            listForLoop.forEach {
+                if (it.outMarketDate > filter.outMarketDate) listToModify.remove(it)
+            }
+        }
+
         refreshFilteredList(listToModify)
+    }
+
+    private fun resetField() {
+        binding.include.filterKind.setSelection(0)
+        binding.include.filterMinPrice.setText(0.toString())
+        binding.include.filterMaxPrice.setText(0.toString())
+        binding.include.filterMinArea.setText(0.toString())
+        binding.include.filterMaxArea.setText(0.toString())
+        binding.include.filterMinRoom.setText(0.toString())
+        binding.include.filterMaxRoom.setText(0.toString())
+        binding.include.filterMinBathroom.setText(0.toString())
+        binding.include.filterMaxBathroom.setText(0.toString())
+        binding.include.filterMinBedroom.setText(0.toString())
+        binding.include.filterMaxBedroom.setText(0.toString())
+        binding.include.filterCheckForAvailability.isChecked = false
+        binding.include.filterNearPlace.text = ""
+        refreshFilteredList(realtyList.toMutableList())
+        binding.include.filterInDate.text = ""
+        binding.include.filterOutDate.text = ""
     }
 
     private fun refreshFilteredList(filteredResult: MutableList<Realty>) {
@@ -332,13 +407,16 @@ class SearchActivity : BaseActivity() {
         }
         adapter.dataList = filteredResult
         adapter.notifyDataSetChanged()
-
     }
 
     private fun updateView() {
         adapter.dataList = realtyList
         adapter.notifyDataSetChanged()
         setFilterData()
+    }
+
+    private fun updateDateInTextView(realtyDateTextView: TextView) {
+        realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
 
     private fun setFilterData() {
@@ -403,7 +481,6 @@ class SearchActivity : BaseActivity() {
         val dialog: Dialog = builder.create()
         dialog.show()
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

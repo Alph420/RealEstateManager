@@ -18,4 +18,6 @@ data class FilterConstraint(
     var maxBedroom: Int,
     var pointOfInterest: List<String>,
     var available: Boolean,
+    var inMarketDate: Long,
+    var outMarketDate: Long,
     )
