@@ -113,9 +113,9 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updatePictures() {
-        if(realty.pictures.isEmpty()){
+        if (realty.pictures.isEmpty()) {
             binding.emptyView.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.emptyView.visibility = View.INVISIBLE
             mAdapter.dataList = realty.pictures
             mAdapter.notifyDataSetChanged()
@@ -128,9 +128,11 @@ class DetailRealtyActivity : BaseActivity() {
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom.text = realty.bedRoom.toString()
         binding.realtyDetailDescription.text = realty.description
-        binding.realtyDetailLocationAddress.text = realty.address
+        binding.realtyDetailLocationAddress.text =
+            "${realty.address}, ${realty.city}, ${realty.region}, ${realty.department}, ${realty.country}"
 
-        binding.realtyDetailNearPlaces.text = realty.pointOfInterest.toString().replace("[","").replace("]","").replace(", ","\n")
+        binding.realtyDetailNearPlaces.text =
+            realty.pointOfInterest.toString().replace("[", "").replace("]", "").replace(", ", "\n")
 
         drawMarker()
         updatePictures()

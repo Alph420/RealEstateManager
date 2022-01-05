@@ -40,7 +40,7 @@
         <RelativeLayout
             android:id="@+id/bottom_sheet_parent"
             android:layout_width="match_parent"
-            android:layout_height="550dp"
+            android:layout_height="600dp"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
             app:behavior_hideable="false"

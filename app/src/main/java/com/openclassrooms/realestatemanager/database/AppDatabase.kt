@@ -21,7 +21,7 @@ import java.util.*
  * Project : RealEstateManager
  **/
 
-@Database(entities = [RealtyModel::class,PicturesModel::class], version = 1, exportSchema = false)
+@Database(entities = [RealtyModel::class, PicturesModel::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // --- DAO ---
@@ -66,8 +66,12 @@ abstract class AppDatabase : RoomDatabase() {
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 )
                 realtyOne.put("address", "16 rue de lilas")
-                realtyOne.put("longitude",0.0)
-                realtyOne.put("latitude",0.0)
+                realtyOne.put("region", "")
+                realtyOne.put("country", "")
+                realtyOne.put("city", "")
+                realtyOne.put("department", "")
+                realtyOne.put("longitude", 0.0)
+                realtyOne.put("latitude", 0.0)
                 realtyOne.put("point_of_interest", "School, Cinema, Library")
                 realtyOne.put("available", true)
                 realtyOne.put("in_market_date", Date().time)
@@ -90,8 +94,12 @@ abstract class AppDatabase : RoomDatabase() {
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 )
                 realtyTwo.put("address", "16 rue Lille")
-                realtyTwo.put("longitude",50.633906)
-                realtyTwo.put("latitude",3.058742)
+                realtyTwo.put("region", "")
+                realtyTwo.put("country", "")
+                realtyTwo.put("city", "")
+                realtyTwo.put("department", "")
+                realtyTwo.put("longitude", 50.633906)
+                realtyTwo.put("latitude", 3.058742)
                 realtyTwo.put("point_of_interest", "School, Cinema, Library, Bank")
                 realtyTwo.put("available", true)
                 realtyTwo.put("in_market_date", Date().time)
@@ -114,8 +122,12 @@ abstract class AppDatabase : RoomDatabase() {
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 )
                 realtyThree.put("address", "16 rue de paris")
-                realtyThree.put("longitude",48.854136)
-                realtyThree.put("latitude",2.254200)
+                realtyThree.put("region", "")
+                realtyThree.put("country", "")
+                realtyThree.put("city", "")
+                realtyThree.put("department", "")
+                realtyThree.put("longitude", 48.854136)
+                realtyThree.put("latitude", 2.254200)
                 realtyThree.put("point_of_interest", "School, Cinema, Library, Bank")
                 realtyThree.put("available", true)
                 realtyThree.put("in_market_date", Date().time)
@@ -138,8 +150,12 @@ abstract class AppDatabase : RoomDatabase() {
                     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 )
                 realtyFour.put("address", "16 rue biarritz")
-                realtyFour.put("longitude",43.552240)
-                realtyFour.put("latitude",-1.446746)
+                realtyFour.put("region", "")
+                realtyFour.put("country", "")
+                realtyFour.put("city", "")
+                realtyFour.put("department", "")
+                realtyFour.put("longitude", 43.552240)
+                realtyFour.put("latitude", -1.446746)
                 realtyFour.put("point_of_interest", "School, Cinema, Library")
                 realtyFour.put("available", true)
                 realtyFour.put("in_market_date", Date().time)

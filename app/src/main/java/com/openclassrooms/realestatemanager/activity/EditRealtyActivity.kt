@@ -238,8 +238,7 @@ class EditRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.editRealtyAddress.text.toString()
-            realty.latitude = Utils.getLocationFromAddress(this, realty.address).latitude
-            realty.longitude = Utils.getLocationFromAddress(this, realty.address).longitude
+            realty = Utils.getLocationFromAddress(this, realty)
         }
 
         if (binding.editRealtyArea.text.isNullOrEmpty()) {

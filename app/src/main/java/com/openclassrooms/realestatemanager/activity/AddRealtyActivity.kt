@@ -100,7 +100,7 @@ class AddRealtyActivity : BaseActivity() {
         setContentView(binding.root)
 
         realty =
-            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", 0.0, 0.0, "", true, 0, 0, "")
+            RealtyModel(0, "", 0, 0, 0, 0, 0, "", "", "", "", "", "", 0.0, 0.0, "", true, 0, 0, "")
 
         initUI()
         initViewModel()
@@ -217,8 +217,7 @@ class AddRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.addRealtyAddress.text.toString()
-            realty.latitude = Utils.getLocationFromAddress(this, realty.address).latitude
-            realty.longitude = Utils.getLocationFromAddress(this, realty.address).longitude
+            realty = Utils.getLocationFromAddress(this, realty)
         }
 
         if (binding.addRealtyArea.text.isNullOrEmpty()) {
@@ -296,7 +295,8 @@ class AddRealtyActivity : BaseActivity() {
             for (i in resources.getStringArray(R.array.genres).indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(resources.getStringArray(R.array.genres)[i]).append(", ").toString()
+                        interestPoints.append(resources.getStringArray(R.array.genres)[i])
+                            .append(", ").toString()
                 }
             }
 

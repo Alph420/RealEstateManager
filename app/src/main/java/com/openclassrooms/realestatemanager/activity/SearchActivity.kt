@@ -26,6 +26,7 @@ import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.max
 
 /**
  * Created by Julien Jennequin on 29/12/2021 17:27
@@ -83,10 +84,15 @@ class SearchActivity : BaseActivity() {
 
         setContentView(binding.root)
 
+        initUI()
         initViewModel()
         initListener()
         iniObserver()
         initRecyclerView()
+    }
+
+    private fun initUI() {
+        binding.include.filterPriceRange.isNotifyWhileDragging = true
     }
 
     private fun initViewModel() {
@@ -98,7 +104,7 @@ class SearchActivity : BaseActivity() {
     private fun initListener() {
         val bottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomSheetParent)
 
-        binding.bottomSheetParent.setOnClickListener {
+        binding.fitlerUp.setOnClickListener {
             when (bottomSheetBehaviour.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -132,13 +138,39 @@ class SearchActivity : BaseActivity() {
             }
         })
 
+        binding.include.filterPriceRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
+            binding.include.filterMinPrice.text = Utils.formatPrice(minValue.toString().toLong())
+            binding.include.filterMaxPrice.text =  Utils.formatPrice(maxValue.toString().toLong())
+        }
+
+        binding.include.filterAreaRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
+            binding.include.filterMinArea.text = minValue.toString()
+            binding.include.filterMaxArea.text =  maxValue.toString()
+        }
+
+        binding.include.filterRoomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
+            binding.include.filterMinRoom.text = minValue.toString()
+            binding.include.filterMaxRoom.text =  maxValue.toString()
+        }
+
+        binding.include.filterBathroomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
+            binding.include.filterMinBathroom.text = minValue.toString()
+            binding.include.filterMaxBathroom.text =  maxValue.toString()
+        }
+
+        binding.include.filterBedroomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
+            binding.include.filterMinBedroom.text = minValue.toString()
+            binding.include.filterMaxBedroom.text =  maxValue.toString()
+        }
+
         binding.include.filterValidateSearch.setOnClickListener {
             if (verify()) {
                 bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+                //TODO ADD PICTURE, LOCATION FILTER
                 val filter = FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
-                    binding.include.filterMinPrice.text.toString().toInt(),
-                    binding.include.filterMaxPrice.text.toString().toInt(),
+                    binding.include.filterPriceRange.selectedMinValue.toInt(),
+                    binding.include.filterPriceRange.selectedMaxValue.toInt(),
                     binding.include.filterMinArea.text.toString().toDouble(),
                     binding.include.filterMaxArea.text.toString().toDouble(),
                     binding.include.filterMinRoom.text.toString().toInt(),
@@ -219,16 +251,6 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun verify(): Boolean {
-        if (binding.include.filterMinPrice.text.isNullOrEmpty()) {
-            binding.include.filterMinPrice.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMaxPrice.text.isNullOrEmpty()) {
-            binding.include.filterMaxPrice.error = "Missing field put 0 for no filter"
-            return false
-        }
-
         if (binding.include.filterMinArea.text.isNullOrEmpty()) {
             binding.include.filterMinArea.error = "Missing field put 0 for no filter"
             return false
@@ -269,19 +291,19 @@ class SearchActivity : BaseActivity() {
             return false
         }
 
-      /*  if (binding.include.filterInDate.text.isNullOrEmpty()) {
-            binding.include.filterInDate.error = "Missing field put 0 for no filter"
-            return false
-        } else {
-            binding.include.filterInDate.error = null
-        }
+        /*  if (binding.include.filterInDate.text.isNullOrEmpty()) {
+              binding.include.filterInDate.error = "Missing field put 0 for no filter"
+              return false
+          } else {
+              binding.include.filterInDate.error = null
+          }
 
-        if (binding.include.filterOutDate.text.isNullOrEmpty()) {
-            binding.include.filterOutDate.error = "Missing field put 0 for no filter"
-            return false
-        } else {
-            binding.include.filterOutDate.error = null
-        }*/
+          if (binding.include.filterOutDate.text.isNullOrEmpty()) {
+              binding.include.filterOutDate.error = "Missing field put 0 for no filter"
+              return false
+          } else {
+              binding.include.filterOutDate.error = null
+          }*/
 
         return true
     }
@@ -382,8 +404,11 @@ class SearchActivity : BaseActivity() {
 
     private fun resetField() {
         binding.include.filterKind.setSelection(0)
-        binding.include.filterMinPrice.setText(0.toString())
-        binding.include.filterMaxPrice.setText(0.toString())
+        binding.include.filterPriceRange.selectedMinValue = 0
+        binding.include.filterPriceRange.selectedMaxValue = 10000000
+        binding.include.filterMinPrice.text = "0"
+        binding.include.filterMaxPrice.text = "0"
+
         binding.include.filterMinArea.setText(0.toString())
         binding.include.filterMaxArea.setText(0.toString())
         binding.include.filterMinRoom.setText(0.toString())

@@ -19,6 +19,8 @@ import java.util.*
 import kotlin.math.roundToInt
 import android.provider.MediaStore.Images
 import android.provider.MediaStore
+import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.model.RealtyModel
 
 
 /**
@@ -149,17 +151,32 @@ internal object Utils {
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
     }
 
-    fun getLocationFromAddress(context: Context, strAddress: String): GeoPoint {
-        val realtyPosition: GeoPoint
-        if (Geocoder(context).getFromLocationName(strAddress, 5).size > 0) {
-            val location: Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
-            location.latitude
-            location.longitude
-
-            realtyPosition = GeoPoint(location.latitude, location.longitude)
-            return realtyPosition
+    fun getLocationFromAddress(context: Context, realty: RealtyModel): RealtyModel {
+        if (Geocoder(context).getFromLocationName(realty.address, 5).size > 0) {
+            val location: Address = Geocoder(context).getFromLocationName(realty.address, 5)[0]
+            realty.region = location.adminArea
+            realty.country = location.countryName
+            realty.city = location.locality
+            realty.department = location.subAdminArea
+            realty.longitude = location.longitude
+            realty.latitude = location.latitude
         }
-        return GeoPoint(0.0, 0.0)
+
+        return realty
+    }
+
+    fun getLocationFromAddress(context: Context, realty: Realty): Realty {
+        if (Geocoder(context).getFromLocationName(realty.address, 5).size > 0) {
+            val location: Address = Geocoder(context).getFromLocationName(realty.address, 5)[0]
+            realty.region = location.adminArea
+            realty.country = location.countryName
+            realty.city = location.locality
+            realty.department = location.subAdminArea
+            realty.longitude = location.longitude
+            realty.latitude = location.latitude
+        }
+
+        return realty
     }
 
     fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
