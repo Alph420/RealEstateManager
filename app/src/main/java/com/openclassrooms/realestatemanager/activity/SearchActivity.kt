@@ -341,6 +341,19 @@ class SearchActivity : BaseActivity() {
         binding.include.filterKind.setSelection(0)
         binding.include.filterPriceRange.selectedMinValue = 0
         binding.include.filterPriceRange.selectedMaxValue = 10000000
+
+        binding.include.filterAreaRange.selectedMinValue = 0
+        binding.include.filterAreaRange.selectedMaxValue = 10000000
+
+        binding.include.filterRoomRange.selectedMinValue = 0
+        binding.include.filterRoomRange.selectedMaxValue = 10000000
+
+        binding.include.filterBathroomRange.selectedMinValue = 0
+        binding.include.filterBathroomRange.selectedMaxValue = 10000000
+
+        binding.include.filterBedroomRange.selectedMinValue = 0
+        binding.include.filterBedroomRange.selectedMaxValue = 10000000
+
         binding.include.filterCheckForAvailability.isChecked = false
         binding.include.filterNearPlace.text = ""
         refreshFilteredList(realtyList.toMutableList())
