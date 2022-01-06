@@ -104,17 +104,17 @@ class SearchActivity : BaseActivity() {
     private fun initListener() {
         val bottomSheetBehaviour = BottomSheetBehavior.from(binding.bottomSheetParent)
 
-        binding.fitlerUp.setOnClickListener {
+        binding.include.filterUp.setOnClickListener {
             when (bottomSheetBehaviour.state) {
                 BottomSheetBehavior.STATE_EXPANDED -> {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
                     binding.include.bottomFilterView.visibility = View.INVISIBLE
-                    binding.fitlerUp.rotation = (90).toFloat()
+                    binding.include.filterUp.rotation = (90).toFloat()
                 }
                 BottomSheetBehavior.STATE_COLLAPSED -> {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.include.bottomFilterView.visibility = View.VISIBLE
-                    binding.fitlerUp.rotation = (270).toFloat()
+                    binding.include.filterUp.rotation = (270).toFloat()
 
                 }
             }
@@ -125,10 +125,10 @@ class SearchActivity : BaseActivity() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 if (slideOffset == 0.00000F) {
                     binding.include.bottomFilterView.visibility = View.INVISIBLE
-                    binding.fitlerUp.rotation = (90).toFloat()
+                    binding.include.filterUp.rotation = (90).toFloat()
                 } else {
                     binding.include.bottomFilterView.visibility = View.VISIBLE
-                    binding.fitlerUp.rotation = (270).toFloat()
+                    binding.include.filterUp.rotation = (270).toFloat()
                 }
 
             }
@@ -138,31 +138,6 @@ class SearchActivity : BaseActivity() {
             }
         })
 
-        binding.include.filterPriceRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
-            binding.include.filterMinPrice.text = Utils.formatPrice(minValue.toString().toLong())
-            binding.include.filterMaxPrice.text =  Utils.formatPrice(maxValue.toString().toLong())
-        }
-
-        binding.include.filterAreaRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
-            binding.include.filterMinArea.text = minValue.toString()
-            binding.include.filterMaxArea.text =  maxValue.toString()
-        }
-
-        binding.include.filterRoomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
-            binding.include.filterMinRoom.text = minValue.toString()
-            binding.include.filterMaxRoom.text =  maxValue.toString()
-        }
-
-        binding.include.filterBathroomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
-            binding.include.filterMinBathroom.text = minValue.toString()
-            binding.include.filterMaxBathroom.text =  maxValue.toString()
-        }
-
-        binding.include.filterBedroomRange.setOnRangeSeekBarChangeListener { bar, minValue, maxValue ->
-            binding.include.filterMinBedroom.text = minValue.toString()
-            binding.include.filterMaxBedroom.text =  maxValue.toString()
-        }
-
         binding.include.filterValidateSearch.setOnClickListener {
             if (verify()) {
                 bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -171,14 +146,14 @@ class SearchActivity : BaseActivity() {
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterPriceRange.selectedMinValue.toInt(),
                     binding.include.filterPriceRange.selectedMaxValue.toInt(),
-                    binding.include.filterMinArea.text.toString().toDouble(),
-                    binding.include.filterMaxArea.text.toString().toDouble(),
-                    binding.include.filterMinRoom.text.toString().toInt(),
-                    binding.include.filterMaxRoom.text.toString().toInt(),
-                    binding.include.filterMinBathroom.text.toString().toInt(),
-                    binding.include.filterMaxBathroom.text.toString().toInt(),
-                    binding.include.filterMinBedroom.text.toString().toInt(),
-                    binding.include.filterMaxBedroom.text.toString().toInt(),
+                    binding.include.filterAreaRange.selectedMinValue.toDouble(),
+                    binding.include.filterAreaRange.selectedMaxValue.toDouble(),
+                    binding.include.filterRoomRange.selectedMinValue.toInt(),
+                    binding.include.filterRoomRange.selectedMaxValue.toInt(),
+                    binding.include.filterBathroomRange.selectedMinValue.toInt(),
+                    binding.include.filterBathroomRange.selectedMaxValue.toInt(),
+                    binding.include.filterBedroomRange.selectedMinValue.toInt(),
+                    binding.include.filterBedroomRange.selectedMaxValue.toInt(),
                     interestPointsList,
                     binding.include.filterIsAvailable.isChecked,
                     Utils.getDateFromString(binding.include.filterInDate.text.toString()),
@@ -251,46 +226,6 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun verify(): Boolean {
-        if (binding.include.filterMinArea.text.isNullOrEmpty()) {
-            binding.include.filterMinArea.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMaxArea.text.isNullOrEmpty()) {
-            binding.include.filterMaxArea.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMinRoom.text.isNullOrEmpty()) {
-            binding.include.filterMinRoom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMaxRoom.text.isNullOrEmpty()) {
-            binding.include.filterMaxRoom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMinBathroom.text.isNullOrEmpty()) {
-            binding.include.filterMinBathroom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMaxBathroom.text.isNullOrEmpty()) {
-            binding.include.filterMaxBathroom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMinBedroom.text.isNullOrEmpty()) {
-            binding.include.filterMinBedroom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
-        if (binding.include.filterMaxBedroom.text.isNullOrEmpty()) {
-            binding.include.filterMaxBedroom.error = "Missing field put 0 for no filter"
-            return false
-        }
-
         /*  if (binding.include.filterInDate.text.isNullOrEmpty()) {
               binding.include.filterInDate.error = "Missing field put 0 for no filter"
               return false
@@ -406,17 +341,6 @@ class SearchActivity : BaseActivity() {
         binding.include.filterKind.setSelection(0)
         binding.include.filterPriceRange.selectedMinValue = 0
         binding.include.filterPriceRange.selectedMaxValue = 10000000
-        binding.include.filterMinPrice.text = "0"
-        binding.include.filterMaxPrice.text = "0"
-
-        binding.include.filterMinArea.setText(0.toString())
-        binding.include.filterMaxArea.setText(0.toString())
-        binding.include.filterMinRoom.setText(0.toString())
-        binding.include.filterMaxRoom.setText(0.toString())
-        binding.include.filterMinBathroom.setText(0.toString())
-        binding.include.filterMaxBathroom.setText(0.toString())
-        binding.include.filterMinBedroom.setText(0.toString())
-        binding.include.filterMaxBedroom.setText(0.toString())
         binding.include.filterCheckForAvailability.isChecked = false
         binding.include.filterNearPlace.text = ""
         refreshFilteredList(realtyList.toMutableList())
