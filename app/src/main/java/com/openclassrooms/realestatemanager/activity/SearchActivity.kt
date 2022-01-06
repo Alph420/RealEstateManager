@@ -35,22 +35,22 @@ class SearchActivity : BaseActivity() {
 
     //region PROPERTIES
     private lateinit var binding: ActivitySearchBinding
+
     private lateinit var adapter: RealtyListAdapter
+    private lateinit var kindAdapter: ArrayAdapter<String>
+    private lateinit var cityAdapter: ArrayAdapter<String>
+
     private lateinit var searchViewModel: SearchViewModel
 
     private var interestPoints = StringBuilder()
     private var interestPointsList = emptyList<String>()
-    private var realtyList: List<Realty> = emptyList()
-    //endregion
+    private var realtyList = emptyList<Realty>()
 
-    //region spinnerKindChoice
-    private lateinit var kindAdapter: ArrayAdapter<String>
-    private lateinit var cityAdapter: ArrayAdapter<String>
     private val kind = mutableListOf<String>()
     private val city = mutableListOf<String>()
+
     private var kindCheckedList = mutableListOf<Boolean>()
     private var cityCheckedList = mutableListOf<Boolean>()
-
     //endregion
 
     //region Date
@@ -133,18 +133,16 @@ class SearchActivity : BaseActivity() {
                     binding.include.bottomFilterView.visibility = View.VISIBLE
                     binding.include.filterUp.rotation = (270).toFloat()
                 }
-
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-
             }
         })
 
         binding.include.filterValidateSearch.setOnClickListener {
-            if (verify()) {
-                bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-                val filter = FilterConstraint(
+            bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
+            filter(
+                FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterCity.selectedItem.toString(),
                     binding.include.filterPriceRange.selectedMinValue.toInt(),
@@ -164,12 +162,11 @@ class SearchActivity : BaseActivity() {
                     binding.include.filterPicturesRange.selectedMinValue.toInt(),
                     binding.include.filterPicturesRange.selectedMaxValue.toInt()
                 )
-                filter(filter)
-            }
+            )
         }
 
         binding.include.filterReset.setOnClickListener {
-            resetField()
+            resetAllFieldData()
         }
 
         binding.include.filterNearPlace.setOnClickListener {
@@ -230,24 +227,6 @@ class SearchActivity : BaseActivity() {
         ).show()
     }
 
-    private fun verify(): Boolean {
-        /*  if (binding.include.filterInDate.text.isNullOrEmpty()) {
-              binding.include.filterInDate.error = "Missing field put 0 for no filter"
-              return false
-          } else {
-              binding.include.filterInDate.error = null
-          }
-
-          if (binding.include.filterOutDate.text.isNullOrEmpty()) {
-              binding.include.filterOutDate.error = "Missing field put 0 for no filter"
-              return false
-          } else {
-              binding.include.filterOutDate.error = null
-          }*/
-
-        return true
-    }
-
     private fun filter(filter: FilterConstraint) {
         val listForLoop = mutableListOf<Realty>()
         val listToModify = mutableListOf<Realty>()
@@ -291,14 +270,12 @@ class SearchActivity : BaseActivity() {
                 if (realty.pictures.size < filter.minPictures) listToModify.remove(realty)
                 if (realty.pictures.size > filter.maxPictures) listToModify.remove(realty)
             }
-
             if (!realty.pointOfInterest.containsAll(filter.pointOfInterest)) listToModify.remove(
                 realty
             )
             if (binding.include.filterCheckForAvailability.isChecked) {
                 if (realty.available != filter.available) listToModify.remove(realty)
             }
-
             if (binding.include.filterInDate.text.isNotEmpty()) {
                 if (realty.inMarketDate < filter.inMarketDate) listToModify.remove(realty)
             }
@@ -310,7 +287,7 @@ class SearchActivity : BaseActivity() {
         refreshFilteredList(listToModify)
     }
 
-    private fun resetField() {
+    private fun resetAllFieldData() {
         binding.include.filterKind.setSelection(0)
         binding.include.filterCity.setSelection(0)
 
