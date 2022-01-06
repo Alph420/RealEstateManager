@@ -157,7 +157,9 @@ class SearchActivity : BaseActivity() {
                     interestPointsList,
                     binding.include.filterIsAvailable.isChecked,
                     Utils.getDateFromString(binding.include.filterInDate.text.toString()),
-                    Utils.getDateFromString(binding.include.filterOutDate.text.toString())
+                    Utils.getDateFromString(binding.include.filterOutDate.text.toString()),
+                    binding.include.filterPicturesRange.selectedMinValue.toInt(),
+                    binding.include.filterPicturesRange.selectedMaxValue.toInt()
                 )
                 filter(filter)
             }
@@ -257,80 +259,44 @@ class SearchActivity : BaseActivity() {
             }
         }
 
-        if (filter.minPrice != 0) {
-            listForLoop.forEach {
-                if (it.price < filter.minPrice) listToModify.remove(it)
+        listForLoop.forEach { realty ->
+            if (binding.include.filterCheckForPrice.isChecked) {
+                if (realty.price < filter.minPrice) listToModify.remove(realty)
+                if (realty.price > filter.maxPrice) listToModify.remove(realty)
             }
-        }
+            if (binding.include.filterCheckForArea.isChecked) {
+                if (realty.area < filter.minArea) listToModify.remove(realty)
+                if (realty.area > filter.maxArea) listToModify.remove(realty)
+            }
+            if (binding.include.filterCheckForRoom.isChecked) {
+                if (realty.roomNumber < filter.minRoom) listToModify.remove(realty)
+                if (realty.roomNumber > filter.maxRoom) listToModify.remove(realty)
+            }
+            if (binding.include.filterCheckForBathroom.isChecked) {
+                if (realty.bathRoom < filter.minBathroom) listToModify.remove(realty)
+                if (realty.bathRoom > filter.maxBathroom) listToModify.remove(realty)
+            }
+            if (binding.include.filterCheckForBedroom.isChecked) {
+                if (realty.bedRoom < filter.minBedroom) listToModify.remove(realty)
+                if (realty.bedRoom > filter.maxBedroom) listToModify.remove(realty)
+            }
+            if (binding.include.checkFilterForPictures.isChecked) {
+                if (realty.pictures.size < filter.minPictures) listToModify.remove(realty)
+                if (realty.pictures.size > filter.maxPictures) listToModify.remove(realty)
+            }
 
-        if (filter.maxPrice != 0) {
-            listForLoop.forEach {
-                if (it.price > filter.maxPrice) listToModify.remove(it)
+            if (!realty.pointOfInterest.containsAll(filter.pointOfInterest)) listToModify.remove(
+                realty
+            )
+            if (binding.include.filterCheckForAvailability.isChecked) {
+                if (realty.available != filter.available) listToModify.remove(realty)
             }
-        }
 
-        if (filter.minArea != 0.0) {
-            listForLoop.forEach {
-                if (it.area < filter.minArea) listToModify.remove(it)
+            if (binding.include.filterInDate.text.isNotEmpty()) {
+                if (realty.inMarketDate < filter.inMarketDate) listToModify.remove(realty)
             }
-        }
-        if (filter.maxArea != 0.0) {
-            listForLoop.forEach {
-                if (it.area > filter.maxArea) listToModify.remove(it)
-            }
-        }
-        if (filter.minRoom != 0) {
-            listForLoop.forEach {
-                if (it.roomNumber < filter.minRoom) listToModify.remove(it)
-            }
-        }
-        if (filter.maxRoom != 0) {
-            listForLoop.forEach {
-                if (it.roomNumber > filter.maxRoom) listToModify.remove(it)
-            }
-        }
-        if (filter.minBathroom != 0) {
-            listForLoop.forEach {
-                if (it.bathRoom < filter.minBathroom) listToModify.remove(it)
-            }
-        }
-        if (filter.maxBathroom != 0) {
-            listForLoop.forEach {
-                if (it.bathRoom > filter.maxBathroom) listToModify.remove(it)
-            }
-        }
-        if (filter.minBedroom != 0) {
-            listForLoop.forEach {
-                if (it.bedRoom < filter.minBedroom) listToModify.remove(it)
-            }
-        }
-        if (filter.maxBedroom != 0) {
-            listForLoop.forEach {
-                if (it.bedRoom > filter.maxBedroom) listToModify.remove(it)
-            }
-        }
-
-        if (filter.pointOfInterest.isNotEmpty()) {
-            listForLoop.forEach {
-                if (!it.pointOfInterest.containsAll(filter.pointOfInterest)) listToModify.remove(it)
-            }
-        }
-
-        if (binding.include.filterCheckForAvailability.isChecked) {
-            listForLoop.forEach {
-                if (it.available != filter.available) listToModify.remove(it)
-            }
-        }
-
-        if (filter.inMarketDate != 0L) {
-            listForLoop.forEach {
-                if (it.inMarketDate < filter.inMarketDate) listToModify.remove(it)
-            }
-        }
-
-        if (filter.outMarketDate != 0L) {
-            listForLoop.forEach {
-                if (it.outMarketDate > filter.outMarketDate) listToModify.remove(it)
+            if (binding.include.filterOutDate.text.isNotEmpty()) {
+                if (realty.outMarketDate > filter.outMarketDate) listToModify.remove(realty)
             }
         }
 
@@ -339,20 +305,42 @@ class SearchActivity : BaseActivity() {
 
     private fun resetField() {
         binding.include.filterKind.setSelection(0)
-        binding.include.filterPriceRange.selectedMinValue = 0
-        binding.include.filterPriceRange.selectedMaxValue = 10000000
+        binding.include.filterPriceRange.selectedMinValue =
+            binding.include.filterPriceRange.absoluteMinValue
+        binding.include.filterPriceRange.selectedMaxValue =
+            binding.include.filterPriceRange.absoluteMaxValue
+        binding.include.filterCheckForPrice.isChecked = false
 
-        binding.include.filterAreaRange.selectedMinValue = 0
-        binding.include.filterAreaRange.selectedMaxValue = 10000000
+        binding.include.filterAreaRange.selectedMinValue =
+            binding.include.filterAreaRange.absoluteMinValue
+        binding.include.filterAreaRange.selectedMaxValue =
+            binding.include.filterAreaRange.absoluteMaxValue
+        binding.include.filterCheckForArea.isChecked = false
 
-        binding.include.filterRoomRange.selectedMinValue = 0
-        binding.include.filterRoomRange.selectedMaxValue = 10000000
+        binding.include.filterRoomRange.selectedMinValue =
+            binding.include.filterRoomRange.absoluteMinValue
+        binding.include.filterRoomRange.selectedMaxValue =
+            binding.include.filterRoomRange.absoluteMaxValue
+        binding.include.filterCheckForRoom.isChecked = false
 
-        binding.include.filterBathroomRange.selectedMinValue = 0
-        binding.include.filterBathroomRange.selectedMaxValue = 10000000
+        binding.include.filterBathroomRange.selectedMinValue =
+            binding.include.filterBathroomRange.absoluteMinValue
+        binding.include.filterBathroomRange.selectedMaxValue =
+            binding.include.filterBathroomRange.absoluteMaxValue
+        binding.include.filterCheckForBathroom.isChecked = false
 
-        binding.include.filterBedroomRange.selectedMinValue = 0
-        binding.include.filterBedroomRange.selectedMaxValue = 10000000
+        binding.include.filterBedroomRange.selectedMinValue =
+            binding.include.filterBedroomRange.absoluteMinValue
+        binding.include.filterBedroomRange.selectedMaxValue =
+            binding.include.filterBedroomRange.absoluteMaxValue
+        binding.include.filterCheckForBedroom.isChecked = false
+
+        binding.include.filterPicturesRange.selectedMinValue =
+            binding.include.filterPicturesRange.absoluteMinValue
+        binding.include.filterPicturesRange.selectedMaxValue =
+            binding.include.filterPicturesRange.absoluteMaxValue
+        binding.include.filterCheckForBathroom.isChecked = false
+
 
         binding.include.filterCheckForAvailability.isChecked = false
         binding.include.filterNearPlace.text = ""

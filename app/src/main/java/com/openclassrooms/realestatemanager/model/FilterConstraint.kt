@@ -20,4 +20,6 @@ data class FilterConstraint(
     var available: Boolean,
     var inMarketDate: Long,
     var outMarketDate: Long,
+    var minPictures:Int,
+    var maxPictures:Int
     )
