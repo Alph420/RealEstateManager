@@ -40,11 +40,11 @@
         <RelativeLayout
             android:id="@+id/bottom_sheet_parent"
             android:layout_width="match_parent"
-            android:layout_height="600dp"
+            android:layout_height="650dp"
             android:fitsSystemWindows="true"
             android:orientation="vertical"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="50dp"
+            app:behavior_peekHeight="65dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <include
