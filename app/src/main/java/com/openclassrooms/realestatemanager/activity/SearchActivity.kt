@@ -352,10 +352,14 @@ class SearchActivity : BaseActivity() {
 
 
         binding.include.filterCheckForAvailability.isChecked = false
+
         binding.include.filterNearPlace.text = ""
-        refreshFilteredList(realtyList.toMutableList())
         binding.include.filterInDate.text = ""
         binding.include.filterOutDate.text = ""
+
+        interestPointsList = emptyList()
+
+        refreshFilteredList(realtyList.toMutableList())
     }
 
     private fun refreshFilteredList(filteredResult: MutableList<Realty>) {
