@@ -24,9 +24,8 @@ import androidx.appcompat.app.AlertDialog
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.utils.Utils
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.max
+import kotlin.concurrent.thread
 
 /**
  * Created by Julien Jennequin on 29/12/2021 17:27
@@ -46,8 +45,12 @@ class SearchActivity : BaseActivity() {
 
     //region spinnerKindChoice
     private lateinit var kindAdapter: ArrayAdapter<String>
+    private lateinit var cityAdapter: ArrayAdapter<String>
     private val kind = mutableListOf<String>()
-    private var isCheckedList = mutableListOf<Boolean>()
+    private val city = mutableListOf<String>()
+    private var kindCheckedList = mutableListOf<Boolean>()
+    private var cityCheckedList = mutableListOf<Boolean>()
+
     //endregion
 
     //region Date
@@ -141,9 +144,9 @@ class SearchActivity : BaseActivity() {
         binding.include.filterValidateSearch.setOnClickListener {
             if (verify()) {
                 bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-                //TODO ADD PICTURE, LOCATION FILTER
                 val filter = FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
+                    binding.include.filterCity.selectedItem.toString(),
                     binding.include.filterPriceRange.selectedMinValue.toInt(),
                     binding.include.filterPriceRange.selectedMaxValue.toInt(),
                     binding.include.filterAreaRange.selectedMinValue.toDouble(),
@@ -253,6 +256,7 @@ class SearchActivity : BaseActivity() {
             if (filter.kind == "all") {
                 listForLoop.add(it)
                 listToModify.add(it)
+
             } else if (it.kind.lowercase() == filter.kind) {
                 listForLoop.add(it)
                 listToModify.add(it)
@@ -260,6 +264,9 @@ class SearchActivity : BaseActivity() {
         }
 
         listForLoop.forEach { realty ->
+            if (filter.city != "all") {
+                if (filter.city.lowercase() != realty.city.lowercase()) listToModify.remove(realty)
+            }
             if (binding.include.filterCheckForPrice.isChecked) {
                 if (realty.price < filter.minPrice) listToModify.remove(realty)
                 if (realty.price > filter.maxPrice) listToModify.remove(realty)
@@ -305,6 +312,8 @@ class SearchActivity : BaseActivity() {
 
     private fun resetField() {
         binding.include.filterKind.setSelection(0)
+        binding.include.filterCity.setSelection(0)
+
         binding.include.filterPriceRange.selectedMinValue =
             binding.include.filterPriceRange.absoluteMinValue
         binding.include.filterPriceRange.selectedMaxValue =
@@ -371,16 +380,36 @@ class SearchActivity : BaseActivity() {
 
     private fun setFilterData() {
         kind.add("all")
-        realtyList.forEach {
-            kind.add(it.kind.lowercase())
-            isCheckedList.add(false)
+        city.add("all")
+
+        thread {
+            realtyList.forEach {
+                kind.add(it.kind.lowercase())
+                kindCheckedList.add(false)
+            }
+
+            realtyList.forEach {
+                if (it.city.isNotEmpty()) {
+                    city.add(it.city.lowercase())
+                    cityCheckedList.add(false)
+                }
+            }
         }
-        val distinct = kind.toSet().toList()
+
+        val kindDistinct = kind.toSet().toList()
+        val cityDistinct = city.toSet().toList()
 
         this.kindAdapter =
-            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, distinct)
+            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, kindDistinct)
+
+        this.cityAdapter =
+            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, cityDistinct)
+
         binding.include.filterKind.adapter = kindAdapter
+        binding.include.filterCity.adapter = cityAdapter
+
         kindAdapter.notifyDataSetChanged()
+        cityAdapter.notifyDataSetChanged()
     }
 
     private fun showNearPlaceChoice() {

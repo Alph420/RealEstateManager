@@ -6,6 +6,7 @@ package com.openclassrooms.realestatemanager.model
  **/
 data class FilterConstraint(
     var kind:String,
+    var city:String,
     var minPrice: Int = 0,
     var maxPrice:Int = 0,
     var minArea: Double = 0.0,

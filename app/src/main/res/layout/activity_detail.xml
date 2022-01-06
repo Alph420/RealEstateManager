@@ -336,11 +336,14 @@
 
                 <TextView
                     android:id="@+id/realty_detail_location_address"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
                     app:layout_constraintBottom_toBottomOf="@+id/realty_detail_location"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/realty_detail_location"
                     app:layout_constraintTop_toTopOf="@+id/realty_detail_location" />
 
