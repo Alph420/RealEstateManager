@@ -244,7 +244,7 @@ class MainActivity : BaseActivity() {
 
     private fun setDataOfRetail() {
         updatePictures()
-        binding.realtyDetailArea!!.text = realty.area.toString() + " m2"
+        binding.realtyDetailArea!!.text = realty.area.toString() + this.getString(R.string.m2)
         binding.realtyDetailRoom!!.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom!!.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
@@ -267,7 +267,7 @@ class MainActivity : BaseActivity() {
 
     private fun checkIfWifiIsAvailable() {
         if (Utils.isInternetAvailable(this)) {
-            Toast.makeText(this, "Wifi available", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
         }
     }
 

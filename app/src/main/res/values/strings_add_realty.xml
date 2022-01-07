@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="add_field_required_error">Missing required field</string>
+
+
+    <!--DIALOG-->
+    <string name="add_dialog_positive_btn" translatable="false">OK</string>
+
+    <string name="add_dialog_title">Picture name</string>
+    <string name="add_dialog_negative_btn">Cancel</string>
+    <string name="add_dialog_error_msg">Each picture need description</string>
+    <string name="add_dialog_hint">Enter picture name</string>
+</resources>

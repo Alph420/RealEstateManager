@@ -108,7 +108,7 @@ class MapActivity : BaseActivity() {
             startMarker.title = " ${it.kind}, ${it.address}"
             mMap.overlays.add(startMarker)
 
-            startMarker.setOnMarkerClickListener { marker, mapView ->
+            startMarker.setOnMarkerClickListener { _, _ ->
                 val intent = Intent(binding.root.context, DetailRealtyActivity::class.java)
                 intent.putExtra(Constants().REALTY_ID_EXTRAS, (it.id))
                 startActivity(intent)
@@ -122,7 +122,7 @@ class MapActivity : BaseActivity() {
         userMarker.position = geoPoint
         userMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_location, null)
 
-        userMarker.title = "Our last position"
+        userMarker.title = this.getString(R.string.map_last_location)
         mMap.overlays.add(userMarker)
     }
 
@@ -147,7 +147,7 @@ class MapActivity : BaseActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
                 getLocation()
-            }else{
+            } else {
                 noLocationError()
             }
         }
@@ -157,7 +157,7 @@ class MapActivity : BaseActivity() {
         if (mapViewModel.isLocationEnabled(this)) {
             mapViewModel.getLastLocation(this)
         } else {
-            Log.d("getLocation", "Permissions refused")
+            Log.d(TAG, "Permissions refused")
             noLocationError()
         }
 

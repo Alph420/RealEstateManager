@@ -60,4 +60,6 @@ class SearchViewModel(private val database: AppDatabase) : ViewModel() {
         .getPicturesById(id)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
+
+
 }

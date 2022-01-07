@@ -232,7 +232,7 @@ class SearchActivity : BaseActivity() {
         val listToModify = mutableListOf<Realty>()
 
         realtyList.forEach {
-            if (filter.kind == "all") {
+            if (filter.kind == this.getString(R.string.search_all_kind)) {
                 listForLoop.add(it)
                 listToModify.add(it)
 
@@ -243,7 +243,7 @@ class SearchActivity : BaseActivity() {
         }
 
         listForLoop.forEach { realty ->
-            if (filter.city != "all") {
+            if (filter.city != this.getString(R.string.search_all_city)) {
                 if (filter.city.lowercase() != realty.city.lowercase()) listToModify.remove(realty)
             }
             if (binding.include.filterCheckForPrice.isChecked) {
@@ -360,8 +360,8 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun setFilterData() {
-        kind.add("all")
-        city.add("all")
+        kind.add(this.getString(R.string.search_all_kind))
+        city.add(this.getString(R.string.search_all_city))
 
         thread {
             realtyList.forEach {
@@ -420,7 +420,7 @@ class SearchActivity : BaseActivity() {
             genreCheckedList[index] = isChecked
         }
 
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(this.getString(R.string.dialog_positive_btn)) { dialog, _ ->
             dialog.dismiss()
             for (i in resources.getStringArray(R.array.genres).indices) {
                 if (genreCheckedList[i]) {

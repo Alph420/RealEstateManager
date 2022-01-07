@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import org.osmdroid.config.Configuration.*
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
@@ -123,7 +124,7 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        binding.realtyDetailArea.text = realty.area.toString() + " m2"
+        binding.realtyDetailArea.text = realty.area.toString() + this.getString(R.string.m2)
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom.text = realty.bedRoom.toString()
@@ -148,7 +149,7 @@ class DetailRealtyActivity : BaseActivity() {
             mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
             mMap.controller.setZoom(12.0)
         } else {
-            Toast.makeText(this, "Realty location not available", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, this.getString(R.string.location_error_msg), Toast.LENGTH_LONG).show()
         }
     }
 

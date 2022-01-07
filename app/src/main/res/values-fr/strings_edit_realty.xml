@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_field_required_error">Champ obligatoire manquant</string>
+
+    <!--DIALOG-->
+    <string name="edit_dialog_title">Nom de l\'image</string>
+    <string name="edit_dialog_hint">Entrez le nom de l\'image</string>
+    <string name="edit_dialog_error_msg">Chaque image a besoin d\'une description</string>
+    <string name="edit_dialog_negative_btn">Cancel</string>
+</resources>

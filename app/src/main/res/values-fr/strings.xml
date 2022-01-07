@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--MAIN ACTIVITY-->
+    <string name="wifi_available">Wi-Fi disponible</string>
+
+    <!-- SETTINGS -->
+    <string name="general_header">Général</string>
+    <string name="theme">Thème</string>
+
+</resources>

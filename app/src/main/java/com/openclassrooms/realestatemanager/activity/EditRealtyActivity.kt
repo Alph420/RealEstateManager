@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityEditRealtyBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
@@ -220,21 +221,21 @@ class EditRealtyActivity : BaseActivity() {
     private fun verify(): Boolean {
 
         if (binding.editRealtyKind.text.isNullOrEmpty()) {
-            binding.editRealtyKind.error = "Missing required field"
+            binding.editRealtyKind.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.kind = binding.editRealtyKind.text.toString()
         }
 
         if (binding.editRealtyPrice.text.isNullOrEmpty()) {
-            binding.editRealtyPrice.error = "Missing required field"
+            binding.editRealtyPrice.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.price = binding.editRealtyPrice.text.toString().toLong()
         }
 
         if (binding.editRealtyAddress.text.isNullOrEmpty()) {
-            binding.editRealtyAddress.error = "Missing required field"
+            binding.editRealtyAddress.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.address = binding.editRealtyAddress.text.toString()
@@ -242,42 +243,42 @@ class EditRealtyActivity : BaseActivity() {
         }
 
         if (binding.editRealtyArea.text.isNullOrEmpty()) {
-            binding.editRealtyArea.error = "Missing required field"
+            binding.editRealtyArea.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.area = binding.editRealtyArea.text.toString().toLong()
         }
 
         if (binding.editRealtyNbRoom.text.isNullOrEmpty()) {
-            binding.editRealtyNbRoom.error = "Missing required field"
+            binding.editRealtyNbRoom.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.roomNumber = binding.editRealtyNbRoom.text.toString().toInt()
         }
 
         if (binding.editRealtyBathRoom.text.isNullOrEmpty()) {
-            binding.editRealtyBathRoom.error = "Missing required field"
+            binding.editRealtyBathRoom.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.bathRoom = binding.editRealtyBathRoom.text.toString().toInt()
         }
 
         if (binding.editRealtyBedRoom.text.isNullOrEmpty()) {
-            binding.editRealtyBedRoom.error = "Missing required field"
+            binding.editRealtyBedRoom.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.bedRoom = binding.editRealtyBedRoom.text.toString().toInt()
         }
 
         if (binding.editRealtyAgent.text.isNullOrEmpty()) {
-            binding.editRealtyAgent.error = "Missing required field"
+            binding.editRealtyAgent.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.estateAgent = binding.editRealtyAgent.text.toString()
         }
 
         if (binding.editRealtyDescription.text.isNullOrEmpty()) {
-            binding.editRealtyDescription.error = "Missing required field"
+            binding.editRealtyDescription.error = this.getString(R.string.edit_field_required_error)
             return false
         } else {
             realty.description = binding.editRealtyDescription.text.toString()
@@ -285,7 +286,7 @@ class EditRealtyActivity : BaseActivity() {
 
         if (!binding.editRealtyOutDate.text.isNullOrEmpty()) {
             if (binding.editRealtyInDate.text.isNullOrEmpty()) {
-                binding.editRealtyInDate.error = "Missing required field"
+                binding.editRealtyInDate.error = this.getString(R.string.edit_field_required_error)
                 return false
             }
         }
@@ -303,7 +304,7 @@ class EditRealtyActivity : BaseActivity() {
         ) { _, index, isChecked ->
             isCheckedList[index] = isChecked
         }
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(this.getString(R.string.edit_dialog_positive_btn)) { dialog, _ ->
             dialog.dismiss()
             val interestPoints = StringBuilder()
             realty.pointOfInterest = emptyList()
@@ -315,7 +316,8 @@ class EditRealtyActivity : BaseActivity() {
             }
 
             if (realty.pointOfInterest.isNotEmpty()) {
-                realty.pointOfInterest = interestPoints.substring(0, interestPoints.length - 2).split(", ")
+                realty.pointOfInterest =
+                    interestPoints.substring(0, interestPoints.length - 2).split(", ")
                 binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString())
             } else {
                 binding.editRealtyInterestPoint.hint = ""
@@ -366,17 +368,21 @@ class EditRealtyActivity : BaseActivity() {
     private fun popup(picturePath: Uri) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         val picture = PicturesModel(0, 0, "", picturePath.toString())
-        builder.setTitle("Picture name")
+        builder.setTitle(this.getString(R.string.edit_dialog_title))
 
         val input = EditText(this)
-        input.hint = "Enter picture name"
+        input.hint = this.getString(R.string.edit_dialog_hint)
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
         // Set up the buttons
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(this.getString(R.string.edit_dialog_positive_btn)) { dialog, _ ->
             if (input.text.isEmpty()) {
-                Toast.makeText(this, "Each picture need description", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this,
+                    this.getString(R.string.edit_dialog_error_msg),
+                    Toast.LENGTH_LONG
+                ).show()
             } else {
                 picture.name = input.text.toString()
                 picturesList.add(picture)
@@ -384,7 +390,7 @@ class EditRealtyActivity : BaseActivity() {
                 dialog.cancel()
             }
         }
-        builder.setNegativeButton("Cancel") { dialog, _ ->
+        builder.setNegativeButton(this.getString(R.string.edit_dialog_negative_btn)) { dialog, _ ->
             dialog.cancel()
         }
 
