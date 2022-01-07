@@ -154,6 +154,7 @@ class EditRealtyActivity : BaseActivity() {
             initUI()
         }
         binding.editRealtyValidateBtn.setOnClickListener {
+
             saveRealty()
         }
 
@@ -311,14 +312,14 @@ class EditRealtyActivity : BaseActivity() {
             for (i in GENRES.indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(GENRES[i]).append(", ").toString().split(", ")
+                        interestPoints.append(GENRES[i]).append(", ").toString().replace("[","").replace("]","").trim().split(", ")
                 }
             }
 
             if (realty.pointOfInterest.isNotEmpty()) {
                 realty.pointOfInterest =
                     interestPoints.substring(0, interestPoints.length - 2).split(", ")
-                binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString())
+                binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString().replace("[","").replace("]","").trim())
             } else {
                 binding.editRealtyInterestPoint.hint = ""
             }
@@ -405,7 +406,7 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyBathRoom.setText(realty.bathRoom.toString())
         binding.editRealtyNbRoom.setText(realty.roomNumber.toString())
         binding.editRealtyBedRoom.setText(realty.bedRoom.toString())
-        binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString())
+        binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString().replace("[","").replace("]","").trim())
         binding.editRealtyInDate.text = Utils.getTodayDate(realty.inMarketDate)
         binding.editRealtyOutDate.text = Utils.getTodayDate(realty.outMarketDate)
         binding.editRealtyAgent.setText(realty.estateAgent)

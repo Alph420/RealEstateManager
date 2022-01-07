@@ -74,7 +74,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
                     realty.department,
                     realty.longitude,
                     realty.latitude,
-                    realty.pointOfInterest.toString(),
+                    realty.pointOfInterest.toString().replace("[","").replace("]","").trim(),
                     realty.available,
                     realty.inMarketDate,
                     realty.outMarketDate,
