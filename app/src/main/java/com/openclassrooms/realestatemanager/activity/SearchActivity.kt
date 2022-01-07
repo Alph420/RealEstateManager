@@ -25,7 +25,6 @@ import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.utils.Utils
 import java.util.*
-import kotlin.concurrent.thread
 
 /**
  * Created by Julien Jennequin on 29/12/2021 17:27
@@ -141,7 +140,8 @@ class SearchActivity : BaseActivity() {
 
         binding.include.filterValidateSearch.setOnClickListener {
             bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
-            filter(
+
+            disposeBag += searchViewModel.filter(
                 FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterCity.selectedItem.toString(),
@@ -161,8 +161,13 @@ class SearchActivity : BaseActivity() {
                     Utils.getDateFromString(binding.include.filterOutDate.text.toString()),
                     binding.include.filterPicturesRange.selectedMinValue.toInt(),
                     binding.include.filterPicturesRange.selectedMaxValue.toInt()
-                )
-            )
+                ), binding, this
+            ).subscribe({
+                Log.d(TAG, "filter two success + $it")
+                refreshFilteredList(it.toMutableList())
+            }, { error ->
+                Log.d(TAG, error.stackTraceToString())
+            })
         }
 
         binding.include.filterReset.setOnClickListener {
@@ -227,7 +232,7 @@ class SearchActivity : BaseActivity() {
         ).show()
     }
 
-    private fun filter(filter: FilterConstraint) {
+    /*    private fun filter(filter: FilterConstraint) {
         val listForLoop = mutableListOf<Realty>()
         val listToModify = mutableListOf<Realty>()
 
@@ -285,7 +290,7 @@ class SearchActivity : BaseActivity() {
         }
 
         refreshFilteredList(listToModify)
-    }
+    }*/
 
     private fun resetAllFieldData() {
         binding.include.filterKind.setSelection(0)
@@ -363,17 +368,15 @@ class SearchActivity : BaseActivity() {
         kind.add(this.getString(R.string.search_all_kind))
         city.add(this.getString(R.string.search_all_city))
 
-        thread {
-            realtyList.forEach {
-                kind.add(it.kind.lowercase())
-                kindCheckedList.add(false)
-            }
+        realtyList.forEach {
+            kind.add(it.kind.lowercase())
+            kindCheckedList.add(false)
+        }
 
-            realtyList.forEach {
-                if (it.city.isNotEmpty()) {
-                    city.add(it.city.lowercase())
-                    cityCheckedList.add(false)
-                }
+        realtyList.forEach {
+            if (it.city.isNotEmpty()) {
+                city.add(it.city.lowercase())
+                cityCheckedList.add(false)
             }
         }
 
@@ -381,10 +384,18 @@ class SearchActivity : BaseActivity() {
         val cityDistinct = city.toSet().toList()
 
         this.kindAdapter =
-            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, kindDistinct)
+            ArrayAdapter(
+                this,
+                R.layout.support_simple_spinner_dropdown_item,
+                kindDistinct
+            )
 
         this.cityAdapter =
-            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, cityDistinct)
+            ArrayAdapter(
+                this,
+                R.layout.support_simple_spinner_dropdown_item,
+                cityDistinct
+            )
 
         binding.include.filterKind.adapter = kindAdapter
         binding.include.filterCity.adapter = cityAdapter
