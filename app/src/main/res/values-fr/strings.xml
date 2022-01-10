@@ -2,10 +2,40 @@
 <resources>
 
     <!--MAIN ACTIVITY-->
+    <!--CLASS-->
     <string name="wifi_available">Wi-Fi disponible</string>
+
+    <!--XML-->
+    <string name="main_realty_media">Média</string>
+    <string name="main_realty_no_data_available">Aucune donnée disponible</string>
+    <string name="main_realty_description">Description</string>
+    <string name="main_realty_surface">Surface:</string>
+    <string name="main_realty_rooms">Chambres:</string>
+    <string name="main_realty_bathrooms">Salles de bain:</string>
+    <string name="main_realty_bedrooms">Chambres:</string>
+    <string name="main_realty_near_places">Endroits proches</string>
+    <string name="main_realty_location">Emplacement</string>
+    <string name="main_realty_address">Adresse:</string>
+
 
     <!-- SETTINGS -->
     <string name="general_header">Général</string>
     <string name="theme">Thème</string>
 
+
+    <!--ARRAY-->
+    <string name="kind_array_city_center">Centre-ville</string>
+    <string name="kind_array_restaurants">Restaurants</string>
+    <string name="kind_array_subway">Métro/Gare</string>
+    <string name="kind_array_superMarket">Supermarché</string>
+    <string name="kind_array_school">École</string>
+    <string name="kind_array_cinema">Cinéma</string>
+    <string name="kind_array_pool">Piscine</string>
+    <string name="kind_array_hospital">Hôpital</string>
+    <string name="kind_array_library">Bibliothèque</string>
+    <string name="kind_array_park">Parc</string>
+    <string name="kind_array_nightlife">Vie nocturne</string>
+    <string name="kind_array_theater">Théâtre</string>
+    <string name="kind_array_bank">Banque</string>
+    <string name="kind_array_pharmacy">Pharmacie</string>
 </resources>

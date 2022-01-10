@@ -70,23 +70,6 @@ class EditRealtyActivity : BaseActivity() {
     //endregion
 
     //region MultipleChoiceBoxData
-
-    private val GENRES = arrayOf(
-        "City Center",
-        "Restaurants",
-        "Metro/Train station",
-        "SuperMarket",
-        "Shcool",
-        "Cinema",
-        "Swimming pool",
-        "Hospital",
-        "Library",
-        "Park",
-        "Nightlife Street",
-        "theater",
-        "Bank",
-        "Pharmacy"
-    )
     private var isCheckedList = booleanArrayOf(
         false,
         false,
@@ -301,7 +284,7 @@ class EditRealtyActivity : BaseActivity() {
     private fun showMultiCheckBoxesDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setMultiChoiceItems(
-            GENRES, isCheckedList
+            resources.getStringArray(R.array.genres), isCheckedList
         ) { _, index, isChecked ->
             isCheckedList[index] = isChecked
         }
@@ -309,10 +292,10 @@ class EditRealtyActivity : BaseActivity() {
             dialog.dismiss()
             val interestPoints = StringBuilder()
             realty.pointOfInterest = emptyList()
-            for (i in GENRES.indices) {
+            for (i in  resources.getStringArray(R.array.genres).indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(GENRES[i]).append(", ").toString().replace("[","").replace("]","").trim().split(", ")
+                        interestPoints.append(resources.getStringArray(R.array.genres)[i]).append(", ").toString().replace("[","").replace("]","").trim().split(", ")
                 }
             }
 

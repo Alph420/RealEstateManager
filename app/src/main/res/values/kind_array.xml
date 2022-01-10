@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="genres">
-        <item>City Center</item>,
-        <item>Restaurants</item>,
-        <item>Metro/Train station</item>,
-        <item>SuperMarket</item>,
-        <item>School</item>,
-        <item>Cinema</item>,
-        <item>Swimming pool</item>,
-        <item>Hospital</item>,
-        <item>Library</item>,
-        <item>Park</item>,
-        <item>Nightlife Street</item>,
-        <item>theater</item>,
-        <item>Bank</item>,
-        <item>Pharmacy</item>
+        <item>@string/kind_array_city_center</item>,
+        <item>@string/kind_array_restaurants</item>,
+        <item>@string/kind_array_subway</item>,
+        <item>@string/kind_array_superMarket</item>,
+        <item>@string/kind_array_school</item>,
+        <item>@string/kind_array_cinema</item>,
+        <item>@string/kind_array_pool</item>,
+        <item>@string/kind_array_hospital</item>,
+        <item>@string/kind_array_library</item>,
+        <item>@string/kind_array_park</item>,
+        <item>@string/kind_array_nightlife</item>,
+        <item>@string/kind_array_theater</item>,
+        <item>@string/kind_array_bank</item>,
+        <item>@string/kind_array_pharmacy</item>
     </string-array>
 
 </resources>

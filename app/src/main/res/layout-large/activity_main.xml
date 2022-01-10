@@ -85,12 +85,12 @@
 
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/main_realty_media"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
-                            android:text="Media"
+                            android:text="@string/main_realty_media"
                             android:textSize="25sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -101,11 +101,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
                             android:src="@drawable/ic_edit"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView"
+                            app:layout_constraintBottom_toBottomOf="@+id/main_realty_media"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toEndOf="@+id/textView"
-                            app:layout_constraintTop_toTopOf="@+id/textView" />
+                            app:layout_constraintStart_toEndOf="@+id/main_realty_media"
+                            app:layout_constraintTop_toTopOf="@+id/main_realty_media" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/recyclerView"
@@ -118,7 +118,7 @@
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView"
+                            app:layout_constraintTop_toBottomOf="@+id/main_realty_media"
                             tools:itemCount="5"
                             tools:listitem="@layout/picture_item" />
 
@@ -127,7 +127,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="No Data available"
+                            android:text="@string/main_realty_no_data_available"
                             android:textSize="18sp"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
@@ -135,26 +135,13 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="@+id/recyclerView" />
 
-                        <!--                <ImageView
-                                            android:id="@+id/recyclerView"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="200dp"
-                                            android:layout_marginStart="16dp"
-                                            android:layout_marginTop="8dp"
-                                            android:layout_marginEnd="8dp"
-                                            tools:src="@mipmap/ic_launcher"
-                                            android:orientation="horizontal"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toBottomOf="@+id/textView"/>-->
-
                         <TextView
                             android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
-                            android:text="Description"
+                            android:text="@string/main_realty_description"
                             android:textSize="25sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
@@ -197,7 +184,7 @@
                             android:layout_marginTop="8dp"
                             android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:text="Surface:"
+                            android:text="@string/main_realty_surface"
                             android:textSize="18sp"
                             app:drawableStartCompat="@drawable/ic_area_xl"
                             app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +210,7 @@
                             android:layout_marginTop="8dp"
                             android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:text="Rooms:"
+                            android:text="@string/main_realty_rooms"
                             android:textSize="18sp"
                             app:drawableStartCompat="@drawable/ic_room_xl"
                             app:layout_constraintStart_toStartOf="parent"
@@ -246,13 +233,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:drawableStart="@drawable/ic_bathroom"
                             android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:text="Bathrooms:"
+                            android:text="@string/main_realty_bathrooms"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView9"
+                            app:drawableStartCompat="@drawable/ic_bathroom" />
 
                         <TextView
                             android:id="@+id/realty_detail_bathroom"
@@ -271,13 +258,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:layout_marginTop="8dp"
-                            android:drawableStart="@drawable/ic_kind_xl"
                             android:drawablePadding="10dp"
                             android:gravity="center"
-                            android:text="Bedrooms:"
+                            android:text="@string/main_realty_bedrooms"
                             android:textSize="18sp"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/textView59" />
+                            app:layout_constraintTop_toBottomOf="@+id/textView59"
+                            app:drawableStartCompat="@drawable/ic_kind_xl" />
 
                         <TextView
                             android:id="@+id/realty_detail_bedroom"
@@ -295,7 +282,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="Near places"
+                            android:text="@string/main_realty_near_places"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="@+id/textView4"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -354,7 +341,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
-                            android:text="Location"
+                            android:text="@string/main_realty_location"
                             android:textSize="25sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -375,7 +362,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
-                            android:text="Address :"
+                            android:text="@string/main_realty_address"
                             android:textSize="20sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/textView3" />

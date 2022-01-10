@@ -4,11 +4,40 @@
     <string name="m2" translatable="false">m2</string>
 
     <!--MAIN ACTIVITY-->
+    <!--CLASS-->
     <string name="wifi_available">Wifi available</string>
 
+
+    <!--XML-->
+    <string name="main_realty_media">Media</string>
+    <string name="main_realty_no_data_available">No Data available</string>
+    <string name="main_realty_description">Description</string>
+    <string name="main_realty_surface">Surface:</string>
+    <string name="main_realty_rooms">Rooms:</string>
+    <string name="main_realty_bathrooms">Bathrooms:</string>
+    <string name="main_realty_bedrooms">Bedrooms:</string>
+    <string name="main_realty_near_places">Near places</string>
+    <string name="main_realty_location">Location</string>
+    <string name="main_realty_address">Address:</string>
 
     <!-- SETTINGS -->
     <string name="general_header">General</string>
     <string name="theme">Theme</string>
 
+
+    <!--ARRAY-->
+    <string name="kind_array_city_center">City Center</string>
+    <string name="kind_array_restaurants">Restaurants</string>
+    <string name="kind_array_subway">Metro/Train station</string>
+    <string name="kind_array_superMarket">SuperMarket</string>
+    <string name="kind_array_school">School</string>
+    <string name="kind_array_cinema">Cinema</string>
+    <string name="kind_array_pool">Swimming pool</string>
+    <string name="kind_array_hospital">Hospital</string>
+    <string name="kind_array_library">Library</string>
+    <string name="kind_array_park">Park</string>
+    <string name="kind_array_nightlife">Nightlife Street</string>
+    <string name="kind_array_theater">Theater</string>
+    <string name="kind_array_bank">Bank</string>
+    <string name="kind_array_pharmacy">Pharmacy</string>
 </resources>
