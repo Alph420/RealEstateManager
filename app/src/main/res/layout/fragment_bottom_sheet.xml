@@ -418,7 +418,7 @@
 
                     <Button
                         android:id="@+id/filter_reset"
-                        android:layout_width="120dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/red_error"
@@ -432,7 +432,7 @@
 
                     <Button
                         android:id="@+id/filter_validate_search"
-                        android:layout_width="120dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/fragment_sheet_search"
