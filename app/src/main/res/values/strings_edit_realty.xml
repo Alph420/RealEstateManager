@@ -16,7 +16,7 @@
     <!--XML-->
     <string name="edit_realty_kind">Kind</string>
     <string name="edit_realty_price">Price</string>
-    <string name="edit_realty_editress">Address</string>
+    <string name="edit_realty_address">Address</string>
     <string name="edit_realty_area">Area size (m2)</string>
     <string name="edit_realty_bathroom">Bathroom</string>
     <string name="edit_realty_room">Room</string>

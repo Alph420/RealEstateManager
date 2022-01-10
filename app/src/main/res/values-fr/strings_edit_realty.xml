@@ -12,7 +12,7 @@
     <!--XML-->
     <string name="edit_realty_kind">Genre</string>
     <string name="edit_realty_price">Prix</string>
-    <string name="edit_realty_editress">Adresse</string>
+    <string name="edit_realty_address">Adresse</string>
     <string name="edit_realty_area">Taille de la zone (m2)</string>
     <string name="edit_realty_bathroom">Salle de bain</string>
     <string name="edit_realty_room">Chambre</string>
