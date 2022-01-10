@@ -381,7 +381,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="@string/fragment_sheet_date_of_avaibility"
+                        android:hint="@string/fragment_sheet_date_of_availability"
                         android:textSize="18sp"
                         tools:text="21/05/3000" />
 
