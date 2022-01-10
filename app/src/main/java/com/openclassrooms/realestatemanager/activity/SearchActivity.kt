@@ -163,6 +163,7 @@ class SearchActivity : BaseActivity() {
                 ), binding, this
             ).subscribe({
                 Log.d(TAG, "filter two success + $it")
+                realtyList = it.toMutableList()
                 refreshFilteredList(it.toMutableList())
             }, { error ->
                 Log.d(TAG, error.stackTraceToString())
