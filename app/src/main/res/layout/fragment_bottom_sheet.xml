@@ -86,7 +86,7 @@
                             android:id="@+id/textView7"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Price"
+                            android:text="@string/fragment_sheet_price"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -121,7 +121,7 @@
                             android:id="@+id/textView8"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Area"
+                            android:text="@string/fragment_sheet_area"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="@+id/textView7"
                             app:layout_constraintStart_toStartOf="@+id/textView7"
@@ -156,7 +156,7 @@
                             android:id="@+id/textView10"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Room"
+                            android:text="@string/fragment_sheet_room"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="@+id/textView8"
                             app:layout_constraintStart_toStartOf="@+id/textView8"
@@ -192,7 +192,7 @@
                             android:id="@+id/textView11"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bathroom"
+                            android:text="@string/fragment_sheet_bathroom"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="@+id/textView10"
                             app:layout_constraintStart_toStartOf="@+id/textView10"
@@ -227,7 +227,7 @@
                             android:id="@+id/textView12"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Bedroom"
+                            android:text="@string/fragment_sheet_bedroom"
                             android:textSize="18sp"
                             app:layout_constraintEnd_toEndOf="@+id/textView11"
                             app:layout_constraintStart_toStartOf="@+id/textView11"
@@ -259,7 +259,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pictures"
+                            android:text="@string/fragment_sheet_pictures"
                             android:textSize="18sp" />
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -271,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
-                    android:text="Kind"
+                    android:text="@string/fragment_sheet_kind"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/scroll_view" />
@@ -293,7 +293,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="City"
+                    android:text="@string/fragment_sheet_city"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@+id/textView5"
                     app:layout_constraintTop_toBottomOf="@id/textView5" />
@@ -315,7 +315,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="Near places"
+                    android:text="@string/fragment_sheet_near_places"
                     android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="@+id/textView15"
                     app:layout_constraintTop_toBottomOf="@+id/textView15" />
@@ -333,7 +333,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:text="Available"
+                    android:text="@string/fragment_sheet_available"
                     android:textSize="18sp"
                     app:layout_constraintStart_toEndOf="@+id/filter_check_for_availability"
                     app:layout_constraintTop_toBottomOf="@+id/textView13" />
@@ -345,8 +345,7 @@
                     android:layout_marginStart="50dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="end"
-                    android:hint="Click here"
-                    android:inputType="textMultiLine"
+                    android:hint="@string/fragment_sheet_click_here"
                     android:maxLines="2"
                     android:spinnerMode="dropdown"
                     android:textSize="16sp"
@@ -382,8 +381,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="Date of avaibility"
-                        android:inputType="date"
+                        android:hint="@string/fragment_sheet_date_of_avaibility"
                         android:textSize="18sp"
                         tools:text="21/05/3000" />
 
@@ -398,8 +396,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="Date of selling"
-                        android:inputType="date"
+                        android:hint="@string/fragment_sheet_date_of_selling"
                         android:textSize="18sp"
                         android:visibility="visible"
                         tools:text="21/05/3001" />
@@ -425,7 +422,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/red_error"
-                        android:text="Reset"
+                        android:text="@string/fragment_sheet_reset"
                         android:textSize="18sp" />
 
                     <View
@@ -438,7 +435,7 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Search"
+                        android:text="@string/fragment_sheet_search"
                         android:textSize="18sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.constraintlayout.widget.ConstraintLayout>

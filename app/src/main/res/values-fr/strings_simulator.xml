@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--XML-->
+    <string name="simulator_amount_of_loan">Montant du prêt</string>
+    <string name="simulator_interest_year">Année d\'intérêt</string>
+    <string name="simulator_per_year">% PAR ANNÉE</string>
+    <string name="simulator_in_total_you_will_repay">Au total, vous rembourserez</string>
+    <string name="simulator_per_month_you_repay">Par mois vous remboursez</string>
 </resources>

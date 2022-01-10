@@ -40,4 +40,10 @@
     <string name="kind_array_theater">Theater</string>
     <string name="kind_array_bank">Bank</string>
     <string name="kind_array_pharmacy">Pharmacy</string>
+
+    <!--DIALOG NO GPS-->
+    <string name="dialog_gps_permissions_missing">Permissions missing</string>
+    <string name="dialog_gps_need_location">Need location</string>
+    <string name="dialog_gps_settings">Settings</string>
+
 </resources>

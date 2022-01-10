@@ -24,7 +24,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:hint="Amout of loan"
+            android:hint="@string/simulator_amount_of_loan"
             android:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="32dp"
-            android:hint="Intereset year"
+            android:hint="@string/simulator_interest_year"
             android:inputType="number"
             app:layout_constraintEnd_toStartOf="@+id/main_realty_media"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:text="% PER YEAR"
+            android:text="@string/simulator_per_year"
             app:layout_constraintBottom_toBottomOf="@+id/simulator_intereset_rate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/simulator_intereset_rate" />
@@ -98,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="In total, you will repay"
+            android:text="@string/simulator_in_total_you_will_repay"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,7 +121,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
-            android:text="Per month you repay"
+            android:text="@string/simulator_per_month_you_repay"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />

@@ -38,4 +38,9 @@
     <string name="kind_array_theater">Théâtre</string>
     <string name="kind_array_bank">Banque</string>
     <string name="kind_array_pharmacy">Pharmacie</string>
+
+    <!--DIALOGUE PAS GPS-->
+    <string name="dialog_gps_permissions_missing">Autorisations manquantes</string>
+    <string name="dialog_gps_need_location">Emplacement requis</string>
+    <string name="dialog_gps_settings">Paramètres</string>
 </resources>
