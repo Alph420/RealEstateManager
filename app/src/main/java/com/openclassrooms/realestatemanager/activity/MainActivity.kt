@@ -180,6 +180,11 @@ class MainActivity : BaseActivity() {
                 intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
                 startActivity(intent)
             }
+
+            binding.realtyDetailCenter!!.setOnClickListener {
+                mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+                mMap.controller.setZoom(14.0)
+            }
         }
 
     }
