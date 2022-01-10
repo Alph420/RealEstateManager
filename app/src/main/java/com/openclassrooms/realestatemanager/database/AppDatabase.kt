@@ -4,15 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import androidx.room.Database
 import androidx.room.OnConflictStrategy
-import androidx.room.RoomDatabase
-import com.openclassrooms.realestatemanager.dao.RealtyDao
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.openclassrooms.realestatemanager.app.RealEstateManagerApplication
 import com.openclassrooms.realestatemanager.dao.PictureDao
+import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.model.PicturesModel
-import io.reactivex.rxjava3.core.Observable
+import com.openclassrooms.realestatemanager.model.RealtyModel
 import java.util.*
 
 

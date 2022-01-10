@@ -147,9 +147,9 @@ class MainActivity : BaseActivity() {
     private fun initListeners() {
         binding.topAppBar.setNavigationOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                binding.drawerLayout.closeDrawer(LEFT); //CLOSE Nav Drawer!
+                binding.drawerLayout.closeDrawer(LEFT) //CLOSE Nav Drawer!
             } else {
-                binding.drawerLayout.openDrawer(LEFT); //OPEN Nav Drawer!
+                binding.drawerLayout.openDrawer(LEFT) //OPEN Nav Drawer!
             }
         }
 

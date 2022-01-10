@@ -46,4 +46,11 @@
     <string name="dialog_gps_need_location">Need location</string>
     <string name="dialog_gps_settings">Settings</string>
 
+    <!--ACTION BUTTON-->
+    <string name="search_action_icon">Search</string>
+    <string name="add_action_icon">Add</string>
+    <string name="map_action_icon">Map</string>
+    <string name="simulator_action_icon">Simulator</string>
+    <string name="settings_action_icon">Settings</string>
+
 </resources>

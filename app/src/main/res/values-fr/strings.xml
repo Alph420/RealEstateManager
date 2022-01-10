@@ -43,4 +43,11 @@
     <string name="dialog_gps_permissions_missing">Autorisations manquantes</string>
     <string name="dialog_gps_need_location">Emplacement requis</string>
     <string name="dialog_gps_settings">Paramètres</string>
+
+    <!--ACTION BUTTON-->
+    <string name="search_action_icon">Rechercher</string>
+    <string name="add_action_icon">Ajouter</string>
+    <string name="map_action_icon">Carte</string>
+    <string name="simulator_action_icon">Simulateur</string>
+    <string name="settings_action_icon">Paramètres</string>
 </resources>

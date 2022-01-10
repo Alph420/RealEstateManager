@@ -1,7 +1,6 @@
 package com.openclassrooms.realestatemanager.dialog
 
 import android.R
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings

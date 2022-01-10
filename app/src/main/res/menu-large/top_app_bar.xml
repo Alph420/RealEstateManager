@@ -7,31 +7,30 @@
         android:id="@+id/searchItem"
         android:icon="@drawable/ic_search"
         tools:iconTint="@color/white"
-        android:title="Search"
-        app:showAsAction="always" />
+        android:title="@string/search_action_icon"        app:showAsAction="always" />
     <item
         android:id="@+id/addItem"
         android:icon="@drawable/ic_add"
         tools:iconTint="@color/white"
-        android:title="Add a realty"
+        android:title="@string/add_action_icon"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/mapItem"
         android:icon="@drawable/ic_near"
-        android:title="Map"
+        android:title="@string/map_action_icon"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/simulator"
         android:icon="@drawable/ic_simulator"
         tools:iconTint="@color/white"
-        android:title="Simulator"
+        android:title="@string/simulator_action_icon"
         app:showAsAction="always"/>
     <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         tools:iconTint="@color/white"
-        android:title="Settings"
+        android:title="@string/settings_action_icon"
         app:showAsAction="always" />
 </menu>
