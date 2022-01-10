@@ -44,7 +44,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_kind"
                     android:gravity="center"
-                    android:hint="Kind"
+                    android:hint="@string/add_realty_kind"
                     android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_money"
                     android:gravity="center"
-                    android:hint="Price ($)"
+                    android:hint="@string/add_realty_price"
                     android:inputType="number"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +72,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_location"
                     android:gravity="center"
-                    android:hint="Address"
+                    android:hint="@string/add_realty_address"
                     android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_area"
                     android:gravity="center"
-                    android:hint="Area size (m2)"
+                    android:hint="@string/add_realty_area"
                     android:inputType="number"
                     android:maxLength="10"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -112,7 +112,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_room"
                         android:gravity="center"
-                        android:hint="Bathroom"
+                        android:hint="@string/add_realty_bathroom"
                         android:inputType="number"
                         android:textSize="16sp" />
 
@@ -123,7 +123,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_room"
                         android:gravity="center"
-                        android:hint="Room"
+                        android:hint="@string/add_realty_room"
                         android:inputType="number"
                         android:maxLength="3"
                         android:textSize="16sp"
@@ -139,7 +139,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_room"
                         android:gravity="center"
-                        android:hint="Bedroom"
+                        android:hint="@string/add_realty_bedroom"
                         android:inputType="number"
                         android:textSize="16sp" />
                 </androidx.appcompat.widget.LinearLayoutCompat>
@@ -164,13 +164,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:drawableStart="@drawable/ic_near"
                     android:gravity="center"
-                    android:text="Near places"
+                    android:text="@string/add_realty_near_places"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:drawableStartCompat="@drawable/ic_near" />
 
                 <EditText
                     android:id="@+id/add_realty_interest_point"
@@ -208,13 +208,13 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
-                    android:drawableStart="@drawable/ic_calendar"
                     android:gravity="center"
-                    android:text="Dates"
+                    android:text="@string/add_realty_dates"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:drawableStartCompat="@drawable/ic_calendar" />
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="0dp"
@@ -234,8 +234,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="Date of avaibility"
-                        android:inputType="date"
+                        android:hint="@string/add_realty_date_of_avaibility"
                         android:textSize="20sp"
                         tools:text="21/05/3000" />
 
@@ -250,8 +249,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:hint="Date of selling"
-                        android:inputType="date"
+                        android:hint="@string/add_realty_date_of_selling"
                         android:textSize="20sp"
                         android:visibility="visible"
                         tools:text="21/05/3001" />
@@ -277,7 +275,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_agent"
                     android:gravity="center"
-                    android:hint="Estate agent owner"
+                    android:hint="@string/add_realty_estate_agent_owner"
                     android:inputType="text"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -291,7 +289,7 @@
                     android:layout_marginEnd="8dp"
                     android:drawableStart="@drawable/ic_description"
                     android:gravity="center"
-                    android:hint="Description"
+                    android:hint="@string/add_realty_description"
                     android:inputType="textMultiLine"
                     android:maxLines="15"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -306,7 +304,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:checked="true"
-                android:hint="Available"
+                android:hint="@string/add_realty_available"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -386,7 +384,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/green_money_twice"
-        android:text="Save"
+        android:text="@string/add_realty_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

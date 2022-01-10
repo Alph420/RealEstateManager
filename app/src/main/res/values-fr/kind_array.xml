@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="genres">
+        <item>Centre-ville</item>,
+        <item>Restaurants</item>,
+        <item>Métro/Gare</item>,
+        <item>Supermarché</item>,
+        <item>École</item>,
+        <item>Cinéma</item>,
+        <item>Piscine</item>,
+        <item>Hôpital</item>,
+        <item>Bibliothèque</item>,
+        <item>Parc</item>,
+        <item>Rue de la vie nocturne</item>,
+        <item>théâtre</item>,
+        <item>Banque</item>,
+        <item>Pharmacie</item>
+    </string-array>
+
+</resources>

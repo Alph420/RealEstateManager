@@ -117,7 +117,6 @@ class SearchActivity : BaseActivity() {
                     bottomSheetBehaviour.state = BottomSheetBehavior.STATE_EXPANDED
                     binding.include.bottomFilterView.visibility = View.VISIBLE
                     binding.include.filterUp.rotation = (270).toFloat()
-
                 }
             }
         }
@@ -231,66 +230,6 @@ class SearchActivity : BaseActivity() {
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
-
-    /*    private fun filter(filter: FilterConstraint) {
-        val listForLoop = mutableListOf<Realty>()
-        val listToModify = mutableListOf<Realty>()
-
-        realtyList.forEach {
-            if (filter.kind == this.getString(R.string.search_all_kind)) {
-                listForLoop.add(it)
-                listToModify.add(it)
-
-            } else if (it.kind.lowercase() == filter.kind) {
-                listForLoop.add(it)
-                listToModify.add(it)
-            }
-        }
-
-        listForLoop.forEach { realty ->
-            if (filter.city != this.getString(R.string.search_all_city)) {
-                if (filter.city.lowercase() != realty.city.lowercase()) listToModify.remove(realty)
-            }
-            if (binding.include.filterCheckForPrice.isChecked) {
-                if (realty.price < filter.minPrice) listToModify.remove(realty)
-                if (realty.price > filter.maxPrice) listToModify.remove(realty)
-            }
-            if (binding.include.filterCheckForArea.isChecked) {
-                if (realty.area < filter.minArea) listToModify.remove(realty)
-                if (realty.area > filter.maxArea) listToModify.remove(realty)
-            }
-            if (binding.include.filterCheckForRoom.isChecked) {
-                if (realty.roomNumber < filter.minRoom) listToModify.remove(realty)
-                if (realty.roomNumber > filter.maxRoom) listToModify.remove(realty)
-            }
-            if (binding.include.filterCheckForBathroom.isChecked) {
-                if (realty.bathRoom < filter.minBathroom) listToModify.remove(realty)
-                if (realty.bathRoom > filter.maxBathroom) listToModify.remove(realty)
-            }
-            if (binding.include.filterCheckForBedroom.isChecked) {
-                if (realty.bedRoom < filter.minBedroom) listToModify.remove(realty)
-                if (realty.bedRoom > filter.maxBedroom) listToModify.remove(realty)
-            }
-            if (binding.include.checkFilterForPictures.isChecked) {
-                if (realty.pictures.size < filter.minPictures) listToModify.remove(realty)
-                if (realty.pictures.size > filter.maxPictures) listToModify.remove(realty)
-            }
-            if (!realty.pointOfInterest.containsAll(filter.pointOfInterest)) listToModify.remove(
-                realty
-            )
-            if (binding.include.filterCheckForAvailability.isChecked) {
-                if (realty.available != filter.available) listToModify.remove(realty)
-            }
-            if (binding.include.filterInDate.text.isNotEmpty()) {
-                if (realty.inMarketDate < filter.inMarketDate) listToModify.remove(realty)
-            }
-            if (binding.include.filterOutDate.text.isNotEmpty()) {
-                if (realty.outMarketDate > filter.outMarketDate) listToModify.remove(realty)
-            }
-        }
-
-        refreshFilteredList(listToModify)
-    }*/
 
     private fun resetAllFieldData() {
         binding.include.filterKind.setSelection(0)
