@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--CLASS-->
     <string name="edit_field_required_error">Champ obligatoire manquant</string>
 
     <!--DIALOG-->
@@ -7,4 +8,22 @@
     <string name="edit_dialog_hint">Entrez le nom de l\'image</string>
     <string name="edit_dialog_error_msg">Chaque image a besoin d\'une description</string>
     <string name="edit_dialog_negative_btn">Cancel</string>
+
+    <!--XML-->
+    <string name="edit_realty_kind">Genre</string>
+    <string name="edit_realty_price">Prix</string>
+    <string name="edit_realty_editress">Adresse</string>
+    <string name="edit_realty_area">Taille de la zone (m2)</string>
+    <string name="edit_realty_bathroom">Salle de bain</string>
+    <string name="edit_realty_room">Chambre</string>
+    <string name="edit_realty_bedroom">Chambre à coucher</string>
+    <string name="edit_realty_near_places">Endroits proches</string>
+    <string name="edit_realty_dates">Dates</string>
+    <string name="edit_realty_date_of_avaibility">Date de disponibilité</string>
+    <string name="edit_realty_date_of_selling">Date de vente</string>
+    <string name="edit_realty_estate_agent_owner">Propriétaire de l\'agent immobilier</string>
+    <string name="edit_realty_description">Description</string>
+    <string name="edit_realty_available">Disponible</string>
+    <string name="edit_realty_save">Enregistrer</string>
+
 </resources>

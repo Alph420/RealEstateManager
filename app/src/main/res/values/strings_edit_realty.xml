@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--CLASS-->
     <string name="edit_field_required_error">Missing required field</string>
 
     <!--DIALOG-->
@@ -9,4 +11,22 @@
     <string name="edit_dialog_negative_btn">Cancel</string>
     <string name="edit_dialog_error_msg">Each picture need description</string>
     <string name="edit_dialog_hint">Enter picture name</string>
+
+    <!--XML-->
+    <!--XML-->
+    <string name="edit_realty_kind">Kind</string>
+    <string name="edit_realty_price">Price</string>
+    <string name="edit_realty_editress">Address</string>
+    <string name="edit_realty_area">Area size (m2)</string>
+    <string name="edit_realty_bathroom">Bathroom</string>
+    <string name="edit_realty_room">Room</string>
+    <string name="edit_realty_bedroom">Bedroom</string>
+    <string name="edit_realty_near_places">Near places</string>
+    <string name="edit_realty_dates">Dates</string>
+    <string name="edit_realty_date_of_avaibility">Date of avaibility</string>
+    <string name="edit_realty_date_of_selling">Date of selling</string>
+    <string name="edit_realty_estate_agent_owner">Estate agent owner</string>
+    <string name="edit_realty_description">Description</string>
+    <string name="edit_realty_available">Available</string>
+    <string name="edit_realty_save">Save</string>
 </resources>
