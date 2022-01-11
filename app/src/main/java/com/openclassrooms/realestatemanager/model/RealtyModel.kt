@@ -31,6 +31,6 @@ data class RealtyModel(
     @ColumnInfo(name = "available") var available: Boolean,
     @ColumnInfo(name = "in_market_date") var inMarketDate: Long,
     @ColumnInfo(name = "out_market_date") var outMarketDate: Long,
-    @ColumnInfo(name = "estate_agent") var estateAgent: String,
+    @ColumnInfo(name = "estate_agent") var estateAgent: String
 )
 

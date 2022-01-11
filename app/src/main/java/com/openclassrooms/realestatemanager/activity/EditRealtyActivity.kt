@@ -15,6 +15,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
@@ -26,6 +27,7 @@ import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
 import com.openclassrooms.realestatemanager.viewmodel.*
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.lang.StringBuilder
 import java.util.*
 
@@ -156,17 +158,19 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += editRealtyViewModel.getRealtyData(realtyId).subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realty = result
-                initUI()
-                updateView()
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+        disposeBag += editRealtyViewModel.getRealtyData(realtyId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realty = result
+                    initUI()
+                    updateView()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
     }
 
     private fun initRecyclerView() {
@@ -292,17 +296,21 @@ class EditRealtyActivity : BaseActivity() {
             dialog.dismiss()
             val interestPoints = StringBuilder()
             realty.pointOfInterest = emptyList()
-            for (i in  resources.getStringArray(R.array.genres).indices) {
+            for (i in resources.getStringArray(R.array.genres).indices) {
                 if (isCheckedList[i]) {
                     realty.pointOfInterest =
-                        interestPoints.append(resources.getStringArray(R.array.genres)[i]).append(", ").toString().replace("[","").replace("]","").trim().split(", ")
+                        interestPoints.append(resources.getStringArray(R.array.genres)[i])
+                            .append(", ").toString().replace("[", "").replace("]", "").trim()
+                            .split(", ")
                 }
             }
 
             if (realty.pointOfInterest.isNotEmpty()) {
                 realty.pointOfInterest =
                     interestPoints.substring(0, interestPoints.length - 2).split(", ")
-                binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString().replace("[","").replace("]","").trim())
+                binding.editRealtyInterestPoint.setText(
+                    realty.pointOfInterest.toString().replace("[", "").replace("]", "").trim()
+                )
             } else {
                 binding.editRealtyInterestPoint.hint = ""
             }
@@ -389,7 +397,9 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyBathRoom.setText(realty.bathRoom.toString())
         binding.editRealtyNbRoom.setText(realty.roomNumber.toString())
         binding.editRealtyBedRoom.setText(realty.bedRoom.toString())
-        binding.editRealtyInterestPoint.setText(realty.pointOfInterest.toString().replace("[","").replace("]","").trim())
+        binding.editRealtyInterestPoint.setText(
+            realty.pointOfInterest.toString().replace("[", "").replace("]", "").trim()
+        )
         binding.editRealtyInDate.text = Utils.getTodayDate(realty.inMarketDate)
         binding.editRealtyOutDate.text = Utils.getTodayDate(realty.outMarketDate)
         binding.editRealtyAgent.setText(realty.estateAgent)

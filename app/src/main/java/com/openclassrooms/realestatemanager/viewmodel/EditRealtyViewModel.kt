@@ -5,7 +5,6 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -21,7 +20,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             .getRealtyById(realtyId)
             .subscribeOn(Schedulers.io())
             .flatMap { realty ->
-                getPictures(realty.id).map { listOfPath ->
+                getPictureById(realty.id).map { listOfPath ->
                     Realty(
                         realty.id,
                         realty.kind,
@@ -47,9 +46,8 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
                     )
                 }
             }
-            .observeOn(AndroidSchedulers.mainThread())
 
-    private fun getPictures(id: Int): Observable<List<PicturesModel>> =
+     fun getPictureById(id: Int): Observable<List<PicturesModel>> =
         database.pictureDao()
             .getPicturesById(id)
             .subscribeOn(Schedulers.io())
@@ -74,7 +72,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
                     realty.department,
                     realty.longitude,
                     realty.latitude,
-                    realty.pointOfInterest.toString().replace("[","").replace("]","").trim(),
+                    realty.pointOfInterest.toString().replace("[", "").replace("]", "").trim(),
                     realty.available,
                     realty.inMarketDate,
                     realty.outMarketDate,
@@ -87,7 +85,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             .subscribeOn(Schedulers.io())
 
 
-    private fun insertPictures(
+     fun insertPictures(
         realty: Realty,
         picturesList: MutableList<PicturesModel>
     ): Completable =

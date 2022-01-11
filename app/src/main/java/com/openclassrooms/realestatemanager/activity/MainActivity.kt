@@ -30,6 +30,7 @@ import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -190,18 +191,20 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += mainViewModel.getAllRealty().subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realtyList = result
-                updateView()
-                initDetailPart()
-                initDetailPart()
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+        disposeBag += mainViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realtyList = result
+                    updateView()
+                    initDetailPart()
+                    initDetailPart()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
     }
 
     private fun initDetailPart() {
