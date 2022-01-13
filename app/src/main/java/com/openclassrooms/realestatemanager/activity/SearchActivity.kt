@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.utils.Utils
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.*
 
 /**
@@ -161,7 +162,8 @@ class SearchActivity : BaseActivity() {
                     binding.include.filterPicturesRange.selectedMinValue.toInt(),
                     binding.include.filterPicturesRange.selectedMaxValue.toInt()
                 ), binding, this
-            ).subscribe({
+            ).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
                 Log.d(TAG, "filter two success + $it")
                 realtyList = it.toMutableList()
                 refreshFilteredList(it.toMutableList())
