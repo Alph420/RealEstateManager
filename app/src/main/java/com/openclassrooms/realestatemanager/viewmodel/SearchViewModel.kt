@@ -2,20 +2,17 @@ package com.openclassrooms.realestatemanager.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java8.util.stream.Collectors
 import java8.util.stream.StreamSupport
-import kotlinx.coroutines.launch
 
 /**
  * Created by Julien Jennequin on 29/12/2021 18:55
@@ -29,7 +26,7 @@ class SearchViewModel(private val database: AppDatabase) : ViewModel() {
             .subscribeOn(Schedulers.io())
             .flatMap { realtyList ->
                 val observableList = realtyList.map { realty ->
-                    getPictures(realty.id).map {
+                    getPictureById(realty.id).map {
                         Realty(
                             realty.id,
                             realty.kind,
@@ -61,12 +58,10 @@ class SearchViewModel(private val database: AppDatabase) : ViewModel() {
                         .collect(Collectors.toList())
                 }
             }
-            .observeOn(AndroidSchedulers.mainThread())
 
-    private fun getPictures(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
+     fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
         .getPicturesById(id)
         .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
 
     fun filter(
         filter: FilterConstraint,

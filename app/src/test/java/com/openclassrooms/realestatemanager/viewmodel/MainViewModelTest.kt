@@ -4,6 +4,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.openclassrooms.realestatemanager.dao.PictureDao
 import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
+import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.core.Completable
@@ -50,6 +51,7 @@ class MainViewModelTest {
     )
 
     var realtyList = emptyList<Realty>()
+    private val pictureList = emptyList<PicturesModel>()
 
     @Before
     fun setup() {
@@ -57,13 +59,17 @@ class MainViewModelTest {
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
 
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
     }
 
     @Test
-    fun get_all_realty_test(){
-        viewmodel.getAllRealty().test().await().assertComplete().assertValue{
-            it.isEmpty()
-        }
+    //TODO FIX THIS TEST
+    fun get_all_realty_test() {
+        viewmodel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
+    }
+
+    @Test
+    fun test_get_pictures_by_id() {
+        viewmodel.getPictureById(50).test().await().assertComplete().assertValue(pictureList)
     }
 }

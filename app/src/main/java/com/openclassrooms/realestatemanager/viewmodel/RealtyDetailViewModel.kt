@@ -19,7 +19,7 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
             .getRealtyById(realtyId)
             .subscribeOn(Schedulers.io())
             .flatMap { realty ->
-                getPictures(realty.id).map { listOfPath ->
+                getPictureById(realty.id).map { listOfPath ->
                     Realty(
                         realty.id,
                         realty.kind,
@@ -45,10 +45,9 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
                     )
                 }
             }
-            .observeOn(AndroidSchedulers.mainThread())
 
 
-    private fun getPictures(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
+     fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
         .getPicturesById(id)
         .subscribeOn(Schedulers.io())
 

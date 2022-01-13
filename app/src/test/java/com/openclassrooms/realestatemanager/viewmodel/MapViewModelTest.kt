@@ -1,15 +1,23 @@
 package com.openclassrooms.realestatemanager.viewmodel
 
+import android.app.Instrumentation
+import android.content.Context
+import androidx.test.platform.app.InstrumentationRegistry
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.firestore.GeoPoint
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.verify
 import com.openclassrooms.realestatemanager.dao.PictureDao
 import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
+
 
 /**
  * Created by Julien Jennequin on 11/01/2022 14:37
@@ -19,15 +27,33 @@ import org.mockito.junit.MockitoJUnitRunner
 class MapViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
-    private val pictureDao = Mockito.mock(PictureDao::class.java)
-    private var viewmodel = AddRealtyViewModel(db)
+    private var viewmodel = MapViewModel(db)
+    var context = Mockito.mock(Context::class.java)
 
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-        Mockito.`when`(realtyDao.insertRealty(any())).thenReturn(Single.just(50))
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
+        //Mockito.`when`(viewmodel.isLocationEnabled(context)).thenReturn(true)
+    }
 
-        Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
+    @Test
+    fun get_all_realty_test() {
+        viewmodel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
+    }
+
+    @Test
+    //TODO FIX THIS TEST
+    fun location_is_enabled_test() {
+        assert(
+            viewmodel.isLocationEnabled(
+                context
+            )
+        )
+    }
+
+    @Test
+    //TODO FIX THIS TEST
+    fun get_last_location_test() {
     }
 }

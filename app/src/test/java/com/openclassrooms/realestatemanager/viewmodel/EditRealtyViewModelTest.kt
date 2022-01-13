@@ -70,7 +70,7 @@ class EditRealtyViewModelTest {
         "",
         emptyList()
     )
-    val pictureList = emptyList<PicturesModel>()
+    private val pictureList = emptyList<PicturesModel>()
 
     @Before
     fun setup() {
@@ -83,7 +83,6 @@ class EditRealtyViewModelTest {
         Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.complete())
 
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
     }
