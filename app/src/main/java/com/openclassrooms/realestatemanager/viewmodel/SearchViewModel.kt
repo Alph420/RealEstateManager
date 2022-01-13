@@ -132,6 +132,6 @@ class SearchViewModel(private val database: AppDatabase) : ViewModel() {
 
                 true
             }
-        }.firstOrError().subscribeOn(Schedulers.io())
+        }.firstOrError()
 
 }
