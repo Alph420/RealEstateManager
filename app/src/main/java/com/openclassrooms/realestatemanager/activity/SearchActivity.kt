@@ -141,7 +141,7 @@ class SearchActivity : BaseActivity() {
         binding.include.filterValidateSearch.setOnClickListener {
             bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
 
-            disposeBag += searchViewModel.filter(
+            disposeBag += searchViewModel.realtyFilter(
                 FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterCity.selectedItem.toString(),

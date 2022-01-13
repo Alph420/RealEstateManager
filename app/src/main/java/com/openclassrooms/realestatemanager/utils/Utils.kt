@@ -68,7 +68,7 @@ internal object Utils {
      * @return
      */
     fun convertEurosToDollars(euros: Int): Int {
-        return (euros * 1.131).roundToInt()
+        return (euros * 1.131).toInt()
     }
 
 
@@ -140,17 +140,6 @@ internal object Utils {
         return priceText.toString()
     }
 
-    @TypeConverter
-    fun fromBitmap(bitmap: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        return outputStream.toByteArray()
-    }
-
-    fun toBitmap(byteArray: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-    }
-
     fun getLocationFromAddress(context: Context, realty: RealtyModel): RealtyModel {
         if (Geocoder(context).getFromLocationName(realty.address, 5).size > 0) {
             val location: Address = Geocoder(context).getFromLocationName(realty.address, 5)[0]
@@ -184,20 +173,6 @@ internal object Utils {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
-    }
-
-    fun getRealPathFromURI(context: Context, uri: Uri): String {
-        var path = ""
-        if (context.contentResolver != null) {
-            val cursor: Cursor? = context.contentResolver.query(uri, null, null, null, null)
-            if (cursor != null) {
-                cursor.moveToFirst()
-                val idx: Int = cursor.getColumnIndex(Images.ImageColumns.DATA)
-                path = cursor.getString(idx)
-                cursor.close()
-            }
-        }
-        return path
     }
 
     fun getDateFromString(date: String): Long {

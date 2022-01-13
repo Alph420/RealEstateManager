@@ -63,7 +63,7 @@ class SearchViewModel(private val database: AppDatabase) : ViewModel() {
         .getPicturesById(id)
         .subscribeOn(Schedulers.io())
 
-    fun filter(
+    fun realtyFilter(
         filter: FilterConstraint,
         binding: ActivitySearchBinding,
         context: Context

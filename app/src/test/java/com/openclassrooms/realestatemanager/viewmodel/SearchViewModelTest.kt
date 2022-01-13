@@ -38,7 +38,7 @@ class SearchViewModelTest {
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
-        Mockito.`when`(viewModel.filter(any(), any(), any())).thenReturn(Single.just(emptyList()))
+        Mockito.`when`(viewModel.realtyFilter(any(), any(), any())).thenReturn(Single.just(emptyList()))
 
     }
 
