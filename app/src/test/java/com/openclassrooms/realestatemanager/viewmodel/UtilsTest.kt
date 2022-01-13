@@ -6,6 +6,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.robolectric.util.Util
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by Julien Jennequin on 13/01/2022 12:02
@@ -47,5 +49,6 @@ class UtilsTest {
     @Test
     //TODO FIX THIS TEST
     fun test_date_from_string() {
+        assert(Utils.getDateFromString("10/01/2022") == SimpleDateFormat("dd/MM/yyyy").parse("10/01/2022").time)
     }
 }

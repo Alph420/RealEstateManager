@@ -30,4 +30,6 @@ class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
         database.pictureDao().insertPictures(picturesModel)
             .subscribeOn(Schedulers.io())
 
+
+
 }
