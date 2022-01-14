@@ -25,6 +25,4 @@ interface RealtyDao {
     @Update
     fun updateRealty(realty: RealtyModel): Completable
 
-    @Delete
-    fun delete(user: RealtyModel)
 }

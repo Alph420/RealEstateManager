@@ -22,7 +22,7 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
  * Created by Julien Jennequin on 02/12/2021 15:35
  * Project : RealEstateManager
  **/
-internal object Utils {
+object Utils {
 
     //region Don't touch
     /**
