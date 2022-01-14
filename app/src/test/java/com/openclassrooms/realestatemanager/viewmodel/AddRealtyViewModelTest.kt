@@ -42,13 +42,13 @@ class AddRealtyViewModelTest {
             50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
             "", true, 0, 0, ""
         )
-        viewmodel.insertRealty(realty, emptyList()).test().await().assertComplete()
+        viewmodel.insertRealty(realty, emptyList()).test().assertComplete()
     }
 
     @Test
     fun test_insert_picture() {
         val pictureList = mutableListOf<PicturesModel>()
-        viewmodel.insertPictures(pictureList).test().await().assertComplete()
+        viewmodel.insertPictures(pictureList).test().assertComplete()
     }
 
 }

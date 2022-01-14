@@ -38,7 +38,7 @@ class MapViewModelTest {
 
     @Test
     fun get_all_realty_test() {
-        viewmodel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
+        viewmodel.getAllRealty().test().assertComplete().assertValue { it.isEmpty() }
     }
 
 

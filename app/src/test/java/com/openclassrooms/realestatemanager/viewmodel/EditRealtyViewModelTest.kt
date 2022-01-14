@@ -91,24 +91,24 @@ class EditRealtyViewModelTest {
 
     @Test
     fun test_get_realty_data_by_id() {
-        viewmodel.getRealtyData("50").test().await().assertComplete().assertValue {
+        viewmodel.getRealtyData("50").test().assertComplete().assertValue {
             it.id == realty.id
         }
     }
 
     @Test
     fun test_get_pictures_by_id() {
-        viewmodel.getPictureById(50).test().await().assertComplete().assertValue(pictureList)
+        viewmodel.getPictureById(50).test().assertComplete().assertValue(pictureList)
     }
 
     @Test
     fun test_update_realty() {
-        viewmodel.updateRealty(realty, pictureList.toMutableList()).test().await().assertComplete()
+        viewmodel.updateRealty(realty, pictureList.toMutableList()).test().assertComplete()
     }
 
     @Test
     fun test_insert_pictures() {
         val pictureList = mutableListOf<PicturesModel>()
-        viewmodel.insertPictures(realty, pictureList).test().await().assertComplete()
+        viewmodel.insertPictures(realty, pictureList).test().assertComplete()
     }
 }

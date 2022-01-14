@@ -37,23 +37,23 @@ class RealtyDaoTest {
 
     @Test
     fun get_all_realty() {
-        realtyDao.getAllRealty().test().await().assertComplete().assertValue(emptyList())
+        realtyDao.getAllRealty().test().assertComplete().assertValue(emptyList())
     }
 
     @Test
     fun get_realty_by_id() {
-        realtyDao.getRealtyById("50").test().await().assertComplete().assertValue {
+        realtyDao.getRealtyById("50").test().assertComplete().assertValue {
             it.id == realty.id
         }
     }
 
     @Test
     fun insert_realty() {
-        realtyDao.insertRealty(realty).test().await().assertComplete().assertValue(1)
+        realtyDao.insertRealty(realty).test().assertComplete().assertValue(1)
     }
 
     @Test
     fun update_realty() {
-        realtyDao.updateRealty(realty).test().await().assertComplete()
+        realtyDao.updateRealty(realty).test().assertComplete()
     }
 }

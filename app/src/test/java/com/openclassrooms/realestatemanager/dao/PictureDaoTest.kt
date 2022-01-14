@@ -2,8 +2,6 @@ package com.openclassrooms.realestatemanager.dao
 
 import com.nhaarman.mockitokotlin2.any
 import com.openclassrooms.realestatemanager.model.PicturesModel
-import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
@@ -33,12 +31,12 @@ class PictureDaoTest {
 
     @Test
     fun test_get_pictures_by_id() {
-        pictureDao.getPicturesById(50).test().await().assertComplete().assertValue(pictureList)
+        pictureDao.getPicturesById(50).test().assertComplete().assertValue(pictureList)
     }
 
     @Test
     fun test_insert_pictures() {
-        pictureDao.insertPictures(emptyList()).test().await().assertComplete()
+        pictureDao.insertPictures(emptyList()).test().assertComplete()
     }
 
 }

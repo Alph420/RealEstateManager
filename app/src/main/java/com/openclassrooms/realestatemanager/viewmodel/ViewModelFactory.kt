@@ -3,6 +3,8 @@ package com.openclassrooms.realestatemanager.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.database.AppDatabase
+import com.openclassrooms.realestatemanager.utils.NetworkSchedulers
+import com.openclassrooms.realestatemanager.utils.NetworkSchedulersImpl
 import java.lang.IllegalArgumentException
 
 /**
@@ -28,7 +30,7 @@ class ViewModelFactory(private val database: AppDatabase) : ViewModelProvider.Fa
             return MapViewModel(database) as T
         }
         if (modelClass.isAssignableFrom(SearchViewModel::class.java)){
-            return SearchViewModel(database) as T
+            return SearchViewModel(database,NetworkSchedulersImpl()) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

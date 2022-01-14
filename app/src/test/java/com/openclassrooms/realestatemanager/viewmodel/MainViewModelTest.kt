@@ -65,11 +65,11 @@ class MainViewModelTest {
     @Test
     //TODO FIX THIS TEST
     fun get_all_realty_test() {
-        viewmodel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
+        viewmodel.getAllRealty().test().assertComplete().assertValue { it.isEmpty() }
     }
 
     @Test
     fun test_get_pictures_by_id() {
-        viewmodel.getPictureById(50).test().await().assertComplete().assertValue(pictureList)
+        viewmodel.getPictureById(50).test().assertComplete().assertValue(pictureList)
     }
 }

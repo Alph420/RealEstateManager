@@ -85,13 +85,13 @@ class RealtyDetailViewModelTest {
 
     @Test
     fun test_get_realty_data_by_id() {
-        viewmodel.getRealtyData("50").test().await().assertComplete().assertValue {
+        viewmodel.getRealtyData("50").test().assertComplete().assertValue {
             it.id == realty.id
         }
     }
 
     @Test
     fun test_get_pictures_by_id() {
-        viewmodel.getPictureById(50).test().await().assertComplete().assertValue(pictureList)
+        viewmodel.getPictureById(50).test().assertComplete().assertValue(pictureList)
     }
 }
