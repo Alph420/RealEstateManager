@@ -64,7 +64,6 @@ class UtilsTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
     fun test_date_from_string() {
         assert(Utils.getDateFromString("10/01/2022") == SimpleDateFormat("dd/MM/yyyy").parse("10/01/2022").time)
     }

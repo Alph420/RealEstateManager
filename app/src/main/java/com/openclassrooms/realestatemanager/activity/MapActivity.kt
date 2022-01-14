@@ -29,6 +29,7 @@ import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.Observer
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.dialog.NoGpsDialog
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
 /**
@@ -76,16 +77,18 @@ class MapActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += mapViewModel.getAllRealty().subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realtyList = result
-                drawMarker()
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+        disposeBag += mapViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realtyList = result
+                    drawMarker()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
         val mLocationObserver: Observer<GeoPoint> = Observer {
             setUserMarker(it)
         }
@@ -175,6 +178,4 @@ class MapActivity : BaseActivity() {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return LocationManagerCompat.isLocationEnabled(locationManager)
     }
-
-
 }
