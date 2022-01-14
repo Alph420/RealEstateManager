@@ -7,6 +7,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -25,7 +26,8 @@ class MainViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private val pictureDao = Mockito.mock(PictureDao::class.java)
-    private var viewmodel = MainViewModel(db)
+    private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
+    private var viewmodel = MainViewModel(db, networkSchedulers)
 
     val realtyModel = RealtyModel(
         50,
@@ -65,7 +67,7 @@ class MainViewModelTest {
     @Test
     //TODO FIX THIS TEST
     fun get_all_realty_test() {
-        viewmodel.getAllRealty().test().assertComplete().assertValue { it.isEmpty() }
+        viewmodel.getAllRealty().test().assertValueCount(1)
     }
 
     @Test

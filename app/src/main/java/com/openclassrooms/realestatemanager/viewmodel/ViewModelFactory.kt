@@ -15,7 +15,7 @@ class ViewModelFactory(private val database: AppDatabase) : ViewModelProvider.Fa
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(MainViewModel::class.java)){
-            return MainViewModel(database) as T
+            return MainViewModel(database,NetworkSchedulersImpl()) as T
         }
         if(modelClass.isAssignableFrom(AddRealtyViewModel::class.java)){
             return AddRealtyViewModel(database) as T

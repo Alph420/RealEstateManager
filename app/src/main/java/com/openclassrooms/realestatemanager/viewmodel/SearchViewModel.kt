@@ -29,29 +29,7 @@ class SearchViewModel(
             .flatMap { realtyList ->
                 val observableList = realtyList.map { realty ->
                     getPictureById(realty.id).map {
-                        Realty(
-                            realty.id,
-                            realty.kind,
-                            realty.price,
-                            realty.area,
-                            realty.roomNumber,
-                            realty.bathRoom,
-                            realty.bedRoom,
-                            realty.description,
-                            realty.address,
-                            realty.region,
-                            realty.country,
-                            realty.city,
-                            realty.department,
-                            realty.longitude,
-                            realty.latitude,
-                            realty.pointOfInterest.split(", "),
-                            realty.available,
-                            realty.inMarketDate,
-                            realty.outMarketDate,
-                            realty.estateAgent,
-                            it
-                        )
+                        realty.toRealty(it)
                     }
                 }
                 if (observableList.isNotEmpty()) {
@@ -63,7 +41,6 @@ class SearchViewModel(
                 } else {
                     Observable.just(emptyList())
                 }
-
             }
             .subscribeOn(networkSchedulers.io)
             .observeOn(networkSchedulers.main)
@@ -72,6 +49,7 @@ class SearchViewModel(
         .getPicturesById(id)
         .subscribeOn(networkSchedulers.io)
 
+    //TODO ADD CHECKBOX IN FILTER CONSTRAINT
     fun realtyFilter(
         filter: FilterConstraint,
         binding: ActivitySearchBinding,

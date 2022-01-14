@@ -51,7 +51,11 @@ class SearchViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
+    //TODO CAN BE IMPROVE
+    //TODO WHEN SHE RETURN ONE VALUE
+    //TODO WHEN SHE RETURN NOTHING
+    //TODO WHEN SHE RETURN EMPTY DATA
+    //TODO WHEN SHE RETURN ERROR
     fun get_all_realty_test() {
         viewModel.getAllRealty().test().assertValueCount(1)
     }

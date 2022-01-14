@@ -32,5 +32,34 @@ data class RealtyModel(
     @ColumnInfo(name = "in_market_date") var inMarketDate: Long,
     @ColumnInfo(name = "out_market_date") var outMarketDate: Long,
     @ColumnInfo(name = "estate_agent") var estateAgent: String
-)
+) {
+    //TODO TEST THIS FUN
+     fun toRealty(pictureList:List<PicturesModel>):Realty {
+       return Realty(
+            this.id,
+            this.kind,
+            this.price,
+            this.area,
+            this.roomNumber,
+            this.bathRoom,
+            this.bedRoom,
+            this.description,
+            this.address,
+            this.region,
+            this.country,
+            this.city,
+            this.department,
+            this.longitude,
+            this.latitude,
+            this.pointOfInterest.split(", "),
+            this.available,
+            this.inMarketDate,
+            this.outMarketDate,
+            this.estateAgent,
+           pictureList
+        )
+    }
+}
+
+
 
