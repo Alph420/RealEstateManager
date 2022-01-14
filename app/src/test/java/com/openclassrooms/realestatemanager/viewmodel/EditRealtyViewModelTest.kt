@@ -25,7 +25,8 @@ class EditRealtyViewModelTest {
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private val pictureDao = Mockito.mock(PictureDao::class.java)
     private var viewmodel = EditRealtyViewModel(db)
-    val realtyModel = RealtyModel(
+
+    private val realtyModel = RealtyModel(
         50,
         "",
         500,
@@ -47,7 +48,7 @@ class EditRealtyViewModelTest {
         0,
         ""
     )
-    val realty = Realty(
+    private val realty = Realty(
         50,
         "",
         500,
@@ -80,9 +81,10 @@ class EditRealtyViewModelTest {
                 realtyModel
             )
         )
+        //TODO we want to test the view model why we mock the dao fun ?
         Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.complete())
-
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
+        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
     }
@@ -107,6 +109,6 @@ class EditRealtyViewModelTest {
     @Test
     fun test_insert_pictures() {
         val pictureList = mutableListOf<PicturesModel>()
-        viewmodel.insertPictures(realty,pictureList).test().await().assertComplete()
+        viewmodel.insertPictures(realty, pictureList).test().await().assertComplete()
     }
 }

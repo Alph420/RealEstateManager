@@ -1,6 +1,7 @@
 package com.openclassrooms.realestatemanager.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +22,9 @@ import org.osmdroid.views.overlay.Marker
 import androidx.core.app.ActivityCompat
 
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.location.LocationManagerCompat
 
 import androidx.lifecycle.Observer
 import com.openclassrooms.realestatemanager.R
@@ -154,7 +157,7 @@ class MapActivity : BaseActivity() {
     }
 
     private fun getLocation() {
-        if (mapViewModel.isLocationEnabled(this)) {
+        if (isLocationEnabled(this)) {
             mapViewModel.getLastLocation(this)
         } else {
             Log.d(TAG, "Permissions refused")
@@ -167,5 +170,11 @@ class MapActivity : BaseActivity() {
         val dialog = NoGpsDialog(this)
         dialog.showForegroundGpsDialog()
     }
+
+    private fun isLocationEnabled(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return LocationManagerCompat.isLocationEnabled(locationManager)
+    }
+
 
 }

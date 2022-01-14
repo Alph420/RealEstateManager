@@ -30,10 +30,6 @@ class MapViewModel(private val database: AppDatabase) : ViewModel() {
     fun getAllRealty(): Observable<List<RealtyModel>> = database.realtyDao().getAllRealty()
         .subscribeOn(Schedulers.io())
 
-    fun isLocationEnabled(context: Context): Boolean {
-        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return LocationManagerCompat.isLocationEnabled(locationManager)
-    }
 
     @SuppressLint("MissingPermission")
     fun getLastLocation(context: Context) {

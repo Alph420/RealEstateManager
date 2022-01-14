@@ -3,6 +3,7 @@ package com.openclassrooms.realestatemanager.viewmodel
 import android.app.Instrumentation
 import android.content.Context
 import androidx.test.platform.app.InstrumentationRegistry
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.firestore.GeoPoint
 import com.nhaarman.mockitokotlin2.any
@@ -28,13 +29,11 @@ class MapViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private var viewmodel = MapViewModel(db)
-    var context = Mockito.mock(Context::class.java)
 
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
-        //Mockito.`when`(viewmodel.isLocationEnabled(context)).thenReturn(true)
     }
 
     @Test
@@ -42,15 +41,6 @@ class MapViewModelTest {
         viewmodel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
     }
 
-    @Test
-    //TODO FIX THIS TEST
-    fun location_is_enabled_test() {
-        assert(
-            viewmodel.isLocationEnabled(
-                context
-            )
-        )
-    }
 
     @Test
     //TODO FIX THIS TEST

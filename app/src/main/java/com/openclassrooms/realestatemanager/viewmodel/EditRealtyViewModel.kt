@@ -47,7 +47,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
                 }
             }
 
-     fun getPictureById(id: Int): Observable<List<PicturesModel>> =
+    fun getPictureById(id: Int): Observable<List<PicturesModel>> =
         database.pictureDao()
             .getPicturesById(id)
             .subscribeOn(Schedulers.io())
@@ -85,7 +85,7 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             .subscribeOn(Schedulers.io())
 
 
-     fun insertPictures(
+    fun insertPictures(
         realty: Realty,
         picturesList: MutableList<PicturesModel>
     ): Completable =

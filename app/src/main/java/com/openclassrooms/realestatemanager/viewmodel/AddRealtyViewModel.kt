@@ -26,10 +26,8 @@ class AddRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             }
 
 
-     fun insertPictures(picturesModel: List<PicturesModel>): Completable =
+    fun insertPictures(picturesModel: List<PicturesModel>): Completable =
         database.pictureDao().insertPictures(picturesModel)
             .subscribeOn(Schedulers.io())
-
-
 
 }

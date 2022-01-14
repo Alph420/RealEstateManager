@@ -1,15 +1,11 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.net.wifi.WifiManager
-import androidx.room.TypeConverter
-import com.google.firebase.firestore.GeoPoint
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.ByteArrayOutputStream
@@ -18,7 +14,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 import android.provider.MediaStore.Images
-import android.provider.MediaStore
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
 
@@ -70,7 +65,6 @@ internal object Utils {
     fun convertEurosToDollars(euros: Int): Int {
         return (euros * 1.131).toInt()
     }
-
 
     fun formatPrice(price: Long): String {
         val priceText = StringBuilder()
@@ -168,10 +162,10 @@ internal object Utils {
         return realty
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+    fun getImageUri(context: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path = Images.Media.insertImage(context.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
 

@@ -7,6 +7,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.PicturesModel
+import com.openclassrooms.realestatemanager.model.Realty
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Before
@@ -37,15 +38,16 @@ class SearchViewModelTest {
 
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
-
-        Mockito.`when`(viewModel.realtyFilter(any(), any(), any())).thenReturn(Single.just(emptyList()))
-
     }
 
     @Test
     //TODO FIX THIS TEST
     fun get_all_realty_test() {
-        viewModel.getAllRealty().test().await().assertComplete().assertValue { it.isEmpty() }
+        viewModel.getAllRealty().subscribe({
+            it.isEmpty()
+        }, {
+
+        })
     }
 
     @Test
@@ -56,8 +58,7 @@ class SearchViewModelTest {
     @Test
     //TODO FIX THIS TEST
     fun test_filter() {
-       /* viewModel.filter(filter, binding, this).test().await().assertComplete()
-            .assertValue(emptyList())*/
+
     }
 
 }

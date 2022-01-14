@@ -7,9 +7,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
