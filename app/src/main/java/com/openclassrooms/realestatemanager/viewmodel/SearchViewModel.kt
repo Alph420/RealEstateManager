@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.database.AppDatabase
-import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
@@ -49,116 +48,71 @@ class SearchViewModel(
         .getPicturesById(id)
         .subscribeOn(networkSchedulers.io)
 
-    //TODO ADD CHECKBOX IN FILTER CONSTRAINT
     fun realtyFilter(
         filter: FilterConstraint,
-        binding: ActivitySearchBinding,
-        context: Context
+        kind: String,
+        city:String
     ): Single<List<Realty>> =
         getAllRealty().map { listForLoop ->
             return@map listForLoop.filter { realty ->
 
-                if (filter.kind != context.getString(R.string.search_all_kind)) {
+                if (filter.kind != kind) {
                     if (realty.kind.lowercase() != filter.kind.lowercase()) {
                         return@filter false
                     }
                 }
 
-                if (filter.city != context.getString(R.string.search_all_city)) {
+                if (filter.city != city) {
                     if (filter.city.lowercase() != realty.city.lowercase()) {
                         return@filter false
                     }
                 }
-                if (filter.city != context.getString(R.string.search_all_city)) {
-                    if (filter.city.lowercase() != realty.city.lowercase()) return@filter false
-                }
-
-                if (binding.include.filterCheckForPrice.isChecked) {
+                if (filter.filterCheckForPrice) {
                     if (realty.price < filter.minPrice) return@filter false
                     if (realty.price > filter.maxPrice) return@filter false
                 }
 
-                if (binding.include.filterCheckForArea.isChecked) {
+                if (filter.filterCheckForArea) {
                     if (realty.area < filter.minArea) return@filter false
                     if (realty.area > filter.maxArea) return@filter false
                 }
 
-                if (binding.include.filterCheckForRoom.isChecked) {
+                if (filter.filterCheckForRoom) {
                     if (realty.roomNumber < filter.minRoom) return@filter false
                     if (realty.roomNumber > filter.maxRoom) return@filter false
                 }
 
-                if (binding.include.filterCheckForBathroom.isChecked) {
+                if (filter.filterCheckForBathroom) {
                     if (realty.bathRoom < filter.minBathroom) return@filter false
                     if (realty.bathRoom > filter.maxBathroom) return@filter false
                 }
 
-                if (binding.include.filterCheckForBedroom.isChecked) {
+                if (filter.filterCheckForBedroom) {
                     if (realty.bedRoom < filter.minBedroom) return@filter false
                     if (realty.bedRoom > filter.maxBedroom) return@filter false
                 }
 
-                if (binding.include.checkFilterForPictures.isChecked) {
+                if (filter.filterCheckForPictures) {
                     if (realty.pictures.size < filter.minPictures) return@filter false
                     if (realty.pictures.size > filter.maxPictures) return@filter false
                 }
 
                 if (!realty.pointOfInterest.containsAll(filter.pointOfInterest)) return@filter false
 
-                if (binding.include.filterCheckForAvailability.isChecked) {
+                if (filter.filterCheckForAvailability) {
                     if (realty.available != filter.available) return@filter false
                 }
 
-                if (binding.include.filterInDate.text.isNotEmpty()) {
+                if (filter.filterCheckInDate) {
                     if (realty.inMarketDate < filter.inMarketDate) return@filter false
                 }
 
-                if (binding.include.filterOutDate.text.isNotEmpty()) {
+                if (filter.filterCheckOutDate) {
                     if (realty.outMarketDate > filter.outMarketDate) return@filter false
                 }
 
                 true
             }
         }.firstOrError()
-
-    fun getAllRealty2(): Observable<List<RealtyModel>> =
-        database.realtyDao()
-            .getAllRealty()
-            /*     .flatMap { realtyList ->
-                     val observableList = realtyList.map { realty ->
-                         getPictureById(realty.id).map {
-                             Realty(
-                                 realty.id,
-                                 realty.kind,
-                                 realty.price,
-                                 realty.area,
-                                 realty.roomNumber,
-                                 realty.bathRoom,
-                                 realty.bedRoom,
-                                 realty.description,
-                                 realty.address,
-                                 realty.region,
-                                 realty.country,
-                                 realty.city,
-                                 realty.department,
-                                 realty.longitude,
-                                 realty.latitude,
-                                 realty.pointOfInterest.split(", "),
-                                 realty.available,
-                                 realty.inMarketDate,
-                                 realty.outMarketDate,
-                                 realty.estateAgent,
-                                 it
-                             )
-                         }
-                     }
-                     Observable.zip(observableList) { objects: Array<Any> ->
-                         StreamSupport.stream(objects.toList())
-                             .map { o -> o as Realty }
-                             .collect(Collectors.toList())
-                     }
-                 }*/
-            .subscribeOn(networkSchedulers.io)
-            .observeOn(networkSchedulers.main)
 
 }

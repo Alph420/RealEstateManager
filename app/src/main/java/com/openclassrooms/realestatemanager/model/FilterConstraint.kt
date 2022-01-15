@@ -22,5 +22,14 @@ data class FilterConstraint(
     var inMarketDate: Long,
     var outMarketDate: Long,
     var minPictures:Int,
-    var maxPictures:Int
+    var maxPictures:Int,
+    var filterCheckForPrice:Boolean,
+    var filterCheckForArea:Boolean,
+    var filterCheckForRoom:Boolean,
+    var filterCheckForBathroom:Boolean,
+    var filterCheckForBedroom:Boolean,
+    var filterCheckForPictures:Boolean,
+    var filterCheckForAvailability:Boolean,
+    var filterCheckInDate:Boolean,
+    var filterCheckOutDate:Boolean,
     )

@@ -160,16 +160,27 @@ class SearchActivity : BaseActivity() {
                     Utils.getDateFromString(binding.include.filterInDate.text.toString()),
                     Utils.getDateFromString(binding.include.filterOutDate.text.toString()),
                     binding.include.filterPicturesRange.selectedMinValue.toInt(),
-                    binding.include.filterPicturesRange.selectedMaxValue.toInt()
-                ), binding, this
+                    binding.include.filterPicturesRange.selectedMaxValue.toInt(),
+                    binding.include.filterCheckForPrice.isChecked,
+                    binding.include.filterCheckForArea.isChecked,
+                    binding.include.filterCheckForRoom.isChecked,
+                    binding.include.filterCheckForBathroom.isChecked,
+                    binding.include.filterCheckForBedroom.isChecked,
+                    binding.include.checkFilterForPictures.isChecked,
+                    binding.include.filterCheckForAvailability.isChecked,
+                    binding.include.filterInDate.text.isNotEmpty(),
+                    binding.include.filterOutDate.text.isNotEmpty()
+                ),
+                this.getString(R.string.search_all_kind),
+                this.getString(R.string.search_all_kind)
             ).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                Log.d(TAG, "filter two success + $it")
-                realtyList = it.toMutableList()
-                refreshFilteredList(it.toMutableList())
-            }, { error ->
-                Log.d(TAG, error.stackTraceToString())
-            })
+                    Log.d(TAG, "filter two success + $it")
+                    realtyList = it.toMutableList()
+                    refreshFilteredList(it.toMutableList())
+                }, { error ->
+                    Log.d(TAG, error.stackTraceToString())
+                })
         }
 
         binding.include.filterReset.setOnClickListener {
