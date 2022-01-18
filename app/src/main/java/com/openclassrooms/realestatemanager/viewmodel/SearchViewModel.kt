@@ -51,7 +51,7 @@ class SearchViewModel(
     fun realtyFilter(
         filter: FilterConstraint,
         kind: String,
-        city:String
+        city: String
     ): Single<List<Realty>> =
         getAllRealty().map { listForLoop ->
             return@map listForLoop.filter { realty ->

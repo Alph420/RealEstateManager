@@ -11,6 +11,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.openclassrooms.realestatemanager.dao.PictureDao
 import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
+import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
@@ -28,7 +29,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class MapViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
-    private var viewmodel = MapViewModel(db)
+    private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
+    private var viewmodel = MapViewModel(db, networkSchedulers)
 
     @Before
     fun setup() {
@@ -38,7 +40,9 @@ class MapViewModelTest {
 
     @Test
     fun get_all_realty_test() {
-        viewmodel.getAllRealty().test().assertComplete().assertValue { it.isEmpty() }
+        viewmodel.getAllRealty().test().assertValue {
+            it.isEmpty()
+        }
     }
 
 

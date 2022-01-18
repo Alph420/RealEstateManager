@@ -7,6 +7,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
@@ -24,7 +25,8 @@ class EditRealtyViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private val pictureDao = Mockito.mock(PictureDao::class.java)
-    private var viewmodel = EditRealtyViewModel(db)
+    private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
+    private var viewmodel = EditRealtyViewModel(db, networkSchedulers)
 
     private val realtyModel = RealtyModel(
         50,
@@ -76,14 +78,15 @@ class EditRealtyViewModelTest {
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
+        Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
+
         Mockito.`when`(realtyDao.getRealtyById(any())).thenReturn(
             Observable.just(
                 realtyModel
             )
         )
-        //TODO we want to test the view model why we mock the dao fun ?
         Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.complete())
-        Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
+
         Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
@@ -91,7 +94,7 @@ class EditRealtyViewModelTest {
 
     @Test
     fun test_get_realty_data_by_id() {
-        viewmodel.getRealtyData("50").test().assertComplete().assertValue {
+        viewmodel.getRealtyById("50").test().assertComplete().assertValue {
             it.id == realty.id
         }
     }

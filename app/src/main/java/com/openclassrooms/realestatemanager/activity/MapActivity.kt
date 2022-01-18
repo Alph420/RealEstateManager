@@ -27,6 +27,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.location.LocationManagerCompat
 
 import androidx.lifecycle.Observer
+import com.google.android.gms.location.LocationServices
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.dialog.NoGpsDialog
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -161,7 +162,8 @@ class MapActivity : BaseActivity() {
 
     private fun getLocation() {
         if (isLocationEnabled(this)) {
-            mapViewModel.getLastLocation(this)
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            mapViewModel.getLastLocation(fusedLocationClient)
         } else {
             Log.d(TAG, "Permissions refused")
             noLocationError()
@@ -176,6 +178,19 @@ class MapActivity : BaseActivity() {
 
     private fun isLocationEnabled(context: Context): Boolean {
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return false
+        }
+
         return LocationManagerCompat.isLocationEnabled(locationManager)
     }
 }

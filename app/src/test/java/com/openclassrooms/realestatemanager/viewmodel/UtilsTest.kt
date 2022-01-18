@@ -25,7 +25,6 @@ class UtilsTest {
     @Test
     fun test_get_today_date() {
         assert(Utils.getTodayDate(SimpleDateFormat("dd/MM/yyyy").parse("10/01/2022").time) == "10/01/2022")
-
     }
 
     @Test

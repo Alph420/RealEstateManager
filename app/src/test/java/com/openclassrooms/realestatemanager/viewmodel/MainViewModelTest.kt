@@ -65,9 +65,10 @@ class MainViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
     fun get_all_realty_test() {
-        viewmodel.getAllRealty().test().assertValueCount(1)
+        viewmodel.getAllRealty().test().assertValue {
+            it.isEmpty()
+        }
     }
 
     @Test

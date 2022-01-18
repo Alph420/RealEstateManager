@@ -57,7 +57,9 @@ class SearchViewModelTest {
     //TODO WHEN SHE RETURN EMPTY DATA
     //TODO WHEN SHE RETURN ERROR
     fun get_all_realty_test() {
-        viewModel.getAllRealty().test().assertValueCount(1)
+        viewModel.getAllRealty().test().assertValue {
+            it.isEmpty()
+        }
     }
 
     @Test
@@ -68,7 +70,7 @@ class SearchViewModelTest {
     @Test
     //TODO FIX THIS TEST
     fun test_filter() {
-
+        viewModel.realtyFilter(filter, "all", "all").test().assertValue(emptyList())
     }
 
 }

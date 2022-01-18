@@ -15,7 +15,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
@@ -158,7 +157,7 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += editRealtyViewModel.getRealtyData(realtyId)
+        disposeBag += editRealtyViewModel.getRealtyById(realtyId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { result ->

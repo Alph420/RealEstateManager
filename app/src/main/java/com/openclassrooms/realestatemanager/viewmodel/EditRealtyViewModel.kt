@@ -5,6 +5,7 @@ import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.NetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -13,12 +14,12 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  * Created by Julien Jennequin on 23/12/2021 14:44
  * Project : RealEstateManager
  **/
-class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
+class EditRealtyViewModel(private val database: AppDatabase, private val networkSchedulers: NetworkSchedulers
+) : ViewModel() {
 
-    fun getRealtyData(realtyId: String): Observable<Realty> =
+    fun getRealtyById(realtyId: String): Observable<Realty> =
         database.realtyDao()
             .getRealtyById(realtyId)
-            .subscribeOn(Schedulers.io())
             .flatMap { realty ->
                 getPictureById(realty.id).map { listOfPath ->
                     Realty(
@@ -46,11 +47,14 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
                     )
                 }
             }
+            .subscribeOn(networkSchedulers.io)
+            .observeOn(networkSchedulers.main)
 
     fun getPictureById(id: Int): Observable<List<PicturesModel>> =
         database.pictureDao()
             .getPicturesById(id)
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(networkSchedulers.io)
+            .observeOn(networkSchedulers.main)
 
 
     fun updateRealty(realty: Realty, picturesList: MutableList<PicturesModel>): Completable =
@@ -82,7 +86,8 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             .andThen(
                 insertPictures(realty, picturesList)
             )
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(networkSchedulers.io)
+            .observeOn(networkSchedulers.main)
 
 
     fun insertPictures(
@@ -93,6 +98,6 @@ class EditRealtyViewModel(private val database: AppDatabase) : ViewModel() {
             .insertPictures(picturesList.map {
                 PicturesModel(0, realty.id, it.name, it.path)
             })
-            .subscribeOn(Schedulers.io())
+            .subscribeOn(networkSchedulers.io)
 
 }

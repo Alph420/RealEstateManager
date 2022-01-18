@@ -6,6 +6,7 @@ import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import org.junit.Before
@@ -25,13 +26,13 @@ class AddRealtyViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private val pictureDao = Mockito.mock(PictureDao::class.java)
-    private var viewmodel = AddRealtyViewModel(db)
+    private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
+    private var viewmodel = AddRealtyViewModel(db, networkSchedulers)
 
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
         Mockito.`when`(realtyDao.insertRealty(any())).thenReturn(Single.just(50))
-
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
         Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
     }
