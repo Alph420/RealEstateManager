@@ -50,4 +50,9 @@
     <string name="map_action_icon">Carte</string>
     <string name="simulator_action_icon">Simulateur</string>
     <string name="settings_action_icon">Paramètres</string>
+
+    <!--NOTIFICATIONS-->
+    <string name="notifications_title">Votre %s a été ajouter avec succès</string>
+    <string name="notification_content">Contactez %s pour plus de détails. \nVous pouvez modifier votre propriété si quelque chose doit être changé</string>
+
 </resources>

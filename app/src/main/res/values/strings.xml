@@ -53,4 +53,9 @@
     <string name="simulator_action_icon">Simulator</string>
     <string name="settings_action_icon">Settings</string>
 
+
+    <!--NOTIFICATIONS-->
+    <string name="notifications_title">Your %s is added with success</string>
+    <string name="notification_content">Contact %s for more detail. \nYou can edit you realty if something need to be changed</string>
+
 </resources>

@@ -35,11 +35,6 @@ class SearchViewModelTest {
     private var viewModel = SearchViewModel(db, networkSchedulers)
     private val pictureList = emptyList<PicturesModel>()
     private val filter = Mockito.mock(FilterConstraint::class.java)
-    private val binding = Mockito.mock(ActivitySearchBinding::class.java)
-    private val realty = RealtyModel(
-        50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
-        "", true, 0, 0, ""
-    )
 
     @Before
     fun setup() {

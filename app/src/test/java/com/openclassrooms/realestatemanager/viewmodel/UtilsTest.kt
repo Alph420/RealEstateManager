@@ -45,19 +45,19 @@ class UtilsTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
+    //TODO FIX THIS TEST NEED CONTEXT
     fun test_get_location_from_address_realty_model() {
 
     }
 
     @Test
-    //TODO FIX THIS TEST
+    //TODO FIX THIS TEST NEED CONTEXT
     fun test_get_location_from_address_realty() {
 
     }
 
     @Test
-    //TODO FIX THIS TEST
+    //TODO FIX THIS TEST NEED CONTEXT
     fun test_get_image_uri() {
 
     }
