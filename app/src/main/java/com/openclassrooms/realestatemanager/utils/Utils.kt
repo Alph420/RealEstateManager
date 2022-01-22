@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.net.wifi.WifiManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -134,9 +135,9 @@ object Utils {
         return priceText.toString()
     }
 
-    fun getLocationFromAddress(context: Context, realty: RealtyModel): RealtyModel {
-        if (Geocoder(context).getFromLocationName(realty.address, 5).size > 0) {
-            val location: Address = Geocoder(context).getFromLocationName(realty.address, 5)[0]
+    fun getLocationFromAddress(geoCoder:Geocoder, realty: RealtyModel): RealtyModel {
+        if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
+            val location: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
             realty.region = location.adminArea
             realty.country = location.countryName
             realty.city = location.locality
@@ -148,9 +149,9 @@ object Utils {
         return realty
     }
 
-    fun getLocationFromAddress(context: Context, realty: Realty): Realty {
-        if (Geocoder(context).getFromLocationName(realty.address, 5).size > 0) {
-            val location: Address = Geocoder(context).getFromLocationName(realty.address, 5)[0]
+    fun getLocationFromAddress(geoCoder:Geocoder, realty: Realty): Realty {
+        if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
+            val location: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
             realty.region = location.adminArea
             realty.country = location.countryName
             realty.city = location.locality

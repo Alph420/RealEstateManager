@@ -6,6 +6,7 @@
     <!--MAIN ACTIVITY-->
     <!--CLASS-->
     <string name="wifi_available">Wifi available</string>
+    <string name="wifi_not_available">Wifi not available</string>
 
 
     <!--XML-->

@@ -52,27 +52,47 @@ class MainViewModelTest {
         ""
     )
 
-    var realtyList = emptyList<Realty>()
-    private val pictureList = emptyList<PicturesModel>()
-
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
 
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
     }
 
     @Test
+    //TODO I NEED TO PUSH ONE REALTY TO DB TO GET DATA BACK HERE ????
     fun get_all_realty_test() {
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
         viewmodel.getAllRealty().test().assertValue {
             it.isEmpty()
         }
     }
 
     @Test
-    fun test_get_pictures_by_id() {
-        viewmodel.getPictureById(50).test().assertComplete().assertValue(pictureList)
+    fun get_all_realty_test_error(){
+        val expectedError = "error_test"
+
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
+
+
+        viewmodel.getAllRealty().test().assertError {
+            it.message == expectedError
+        }
+    }
+
+    @Test
+    //TODO DO THE SAME LOGIC WITH A EMPTY VALUE
+    fun get_all_realty_test_empty(){
+        val expectedError = "error_test"
+
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
+
+        viewmodel.getAllRealty().test().assertError {
+            it.message == expectedError
+        }
     }
 }

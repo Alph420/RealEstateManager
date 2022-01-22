@@ -31,7 +31,7 @@ class AddRealtyViewModel(
             .observeOn(networkSchedulers.main)
 
 
-    fun insertPictures(picturesModel: List<PicturesModel>): Completable =
+    private fun insertPictures(picturesModel: List<PicturesModel>): Completable =
         database.pictureDao().insertPictures(picturesModel)
             .subscribeOn(networkSchedulers.io)
             .observeOn(networkSchedulers.main)

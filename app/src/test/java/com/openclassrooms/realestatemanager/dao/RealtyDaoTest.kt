@@ -20,9 +20,10 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class RealtyDaoTest {
     private val realtyDao: RealtyDao = Mockito.mock(RealtyDao::class.java)
+    var expectedId = 50
 
     private val realty = RealtyModel(
-        50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
+        expectedId, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
         "", true, 0, 0, ""
     )
 
@@ -42,7 +43,7 @@ class RealtyDaoTest {
 
     @Test
     fun get_realty_by_id() {
-        realtyDao.getRealtyById("50").test().assertComplete().assertValue {
+        realtyDao.getRealtyById(expectedId).test().assertComplete().assertValue {
             it.id == realty.id
         }
     }

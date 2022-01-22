@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -42,7 +43,7 @@ class EditRealtyActivity : BaseActivity() {
     private lateinit var editRealtyViewModel: EditRealtyViewModel
     private lateinit var realty: Realty
 
-    private var realtyId = ""
+    private var realtyId = 0
     private var picturesList: MutableList<PicturesModel> = arrayListOf()
     //endregion
 
@@ -100,8 +101,8 @@ class EditRealtyActivity : BaseActivity() {
         setContentView(binding.root)
 
         realtyId = intent.extras?.let {
-            it.get(Constants().REALTY_ID_EXTRAS).toString()
-        }.toString()
+            it.getInt(Constants().REALTY_ID_EXTRAS)
+        } ?: 0
 
         initViewModel()
         initListeners()
@@ -226,7 +227,7 @@ class EditRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.editRealtyAddress.text.toString()
-            realty = Utils.getLocationFromAddress(this, realty)
+            realty = Utils.getLocationFromAddress(Geocoder(this), realty)
         }
 
         if (binding.editRealtyArea.text.isNullOrEmpty()) {

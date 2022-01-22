@@ -26,6 +26,7 @@ class RealtyDetailViewModelTest {
     private val pictureDao = Mockito.mock(PictureDao::class.java)
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
     private var viewmodel = RealtyDetailViewModel(db, networkSchedulers)
+    var expectedId = 50
 
     val realtyModel = RealtyModel(
         50,
@@ -87,7 +88,7 @@ class RealtyDetailViewModelTest {
 
     @Test
     fun test_get_realty_data_by_id() {
-        viewmodel.getRealtyData("50").test().assertComplete().assertValue {
+        viewmodel.getRealtyData(expectedId).test().assertComplete().assertValue {
             it.id == realty.id
         }
     }

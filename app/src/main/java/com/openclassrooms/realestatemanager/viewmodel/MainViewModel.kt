@@ -15,7 +15,10 @@ import java8.util.stream.StreamSupport
  * Created by Julien Jennequin on 10/12/2021 13:56
  * Project : RealEstateManager
  **/
-class MainViewModel(private val database: AppDatabase, private val networkSchedulers: NetworkSchedulers) : ViewModel() {
+class MainViewModel(
+    private val database: AppDatabase,
+    private val networkSchedulers: NetworkSchedulers
+) : ViewModel() {
 
     fun getAllRealty(): Observable<List<Realty>> =
         database.realtyDao()
@@ -23,7 +26,7 @@ class MainViewModel(private val database: AppDatabase, private val networkSchedu
             .flatMap { realtyList ->
                 val observableList = realtyList.map { realty ->
                     getPictureById(realty.id).map {
-                      realty.toRealty(it)
+                        realty.toRealty(it)
                     }
                 }
                 if (observableList.isNotEmpty()) {
@@ -39,7 +42,7 @@ class MainViewModel(private val database: AppDatabase, private val networkSchedu
             .subscribeOn(networkSchedulers.io)
             .observeOn(networkSchedulers.main)
 
-    fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
+    private fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
         .getPicturesById(id)
         .subscribeOn(networkSchedulers.io)
 

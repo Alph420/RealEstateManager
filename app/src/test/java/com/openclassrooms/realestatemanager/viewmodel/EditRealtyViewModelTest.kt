@@ -27,9 +27,10 @@ class EditRealtyViewModelTest {
     private val pictureDao = Mockito.mock(PictureDao::class.java)
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
     private var viewmodel = EditRealtyViewModel(db, networkSchedulers)
+    var expectedId = 1
 
     private val realtyModel = RealtyModel(
-        50,
+        expectedId,
         "",
         500,
         100,
@@ -50,58 +51,40 @@ class EditRealtyViewModelTest {
         0,
         ""
     )
-    private val realty = Realty(
-        50,
-        "",
-        500,
-        100,
-        1,
-        1,
-        1,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        0.0,
-        0.0,
-        emptyList(),
-        true,
-        0,
-        0,
-        "",
-        emptyList()
-    )
+    private val realty = realtyModel.toRealty(emptyList())
+
     private val pictureList = emptyList<PicturesModel>()
+
 
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-
-        Mockito.`when`(realtyDao.getRealtyById(any())).thenReturn(
-            Observable.just(
-                realtyModel
-            )
-        )
-        Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.complete())
-
-        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
-
     }
 
     @Test
     fun test_get_realty_data_by_id() {
-        viewmodel.getRealtyById("50").test().assertComplete().assertValue {
-            it.id == realty.id
+        Mockito.`when`(realtyDao.getRealtyById(any())).thenReturn(
+            Observable.just(realtyModel)
+        )
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.getRealtyById(expectedId).test().assertComplete().assertValue {
+            it.id == expectedId
         }
     }
 
     @Test
-    fun test_get_pictures_by_id() {
-        viewmodel.getPictureById(50).test().assertComplete().assertValue(pictureList)
+    fun test_get_realty_data_by_id_error() {
+        val expectedError = "error_test"
+        Mockito.`when`(realtyDao.getRealtyById(any())).thenReturn(
+            Observable.error(Throwable(expectedError))
+        )
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.getRealtyById(expectedId).test().assertError {
+            it.message == expectedError
+        }
     }
 
     @Test
@@ -110,8 +93,14 @@ class EditRealtyViewModelTest {
     }
 
     @Test
-    fun test_insert_pictures() {
-        val pictureList = mutableListOf<PicturesModel>()
-        viewmodel.insertPictures(realty, pictureList).test().assertComplete()
+    //TODO FINISH THIS UNIT TEST
+    fun test_update_realty_error(){
+        val expectedError = "error_test"
+
+        Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.error(Throwable(expectedError)))
+
+        viewmodel.updateRealty(realty, pictureList.toMutableList()).test().assertError{
+            it.message == expectedError
+        }
     }
 }

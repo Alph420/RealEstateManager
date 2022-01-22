@@ -38,7 +38,7 @@ class DetailRealtyActivity : BaseActivity() {
     private lateinit var mMap: MapView
     private lateinit var realty: Realty
 
-    private var realtyId = ""
+    private var realtyId = 0
     private var picturesList = emptyList<PicturesModel>()
     //endregion
 
@@ -53,8 +53,8 @@ class DetailRealtyActivity : BaseActivity() {
         setContentView(binding.root)
 
         realtyId = intent.extras?.let {
-            it.get(Constants().REALTY_ID_EXTRAS).toString()
-        }.toString()
+            it.getInt(Constants().REALTY_ID_EXTRAS)
+        } ?: 0
 
 
         initMap()

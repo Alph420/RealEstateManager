@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
  **/
 class RealtyDetailViewModel(private val database: AppDatabase, private val networkSchedulers: NetworkSchedulers) : ViewModel() {
 
-    fun getRealtyData(realtyId: String): Observable<Realty> =
+    fun getRealtyData(realtyId: Int): Observable<Realty> =
         database.realtyDao()
             .getRealtyById(realtyId)
             .flatMap { realty ->

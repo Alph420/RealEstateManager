@@ -5,6 +5,8 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -217,7 +219,7 @@ class AddRealtyActivity : BaseActivity() {
             return false
         } else {
             realty.address = binding.addRealtyAddress.text.toString()
-            realty = Utils.getLocationFromAddress(this, realty)
+            realty = Utils.getLocationFromAddress(Geocoder(this), realty)
         }
 
         if (binding.addRealtyArea.text.isNullOrEmpty()) {
@@ -362,7 +364,11 @@ class AddRealtyActivity : BaseActivity() {
         // Set up the buttons
         builder.setPositiveButton(this.getString(R.string.add_dialog_positive_btn)) { dialog, _ ->
             if (input.text.isEmpty()) {
-                Toast.makeText(this, this.getString(R.string.add_dialog_error_msg), Toast.LENGTH_LONG)
+                Toast.makeText(
+                    this,
+                    this.getString(R.string.add_dialog_error_msg),
+                    Toast.LENGTH_LONG
+                )
                     .show()
             } else {
                 picture.name = input.text.toString()

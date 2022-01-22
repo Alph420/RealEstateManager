@@ -17,7 +17,7 @@ interface RealtyDao {
     fun getAllRealty(): Observable<List<RealtyModel>>
 
     @Query("SELECT * FROM RealtyModel WHERE id = :id")
-    fun getRealtyById(id: String): Observable<RealtyModel>
+    fun getRealtyById(id: Int): Observable<RealtyModel>
 
     @Insert
     fun insertRealty(realty: RealtyModel): Single<Long>

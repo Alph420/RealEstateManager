@@ -276,6 +276,8 @@ class MainActivity : BaseActivity() {
     private fun checkIfWifiIsAvailable() {
         if (Utils.isInternetAvailable(this)) {
             Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_LONG).show()
         }
     }
 

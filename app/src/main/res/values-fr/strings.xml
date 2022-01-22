@@ -4,6 +4,7 @@
     <!--MAIN ACTIVITY-->
     <!--CLASS-->
     <string name="wifi_available">Wi-Fi disponible</string>
+    <string name="wifi_not_available">Wi-Fi non disponible</string>
 
     <!--XML-->
     <string name="main_realty_media">Média</string>

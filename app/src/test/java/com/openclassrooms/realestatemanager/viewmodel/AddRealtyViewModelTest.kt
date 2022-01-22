@@ -29,27 +29,33 @@ class AddRealtyViewModelTest {
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
     private var viewmodel = AddRealtyViewModel(db, networkSchedulers)
 
+
+    val realty = RealtyModel(
+        50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
+        "", true, 0, 0, ""
+    )
+
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-        Mockito.`when`(realtyDao.insertRealty(any())).thenReturn(Single.just(50))
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
     }
 
     @Test
     fun test_insert_realty() {
-        val realty = RealtyModel(
-            50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
-            "", true, 0, 0, ""
-        )
+        Mockito.`when`(realtyDao.insertRealty(any())).thenReturn(Single.just(50))
         viewmodel.insertRealty(realty, emptyList()).test().assertComplete()
     }
 
     @Test
-    fun test_insert_picture() {
-        val pictureList = mutableListOf<PicturesModel>()
-        viewmodel.insertPictures(pictureList).test().assertComplete()
+    fun test_insert_realty_error() {
+        val expectedError = "error_test"
+        Mockito.`when`(realtyDao.insertRealty(any()))
+            .thenReturn(Single.error(Throwable(expectedError)))
+
+        viewmodel.insertRealty(realty, emptyList()).test().assertError {
+            it.message == expectedError
+        }
     }
 
 }

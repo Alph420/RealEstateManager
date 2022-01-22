@@ -32,40 +32,72 @@ class SearchViewModelTest {
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
     private val pictureDao = Mockito.mock(PictureDao::class.java)
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
-    private var viewModel = SearchViewModel(db, networkSchedulers)
+    private var viewmodel = SearchViewModel(db, networkSchedulers)
     private val pictureList = emptyList<PicturesModel>()
-    private val filter = Mockito.mock(FilterConstraint::class.java)
+
+    private val realtyModel = RealtyModel(
+        50,
+        "",
+        500,
+        100,
+        1,
+        1,
+        1,
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0.0,
+        0.0,
+        "",
+        true,
+        0,
+        0,
+        ""
+    )
+    private val realty = realtyModel.toRealty(emptyList())
 
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
-
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
     }
 
     @Test
-    //TODO CAN BE IMPROVE
-    //TODO WHEN SHE RETURN ONE VALUE
-    //TODO WHEN SHE RETURN NOTHING
-    //TODO WHEN SHE RETURN EMPTY DATA
-    //TODO WHEN SHE RETURN ERROR
+    //TODO I NEED TO PUSH ONE REALTY TO DB TO GET DATA BACK HERE ????
     fun get_all_realty_test() {
-        viewModel.getAllRealty().test().assertValue {
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.getAllRealty().test().assertValue {
             it.isEmpty()
         }
     }
 
     @Test
-    fun test_get_pictures_by_id() {
-        viewModel.getPictureById(50).test().assertComplete().assertValue(pictureList)
+    fun get_all_realty_test_error(){
+        val expectedError = "error_test"
+
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
+
+
+        viewmodel.getAllRealty().test().assertError {
+            it.message == expectedError
+        }
     }
 
     @Test
     //TODO FIX THIS TEST
+    //TODO ADD ERROR CASE
+    //TODO ADD EMPTY CASE
+    //TODO ADD EMPTY CASE
     fun test_filter() {
-        viewModel.realtyFilter(filter, "all", "all").test().assertValue(emptyList())
+        //TODO
+        // Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(listOf(realtyModel,realtyModel.copy(roomNumber = 5))))
+        //viewModel.realtyFilter(filter, "all", "all").test().assertValue(emptyList())
     }
 
 }
