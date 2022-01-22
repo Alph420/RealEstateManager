@@ -33,7 +33,7 @@ class MapViewModel(
 
         fusedLocationClient.lastLocation
             .addOnCompleteListener {
-                commeTuVeux(it)
+                locationSuccess(it)
                 /*             if (it.result != null) {
                                  Log.d(
                                      "MapViewModel",
@@ -50,8 +50,7 @@ class MapViewModel(
             }
     }
 
-    //TODO rename
-    fun commeTuVeux(taskLocation: Task<Location>) {
+    fun locationSuccess(taskLocation: Task<Location>) {
         if (taskLocation.result != null) {
             Log.d(
                 "MapViewModel",

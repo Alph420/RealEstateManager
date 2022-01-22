@@ -1,23 +1,12 @@
 package com.openclassrooms.realestatemanager.viewmodel
 
-import android.app.Instrumentation
-import android.content.Context
 import android.location.Location
-import android.util.Log
-import androidx.test.platform.app.InstrumentationRegistry
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.GeoPoint
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.verify
-import com.openclassrooms.realestatemanager.dao.PictureDao
 import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -77,7 +66,7 @@ class MapViewModelTest {
         Mockito.`when`(locationClient.lastLocation.addOnCompleteListener(any())).thenReturn(task)
 
         Mockito.`when`(locationClient.lastLocation.addOnCompleteListener(any())).thenAnswer {
-            viewmodel.commeTuVeux(task)
+            viewmodel.locationSuccess(task)
         }
     }
 
