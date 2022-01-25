@@ -34,16 +34,6 @@ class MapViewModel(
         fusedLocationClient.lastLocation
             .addOnCompleteListener {
                 locationSuccess(it)
-                /*             if (it.result != null) {
-                                 Log.d(
-                                     "MapViewModel",
-                                     "Location user : ${it.result.latitude}, ${it.result.longitude} "
-                                 )
-                                 mLocationLiveData.postValue(GeoPoint(it.result.latitude, it.result.longitude))
-                             } else {
-                                 Log.d("MapViewModel", "Failed to get user position")
-
-                             }*/
             }
             .addOnFailureListener {
                 Log.d("MapViewModel", "Failed to get user position")

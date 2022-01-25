@@ -55,12 +55,10 @@ class MainViewModelTest {
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-
         Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
     }
 
     @Test
-    //TODO I NEED TO PUSH ONE REALTY TO DB TO GET DATA BACK HERE ????
     fun get_all_realty_test() {
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
@@ -77,19 +75,6 @@ class MainViewModelTest {
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
 
-
-        viewmodel.getAllRealty().test().assertError {
-            it.message == expectedError
-        }
-    }
-
-    @Test
-    //TODO DO THE SAME LOGIC WITH A EMPTY VALUE
-    fun get_all_realty_test_empty(){
-        val expectedError = "error_test"
-
-        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
 
         viewmodel.getAllRealty().test().assertError {
             it.message == expectedError

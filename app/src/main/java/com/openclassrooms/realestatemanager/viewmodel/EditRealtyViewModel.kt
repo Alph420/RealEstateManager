@@ -74,7 +74,7 @@ class EditRealtyViewModel(
         picturesList: MutableList<PicturesModel>
     ): Completable =
         database.pictureDao()
-            .insertPictures(picturesList.map {
+             .insertPictures(picturesList.map {
                 PicturesModel(0, realty.id, it.name, it.path)
             })
             .subscribeOn(networkSchedulers.io)

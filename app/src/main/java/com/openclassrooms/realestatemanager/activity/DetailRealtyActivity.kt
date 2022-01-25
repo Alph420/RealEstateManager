@@ -22,7 +22,6 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import java.lang.StringBuilder
 
 
 /**
@@ -84,7 +83,7 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += realtyDetailViewModel.getRealtyData(realtyId).subscribe(
+        disposeBag += realtyDetailViewModel.getRealtyById(realtyId).subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result

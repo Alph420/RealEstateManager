@@ -66,7 +66,6 @@ class SearchViewModelTest {
     }
 
     @Test
-    //TODO I NEED TO PUSH ONE REALTY TO DB TO GET DATA BACK HERE ????
     fun get_all_realty_test() {
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
@@ -77,11 +76,13 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun get_all_realty_test_error(){
+    fun get_all_realty_test_error() {
         val expectedError = "error_test"
 
-        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(pictureDao.getPicturesById(any()))
+            .thenReturn(Observable.error(Throwable(expectedError)))
 
 
         viewmodel.getAllRealty().test().assertError {
@@ -96,8 +97,40 @@ class SearchViewModelTest {
     //TODO ADD EMPTY CASE
     fun test_filter() {
         //TODO
-        // Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(listOf(realtyModel,realtyModel.copy(roomNumber = 5))))
-        //viewModel.realtyFilter(filter, "all", "all").test().assertValue(emptyList())
+
+        val filter =
+            FilterConstraint(
+                "home", "paris",
+                100, 1000, 0.0,
+                0.0, 0,
+                0, 0,
+                0, 0,
+                0, emptyList(),
+                true, 0,
+                0, 0,
+                0, true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(price = 250))))
+
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        /* Mockito.`when`(viewmodel.realtyFilter(filter, "all", "all"))
+             .thenReturn(Observable.just(listOf(realty)).singleOrError())*/
+
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+        }
+
+
     }
 
 }

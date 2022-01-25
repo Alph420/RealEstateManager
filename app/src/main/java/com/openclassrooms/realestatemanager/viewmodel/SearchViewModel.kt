@@ -44,7 +44,7 @@ class SearchViewModel(
             .subscribeOn(networkSchedulers.io)
             .observeOn(networkSchedulers.main)
 
-    fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
+    private fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
         .getPicturesById(id)
         .subscribeOn(networkSchedulers.io)
 

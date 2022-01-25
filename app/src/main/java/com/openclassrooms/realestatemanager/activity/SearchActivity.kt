@@ -172,7 +172,7 @@ class SearchActivity : BaseActivity() {
                     binding.include.filterOutDate.text.isNotEmpty()
                 ),
                 this.getString(R.string.search_all_kind),
-                this.getString(R.string.search_all_kind)
+                this.getString(R.string.search_all_city)
             ).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Log.d(TAG, "filter two success + $it")

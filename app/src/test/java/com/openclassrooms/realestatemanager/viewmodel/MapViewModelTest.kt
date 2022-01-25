@@ -7,6 +7,7 @@ import com.nhaarman.mockitokotlin2.any
 import com.openclassrooms.realestatemanager.dao.RealtyDao
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.utils.TestNetworkSchedulers
+import io.reactivex.rxjava3.core.Observable
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -42,8 +43,8 @@ class MapViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
     fun get_all_realty_test() {
+        Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
 
         viewmodel.getAllRealty().test().assertValue {
             it.isEmpty()
@@ -51,9 +52,11 @@ class MapViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
     fun get_all_realty_test_error() {
         val expectedError = "error_test"
+
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.error(Throwable(expectedError)))
 
         viewmodel.getAllRealty().test().assertError {
             it.message == expectedError
@@ -61,7 +64,7 @@ class MapViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
+    //TODO VERIFY
     fun get_last_location_test() {
         Mockito.`when`(locationClient.lastLocation.addOnCompleteListener(any())).thenReturn(task)
 

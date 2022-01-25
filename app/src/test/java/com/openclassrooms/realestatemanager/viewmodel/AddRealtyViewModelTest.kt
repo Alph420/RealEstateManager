@@ -30,7 +30,7 @@ class AddRealtyViewModelTest {
     private var viewmodel = AddRealtyViewModel(db, networkSchedulers)
 
 
-    val realty = RealtyModel(
+    private val realty = RealtyModel(
         50, "", 500, 100, 1, 1, 1, "", "", "", "", "", "", 0.0, 0.0,
         "", true, 0, 0, ""
     )
@@ -57,5 +57,4 @@ class AddRealtyViewModelTest {
             it.message == expectedError
         }
     }
-
 }
