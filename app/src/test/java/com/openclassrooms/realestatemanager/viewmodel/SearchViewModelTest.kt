@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager.viewmodel
 
+import android.graphics.Picture
 import android.util.Log
 import com.nhaarman.mockitokotlin2.any
 import com.openclassrooms.realestatemanager.dao.PictureDao
@@ -35,11 +36,12 @@ class SearchViewModelTest {
     private var viewmodel = SearchViewModel(db, networkSchedulers)
     private val pictureList = emptyList<PicturesModel>()
 
+    private val picture = PicturesModel(1, 1, "name", "path")
     private val realtyModel = RealtyModel(
         50,
-        "",
-        500,
-        100,
+        "home",
+        0,
+        0,
         1,
         1,
         1,
@@ -91,16 +93,10 @@ class SearchViewModelTest {
     }
 
     @Test
-    //TODO FIX THIS TEST
-    //TODO ADD ERROR CASE
-    //TODO ADD EMPTY CASE
-    //TODO ADD EMPTY CASE
-    fun test_filter() {
-        //TODO
-
+    fun test_filter_price() {
         val filter =
             FilterConstraint(
-                "home", "paris",
+                "all", "all",
                 100, 1000, 0.0,
                 0.0, 0,
                 0, 0,
@@ -123,14 +119,172 @@ class SearchViewModelTest {
 
         Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
-        /* Mockito.`when`(viewmodel.realtyFilter(filter, "all", "all"))
-             .thenReturn(Observable.just(listOf(realty)).singleOrError())*/
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+        }
+    }
+
+    @Test
+    fun test_filter_area() {
+        val filter =
+            FilterConstraint(
+                "all", "all",
+                100, 1000, 150.0,
+                300.0, 0,
+                0, 0,
+                0, 0,
+                0, emptyList(),
+                true, 0,
+                0, 0,
+                0, false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(area = 250))))
+
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
         viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
             it.size == 1
         }
+    }
 
+    @Test
+    fun test_filter_room() {
+        val filter =
+            FilterConstraint(
+                "all", "all",
+                0, 0, 0.0,
+                0.0, 5,
+                8, 0,
+                0, 0,
+                0, emptyList(),
+                true, 0,
+                0, 0,
+                0, false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(roomNumber = 7))))
 
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+        }
+    }
+
+    @Test
+    fun test_filter_bathroom() {
+        val filter =
+            FilterConstraint(
+                "all", "all",
+                0, 0, 0.0,
+                0.0, 0,
+                0, 5,
+                8, 0,
+                0, emptyList(),
+                true, 0,
+                0, 0,
+                0, false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(bathRoom = 7))))
+
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+        }
+    }
+
+    @Test
+    fun test_filter_bedroom() {
+        val filter =
+            FilterConstraint(
+                "all", "all",
+                0, 0, 0.0,
+                0.0, 0,
+                0, 0,
+                0, 5,
+                8, emptyList(),
+                true, 0,
+                0, 0,
+                0, false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(bedRoom = 7))))
+
+        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
+
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+            it[0].bedRoom == 7
+        }
+    }
+
+    @Test
+    //TODO HELP
+    fun test_filter_pictures() {
+        val filter =
+            FilterConstraint(
+                "all", "all",
+                0, 0, 0.0,
+                0.0, 0,
+                0, 0,
+                0, 0,
+                0, listOf(picture.path),
+                true, 0,
+                0, 0,
+                0, false,
+                false,
+                false,
+                false,
+                false,
+                true,
+                false,
+                false,
+                false
+            )
+        Mockito.`when`(realtyDao.getAllRealty())
+            .thenReturn(Observable.just(listOf(realtyModel)))
+
+        Mockito.`when`(pictureDao.getPicturesById(any()))
+            .thenReturn(Observable.just(listOf(picture)))
+
+        viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
+            it.size == 1
+        }
     }
 
 }
