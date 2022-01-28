@@ -80,7 +80,6 @@ class EditRealtyViewModelTest {
         Mockito.`when`(realtyDao.getRealtyById(any())).thenReturn(
             Observable.error(Throwable(expectedError))
         )
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
         viewmodel.getRealtyById(expectedId).test().assertError {
             it.message == expectedError
@@ -96,7 +95,6 @@ class EditRealtyViewModelTest {
     }
 
     @Test
-    //TODO FINISH THIS UNIT TEST
     fun test_update_realty_error(){
         val expectedError = "error_test"
 

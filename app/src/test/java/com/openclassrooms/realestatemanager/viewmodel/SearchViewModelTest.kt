@@ -62,6 +62,27 @@ class SearchViewModelTest {
     )
     private val realty = realtyModel.toRealty(emptyList())
 
+    val filter =
+        FilterConstraint(
+            "all", "all",
+            0, 0, 0.0,
+            0.0, 0,
+            0, 0,
+            0, 0,
+            0, emptyList(),
+            true, 0,
+            0, 0,
+            0, false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        )
+
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
@@ -95,26 +116,9 @@ class SearchViewModelTest {
 
     @Test
     fun test_filter_price() {
-        val filter =
-            FilterConstraint(
-                "all", "all",
-                100, 1000, 0.0,
-                0.0, 0,
-                0, 0,
-                0, 0,
-                0, emptyList(),
-                true, 0,
-                0, 0,
-                0, true,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false,
-                false
-            )
+       var filter = filter.copy(minPrice = 100,maxPrice = 1000,filterCheckForPrice = true)
+
+
         Mockito.`when`(realtyDao.getAllRealty())
             .thenReturn(Observable.just(listOf(realtyModel, realtyModel.copy(price = 250))))
 
@@ -264,7 +268,7 @@ class SearchViewModelTest {
                 0.0, 0,
                 0, 0,
                 0, 0,
-                0, listOf(picture1.path,picture2.path),
+                0, emptyList(),
                 true, 0,
                 0, 1,
                 5, false,

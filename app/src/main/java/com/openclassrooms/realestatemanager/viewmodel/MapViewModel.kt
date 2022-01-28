@@ -40,7 +40,7 @@ class MapViewModel(
             }
     }
 
-    fun locationSuccess(taskLocation: Task<Location>) {
+    private fun locationSuccess(taskLocation: Task<Location>) {
         if (taskLocation.result != null) {
             Log.d(
                 "MapViewModel",

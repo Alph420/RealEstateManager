@@ -1,9 +1,12 @@
 package com.openclassrooms.realestatemanager.viewmodel
 
+import android.location.Address
 import android.location.Geocoder
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Utils
+import io.reactivex.rxjava3.core.Observable
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -21,6 +24,7 @@ import kotlin.math.roundToInt
 class UtilsTest {
 
     private val geoCoder = Mockito.mock(Geocoder::class.java)
+    private val address = Mockito.mock(Address::class.java)
     private var utils = Utils
     private val realtyModel = RealtyModel(
         50,
@@ -33,9 +37,9 @@ class UtilsTest {
         "",
         "31 rue felix coquelle",
         "",
-        "France",
-        "Dunkerque",
-        "59",
+        "",
+        "",
+        "",
         0.0,
         0.0,
         "",
@@ -70,12 +74,44 @@ class UtilsTest {
 
     @Test
     fun test_get_location_from_address_realty_model() {
-        assert(realtyModel.address == utils.getLocationFromAddress(geoCoder, realtyModel).address)
+        Mockito.`when`(geoCoder.getFromLocationName(any(), any())).thenReturn(listOf(address))
+
+        Mockito.`when`(address.adminArea).thenReturn("Nord")
+        Mockito.`when`(address.countryName).thenReturn("France")
+        Mockito.`when`(address.locality).thenReturn("59")
+        Mockito.`when`(address.subAdminArea).thenReturn("Nord-pas-de-calais")
+        Mockito.`when`(address.longitude).thenReturn(0.0)
+        Mockito.`when`(address.latitude).thenReturn(0.0)
+
+        var test = utils.getLocationFromAddress(geoCoder, realtyModel)
+
+        assert("Nord" == test.region)
+        assert("France" == test.country)
+        assert("59" == test.city)
+        assert("Nord-pas-de-calais" == test.department)
+        assert(0.0 == test.longitude)
+        assert(0.0 == test.latitude)
     }
 
     @Test
     fun test_get_location_from_address_realty() {
-        assert(realtyModel.address == utils.getLocationFromAddress(geoCoder, realtyModel).address)
+        Mockito.`when`(geoCoder.getFromLocationName(any(), any())).thenReturn(listOf(address))
+
+        Mockito.`when`(address.adminArea).thenReturn("Nord")
+        Mockito.`when`(address.countryName).thenReturn("France")
+        Mockito.`when`(address.locality).thenReturn("59")
+        Mockito.`when`(address.subAdminArea).thenReturn("Nord-pas-de-calais")
+        Mockito.`when`(address.longitude).thenReturn(0.0)
+        Mockito.`when`(address.latitude).thenReturn(0.0)
+
+        var test = utils.getLocationFromAddress(geoCoder, realtyModel.toRealty(emptyList()))
+
+        assert("Nord" == test.region)
+        assert("France" == test.country)
+        assert("59" == test.city)
+        assert("Nord-pas-de-calais" == test.department)
+        assert(0.0 == test.longitude)
+        assert(0.0 == test.latitude)
     }
 
     @Test

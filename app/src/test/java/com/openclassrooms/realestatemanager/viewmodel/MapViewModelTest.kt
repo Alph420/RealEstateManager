@@ -36,10 +36,8 @@ class MapViewModelTest {
     fun setup() {
         locationClient.setMockMode(true)
         locationClient.setMockLocation(location)
+
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-
-
-        Mockito.`when`(locationClient.lastLocation).thenReturn(lastLocation)
     }
 
     @Test
@@ -62,15 +60,4 @@ class MapViewModelTest {
             it.message == expectedError
         }
     }
-
-    @Test
-    //TODO VERIFY
-    fun get_last_location_test() {
-        Mockito.`when`(locationClient.lastLocation.addOnCompleteListener(any())).thenReturn(task)
-
-        Mockito.`when`(locationClient.lastLocation.addOnCompleteListener(any())).thenAnswer {
-            viewmodel.locationSuccess(task)
-        }
-    }
-
 }

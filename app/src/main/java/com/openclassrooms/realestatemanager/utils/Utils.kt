@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import android.net.Uri
 import android.net.wifi.WifiManager
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -137,13 +136,13 @@ object Utils {
 
     fun getLocationFromAddress(geoCoder:Geocoder, realty: RealtyModel): RealtyModel {
         if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
-            val location: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
-            realty.region = location.adminArea
-            realty.country = location.countryName
-            realty.city = location.locality
-            realty.department = location.subAdminArea
-            realty.longitude = location.longitude
-            realty.latitude = location.latitude
+            val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
+            realty.region = address.adminArea
+            realty.country = address.countryName
+            realty.city = address.locality
+            realty.department = address.subAdminArea
+            realty.longitude = address.longitude
+            realty.latitude = address.latitude
         }
 
         return realty
@@ -151,13 +150,13 @@ object Utils {
 
     fun getLocationFromAddress(geoCoder:Geocoder, realty: Realty): Realty {
         if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
-            val location: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
-            realty.region = location.adminArea
-            realty.country = location.countryName
-            realty.city = location.locality
-            realty.department = location.subAdminArea
-            realty.longitude = location.longitude
-            realty.latitude = location.latitude
+            val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
+            realty.region = address.adminArea
+            realty.country = address.countryName
+            realty.city = address.locality
+            realty.department = address.subAdminArea
+            realty.longitude = address.longitude
+            realty.latitude = address.latitude
         }
 
         return realty
