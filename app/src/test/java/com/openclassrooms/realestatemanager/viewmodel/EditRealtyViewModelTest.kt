@@ -89,6 +89,9 @@ class EditRealtyViewModelTest {
 
     @Test
     fun test_update_realty() {
+        Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.complete())
+        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
+
         viewmodel.updateRealty(realty, pictureList.toMutableList()).test().assertComplete()
     }
 
@@ -98,7 +101,7 @@ class EditRealtyViewModelTest {
         val expectedError = "error_test"
 
         Mockito.`when`(realtyDao.updateRealty(any())).thenReturn(Completable.error(Throwable(expectedError)))
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
+        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
 
         viewmodel.updateRealty(realty, pictureList.toMutableList()).test().assertError{
             it.message == expectedError

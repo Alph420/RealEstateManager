@@ -36,7 +36,8 @@ class SearchViewModelTest {
     private var viewmodel = SearchViewModel(db, networkSchedulers)
     private val pictureList = emptyList<PicturesModel>()
 
-    private val picture = PicturesModel(1, 1, "name", "path")
+    private val picture1 = PicturesModel(1, 1, "name", "path")
+    private val picture2 = PicturesModel(2, 2, "name", "path")
     private val realtyModel = RealtyModel(
         50,
         "home",
@@ -263,10 +264,10 @@ class SearchViewModelTest {
                 0.0, 0,
                 0, 0,
                 0, 0,
-                0, listOf(picture.path),
+                0, listOf(picture1.path,picture2.path),
                 true, 0,
-                0, 0,
-                0, false,
+                0, 1,
+                5, false,
                 false,
                 false,
                 false,
@@ -280,7 +281,7 @@ class SearchViewModelTest {
             .thenReturn(Observable.just(listOf(realtyModel)))
 
         Mockito.`when`(pictureDao.getPicturesById(any()))
-            .thenReturn(Observable.just(listOf(picture)))
+            .thenReturn(Observable.just(listOf(picture1,picture2)))
 
         viewmodel.realtyFilter(filter, "all", "all").test().assertValue {
             it.size == 1

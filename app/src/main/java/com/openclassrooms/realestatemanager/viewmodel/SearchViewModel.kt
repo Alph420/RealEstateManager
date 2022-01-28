@@ -93,8 +93,10 @@ class SearchViewModel(
                 }
 
                 if (filter.filterCheckForPictures) {
-                    if (realty.pictures.size < filter.minPictures) return@filter false
-                    if (realty.pictures.size > filter.maxPictures) return@filter false
+                    if (realty.pictures.size < filter.minPictures)
+                        return@filter false
+                    if (realty.pictures.size > filter.maxPictures)
+                        return@filter false
                 }
 
                 if (!realty.pointOfInterest.containsAll(filter.pointOfInterest)) return@filter false

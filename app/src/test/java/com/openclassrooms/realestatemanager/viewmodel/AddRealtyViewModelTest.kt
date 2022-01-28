@@ -44,6 +44,8 @@ class AddRealtyViewModelTest {
     @Test
     fun test_insert_realty() {
         Mockito.`when`(realtyDao.insertRealty(any())).thenReturn(Single.just(50))
+        Mockito.`when`(pictureDao.insertPictures(any())).thenReturn(Completable.complete())
+
         viewmodel.insertRealty(realty, emptyList()).test().assertComplete()
     }
 

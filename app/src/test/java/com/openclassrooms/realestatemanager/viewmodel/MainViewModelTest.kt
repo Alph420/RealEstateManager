@@ -55,13 +55,11 @@ class MainViewModelTest {
     @Before
     fun setup() {
         Mockito.`when`(db.realtyDao()).thenReturn(realtyDao)
-        Mockito.`when`(db.pictureDao()).thenReturn(pictureDao)
     }
 
     @Test
     fun get_all_realty_test() {
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.just(emptyList()))
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.just(emptyList()))
 
         viewmodel.getAllRealty().test().assertValue {
             it.isEmpty()
@@ -73,7 +71,6 @@ class MainViewModelTest {
         val expectedError = "error_test"
 
         Mockito.`when`(realtyDao.getAllRealty()).thenReturn(Observable.error(Throwable(expectedError)))
-        Mockito.`when`(pictureDao.getPicturesById(any())).thenReturn(Observable.error(Throwable(expectedError)))
 
 
         viewmodel.getAllRealty().test().assertError {
