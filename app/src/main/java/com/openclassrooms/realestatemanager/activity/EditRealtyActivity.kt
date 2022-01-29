@@ -48,7 +48,6 @@ class EditRealtyActivity : BaseActivity() {
     //endregion
 
     //region Date
-
     private var cal: Calendar = Calendar.getInstance()
 
     private val dateInSetListener =
@@ -100,9 +99,7 @@ class EditRealtyActivity : BaseActivity() {
         binding = ActivityEditRealtyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        realtyId = intent.extras?.let {
-            it.getInt(Constants().REALTY_ID_EXTRAS)
-        } ?: 0
+        realtyId = intent.extras?.getInt(Constants().REALTY_ID_EXTRAS) ?: 0
 
         initViewModel()
         initListeners()
@@ -139,7 +136,6 @@ class EditRealtyActivity : BaseActivity() {
             initUI()
         }
         binding.editRealtyValidateBtn.setOnClickListener {
-
             saveRealty()
         }
 
@@ -154,7 +150,6 @@ class EditRealtyActivity : BaseActivity() {
         binding.editRealtyFromLibrary.setOnClickListener {
             getImageFromLibrary()
         }
-
     }
 
     private fun initObservers() {
@@ -207,7 +202,6 @@ class EditRealtyActivity : BaseActivity() {
     }
 
     private fun verify(): Boolean {
-
         if (binding.editRealtyKind.text.isNullOrEmpty()) {
             binding.editRealtyKind.error = this.getString(R.string.edit_field_required_error)
             return false
@@ -280,9 +274,7 @@ class EditRealtyActivity : BaseActivity() {
         }
 
         realty.available = binding.editRealtyIsAvailable.isChecked
-
         return true
-
     }
 
     private fun showMultiCheckBoxesDialog() {
@@ -367,7 +359,6 @@ class EditRealtyActivity : BaseActivity() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
-        // Set up the buttons
         builder.setPositiveButton(this.getString(R.string.edit_dialog_positive_btn)) { dialog, _ ->
             if (input.text.isEmpty()) {
                 Toast.makeText(
@@ -425,5 +416,4 @@ class EditRealtyActivity : BaseActivity() {
         super.onDestroy()
         finish()
     }
-
 }
