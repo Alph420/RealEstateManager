@@ -35,14 +35,13 @@ class SearchActivity : BaseActivity() {
 
     //region PROPERTIES
     private lateinit var binding: ActivitySearchBinding
-
     private lateinit var adapter: RealtyListAdapter
     private lateinit var kindAdapter: ArrayAdapter<String>
     private lateinit var cityAdapter: ArrayAdapter<String>
-
     private lateinit var searchViewModel: SearchViewModel
 
     private var interestPoints = StringBuilder()
+
     private var interestPointsList = emptyList<String>()
     private var realtyList = emptyList<Realty>()
 
@@ -71,10 +70,6 @@ class SearchActivity : BaseActivity() {
             cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
             updateDateInTextView(binding.include.filterOutDate)
         }
-    //endregion
-
-    //region MultipleChoiceBoxData
-
     //endregion
 
     companion object {
