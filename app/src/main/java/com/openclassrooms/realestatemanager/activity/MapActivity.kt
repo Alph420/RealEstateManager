@@ -20,17 +20,16 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import androidx.core.app.ActivityCompat
-
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.location.LocationManagerCompat
-
 import androidx.lifecycle.Observer
 import com.google.android.gms.location.LocationServices
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.dialog.NoGpsDialog
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.google.android.gms.ads.AdRequest
+import com.openclassrooms.realestatemanager.R
 
 
 /**
@@ -60,6 +59,7 @@ class MapActivity : BaseActivity() {
         initViewModel()
         initObservers()
         initMap()
+        initAdMobBanner()
         checkPermission()
     }
 
@@ -98,6 +98,11 @@ class MapActivity : BaseActivity() {
         mMap.isTilesScaledToDpi = true
         mMap.setMultiTouchControls(true)
         mMap.isVerticalMapRepetitionEnabled = false
+    }
+
+    private fun initAdMobBanner(){
+        val adRequest: AdRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
     private fun drawMarker() {

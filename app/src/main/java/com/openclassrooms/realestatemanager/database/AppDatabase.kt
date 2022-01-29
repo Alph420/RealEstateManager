@@ -50,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
 
-                //region realtyOne
+              /*  //region realtyOne
                 val realtyOne = ContentValues()
                 realtyOne.put("id", 1)
                 realtyOne.put("kind", "house")
@@ -166,7 +166,7 @@ abstract class AppDatabase : RoomDatabase() {
                 db.insert("RealtyModel", OnConflictStrategy.IGNORE, realtyTwo)
                 db.insert("RealtyModel", OnConflictStrategy.IGNORE, realtyThree)
                 db.insert("RealtyModel", OnConflictStrategy.IGNORE, realtyFour)
-                //endregion
+                //endregion*/
             }
         }
     }
