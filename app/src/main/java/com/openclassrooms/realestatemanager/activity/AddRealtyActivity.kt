@@ -40,7 +40,6 @@ import java.util.*
 class AddRealtyActivity : BaseActivity() {
 
     //region PROPERTIES
-
     private lateinit var binding: ActivityAddRealtyBinding
     private lateinit var addRealtyViewModel: AddRealtyViewModel
     private lateinit var mAdapter: PictureModelAdapter
@@ -107,7 +106,6 @@ class AddRealtyActivity : BaseActivity() {
         initUI()
         initViewModel()
         initListeners()
-        initObservers()
         initRecyclerView()
     }
 
@@ -154,16 +152,10 @@ class AddRealtyActivity : BaseActivity() {
         binding.addRealtyValidateBtn.setOnClickListener {
             saveRealty()
         }
-
-    }
-
-    private fun initObservers() {
-
     }
 
     private fun initRecyclerView() {
         this.mAdapter = PictureModelAdapter(picturesList)
-
         binding.recyclerView.adapter = this.mAdapter
     }
 
@@ -181,7 +173,6 @@ class AddRealtyActivity : BaseActivity() {
         realtyDateTextView.text = Utils.getTodayDate(cal.time.time)
     }
 
-
     private fun saveRealty() {
         if (verify()) {
             disposeBag += addRealtyViewModel.insertRealty(realty, picturesList)
@@ -196,7 +187,6 @@ class AddRealtyActivity : BaseActivity() {
                 )
         }
     }
-
 
     private fun verify(): Boolean {
 
@@ -278,7 +268,6 @@ class AddRealtyActivity : BaseActivity() {
         realty.available = binding.addRealtyIsAvailable.isChecked
 
         return true
-
     }
 
     private fun showMultiCheckBoxesDialog() {
@@ -361,7 +350,6 @@ class AddRealtyActivity : BaseActivity() {
         input.inputType = InputType.TYPE_CLASS_TEXT
         builder.setView(input)
 
-        // Set up the buttons
         builder.setPositiveButton(this.getString(R.string.add_dialog_positive_btn)) { dialog, _ ->
             if (input.text.isEmpty()) {
                 Toast.makeText(
