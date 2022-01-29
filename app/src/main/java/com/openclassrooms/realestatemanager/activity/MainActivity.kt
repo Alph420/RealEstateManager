@@ -71,7 +71,7 @@ class MainActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
-        initRealyRecylerView()
+        initRealyRecyclerView()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             initMap()
             initPictureRecyclerView()
@@ -218,7 +218,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initRealyRecylerView() {
+    private fun initRealyRecyclerView() {
         this.realtyAdapter = RealtyListAdapter(realtyList)
 
         binding.realtyRecyclerView.adapter = this.realtyAdapter
@@ -276,8 +276,9 @@ class MainActivity : BaseActivity() {
     private fun checkIfWifiIsAvailable() {
         if (Utils.isInternetAvailable(this)) {
             Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
-        }else{
-            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
