@@ -33,7 +33,6 @@ data class RealtyModel(
     @ColumnInfo(name = "out_market_date") var outMarketDate: Long,
     @ColumnInfo(name = "estate_agent") var estateAgent: String
 ) {
-    //TODO TEST THIS FUN
      fun toRealty(pictureList:List<PicturesModel>):Realty {
        return Realty(
             this.id,

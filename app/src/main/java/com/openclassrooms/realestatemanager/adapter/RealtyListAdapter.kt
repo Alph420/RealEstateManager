@@ -16,10 +16,8 @@ import com.openclassrooms.realestatemanager.model.RealtyModel
  **/
 class RealtyListAdapter(var dataList: List<Realty>) :
     RecyclerView.Adapter<RealtyListAdapter.RealtyViewHolder>() {
-    //Declarative interface
     private lateinit var listener: ItemClickListener
 
-    //set method
     fun setListener(listener: ItemClickListener) {
         this.listener = listener
     }
