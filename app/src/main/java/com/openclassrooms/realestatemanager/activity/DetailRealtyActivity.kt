@@ -51,10 +51,7 @@ class DetailRealtyActivity : BaseActivity() {
 
         setContentView(binding.root)
 
-        realtyId = intent.extras?.let {
-            it.getInt(Constants().REALTY_ID_EXTRAS)
-        } ?: 0
-
+        realtyId = intent.extras?.getInt(Constants().REALTY_ID_EXTRAS) ?: 0
 
         initMap()
         initViewModel()
