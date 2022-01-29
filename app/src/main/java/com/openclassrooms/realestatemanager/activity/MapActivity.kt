@@ -44,7 +44,6 @@ class MapActivity : BaseActivity() {
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mMap: MapView
 
-    private var mLocation: GeoPoint = GeoPoint(0.0, 0.0)
     private var realtyList: List<RealtyModel> = emptyList()
     //endregion
 
@@ -59,7 +58,6 @@ class MapActivity : BaseActivity() {
         setContentView(binding.root)
 
         initViewModel()
-        initListeners()
         initObservers()
         initMap()
         checkPermission()
@@ -70,11 +68,6 @@ class MapActivity : BaseActivity() {
         val mViewModelFactory: ViewModelFactory = Injection.provideViewModelFactory(this)
         this.mapViewModel =
             ViewModelProvider(this, mViewModelFactory).get(MapViewModel::class.java)
-    }
-
-    private fun initListeners() {
-
-
     }
 
     private fun initObservers() {
