@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
 import org.osmdroid.config.Configuration.*
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel

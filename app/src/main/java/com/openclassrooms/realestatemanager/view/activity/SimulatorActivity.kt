@@ -1,10 +1,9 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
 import androidx.core.widget.doOnTextChanged
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySimulatorBinding
 import com.openclassrooms.realestatemanager.utils.Utils
 import kotlin.math.pow

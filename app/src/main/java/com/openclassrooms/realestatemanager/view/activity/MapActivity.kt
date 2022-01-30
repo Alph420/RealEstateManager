@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.Manifest
 import android.content.Context
@@ -29,7 +29,7 @@ import androidx.core.location.LocationManagerCompat
 import androidx.lifecycle.Observer
 import com.google.android.gms.location.LocationServices
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.dialog.NoGpsDialog
+import com.openclassrooms.realestatemanager.view.dialog.NoGpsDialog
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 

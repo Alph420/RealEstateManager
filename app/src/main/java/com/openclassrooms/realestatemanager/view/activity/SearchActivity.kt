@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
+import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants

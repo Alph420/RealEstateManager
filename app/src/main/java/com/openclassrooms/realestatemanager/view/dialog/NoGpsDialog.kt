@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.dialog
+package com.openclassrooms.realestatemanager.view.dialog
 
 import android.R
 import android.content.Context

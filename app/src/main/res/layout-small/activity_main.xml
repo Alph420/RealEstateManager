@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/grey"
     android:tag="main_activity_small"
-    tools:context="com.openclassrooms.realestatemanager.activity.MainActivity"
+    tools:context=".view.activity.MainActivity"
     tools:ignore="MissingDefaultResource">
 
 
