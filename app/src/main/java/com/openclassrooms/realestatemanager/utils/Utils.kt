@@ -4,8 +4,9 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.location.Address
 import android.location.Geocoder
-import android.net.Uri
+import android.net.*
 import android.net.wifi.WifiManager
+import android.os.Build
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.ByteArrayOutputStream
@@ -16,6 +17,8 @@ import kotlin.math.roundToInt
 import android.provider.MediaStore.Images
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
+import android.net.NetworkInfo
+import android.net.ConnectivityManager
 
 
 /**
@@ -52,9 +55,19 @@ object Utils {
      * @return
      */
     fun isInternetAvailable(context: Context): Boolean {
-        //TODO IMPROVE THIS FUN
-        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifi.isWifiEnabled
+        //TODO IMPROVE THIS GET BY RETURN WHICH NETWORK IS USED
+        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+        if (activeNetwork != null) {
+            if (activeNetwork.type == ConnectivityManager.TYPE_WIFI) {
+                return true
+            } else if (activeNetwork.type == ConnectivityManager.TYPE_MOBILE) {
+                return true
+            }
+        } else {
+            return false
+        }
+        return false
     }
     //endregion
 
@@ -135,7 +148,7 @@ object Utils {
         return priceText.toString()
     }
 
-    fun getLocationFromAddress(geoCoder:Geocoder, realty: RealtyModel): RealtyModel {
+    fun getLocationFromAddress(geoCoder: Geocoder, realty: RealtyModel): RealtyModel {
         if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
             val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
             realty.region = address.adminArea
@@ -149,7 +162,7 @@ object Utils {
         return realty
     }
 
-    fun getLocationFromAddress(geoCoder:Geocoder, realty: Realty): Realty {
+    fun getLocationFromAddress(geoCoder: Geocoder, realty: Realty): Realty {
         if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
             val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
             realty.region = address.adminArea
