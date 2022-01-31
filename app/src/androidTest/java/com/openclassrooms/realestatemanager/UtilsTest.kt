@@ -11,7 +11,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.not
-import com.openclassrooms.realestatemanager.activity.MainActivity
+import com.openclassrooms.realestatemanager.view.activity.MainActivity
 
 import androidx.test.rule.ActivityTestRule
 

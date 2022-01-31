@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.app.Activity
 import android.app.DatePickerDialog
@@ -19,7 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityEditRealtyBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty

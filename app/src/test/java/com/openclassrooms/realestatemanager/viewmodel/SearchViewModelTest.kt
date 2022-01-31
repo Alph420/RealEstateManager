@@ -34,7 +34,6 @@ class SearchViewModelTest {
     private val pictureDao = Mockito.mock(PictureDao::class.java)
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
     private var viewmodel = SearchViewModel(db, networkSchedulers)
-    private val pictureList = emptyList<PicturesModel>()
 
     private val picture1 = PicturesModel(1, 1, "name", "path")
     private val picture2 = PicturesModel(2, 2, "name", "path")
@@ -259,7 +258,6 @@ class SearchViewModelTest {
     }
 
     @Test
-    //TODO HELP
     fun test_filter_pictures() {
         val filter =
             FilterConstraint(

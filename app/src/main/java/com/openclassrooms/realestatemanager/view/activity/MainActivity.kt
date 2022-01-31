@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.content.Intent
 import android.graphics.PorterDuff
@@ -18,13 +18,13 @@ import org.osmdroid.config.Configuration.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.utils.Utils
-import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
+import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.openclassrooms.realestatemanager.BuildConfig
-import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty

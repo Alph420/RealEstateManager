@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import io.reactivex.rxjava3.disposables.CompositeDisposable
