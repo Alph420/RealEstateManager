@@ -10,6 +10,7 @@ import com.nhaarman.mockitokotlin2.verify
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Utils
 import io.reactivex.rxjava3.core.Observable
+import junit.framework.Assert.assertFalse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -65,6 +66,7 @@ class UtilsTest {
         assert(Utils.getTodayDate(SimpleDateFormat("dd/MM/yyyy").parse("10/01/2022").time) == "10/01/2022")
     }
 
+    //region Internet available
     @Test
     fun test_internet_available_wifi() {
         val nw = connectivityManager.activeNetwork
@@ -128,7 +130,74 @@ class UtilsTest {
 
         assert(actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH))
     }
+    //endregion
 
+    //region Internet not available
+    @Test
+    fun test_internet_available_wifi_error() {
+        val nw = connectivityManager.activeNetwork
+
+        Mockito.`when`(connectivityManager.getNetworkCapabilities(nw))
+            .thenReturn(networkCapabilities)
+
+
+        val actNw = connectivityManager.getNetworkCapabilities(nw)
+
+        Mockito.`when`(actNw!!.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+            .thenReturn(false)
+
+        assertFalse(actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI))
+    }
+
+    @Test
+    fun test_internet_available_cellular_error() {
+        val nw = connectivityManager.activeNetwork
+
+        Mockito.`when`(connectivityManager.getNetworkCapabilities(nw))
+            .thenReturn(networkCapabilities)
+
+
+        val actNw = connectivityManager.getNetworkCapabilities(nw)
+
+        Mockito.`when`(actNw!!.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
+            .thenReturn(false)
+
+        assertFalse(actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
+    }
+
+    @Test
+    fun test_internet_available_ethernet_error() {
+        val nw = connectivityManager.activeNetwork
+
+        Mockito.`when`(connectivityManager.getNetworkCapabilities(nw))
+            .thenReturn(networkCapabilities)
+
+
+        val actNw = connectivityManager.getNetworkCapabilities(nw)
+
+        Mockito.`when`(actNw!!.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
+            .thenReturn(false)
+
+        assertFalse(actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET))
+    }
+
+    @Test
+    fun test_internet_available_bluetooth_error() {
+        val nw = connectivityManager.activeNetwork
+
+        Mockito.`when`(connectivityManager.getNetworkCapabilities(nw))
+            .thenReturn(networkCapabilities)
+
+
+        val actNw = connectivityManager.getNetworkCapabilities(nw)
+
+        Mockito.`when`(actNw!!.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH))
+            .thenReturn(false)
+
+        assertFalse(actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH))
+    }
+
+    //endregion
     @Test
     fun test_euros_to_dollars() {
         assert((50 * 1.131).toInt() == Utils.convertEurosToDollars(50))
