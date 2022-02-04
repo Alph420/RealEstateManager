@@ -56,18 +56,22 @@ object Utils {
      */
     fun isInternetAvailable(context: Context): Boolean {
         //TODO IMPROVE THIS GET BY RETURN WHICH NETWORK IS USED
-        val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork = cm.activeNetworkInfo
-        if (activeNetwork != null) {
-            if (activeNetwork.type == ConnectivityManager.TYPE_WIFI) {
-                return true
-            } else if (activeNetwork.type == ConnectivityManager.TYPE_MOBILE) {
-                return true
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw      = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                //for other device how are able to connect with Ethernet
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                //for check internet over Bluetooth
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
             }
         } else {
-            return false
+            return connectivityManager.activeNetworkInfo?.isConnected ?: false
         }
-        return false
     }
     //endregion
 
