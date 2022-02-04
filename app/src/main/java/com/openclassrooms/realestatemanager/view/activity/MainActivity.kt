@@ -1,8 +1,10 @@
 package com.openclassrooms.realestatemanager.view.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.LEFT
@@ -274,7 +276,7 @@ class MainActivity : BaseActivity() {
 
 
     private fun checkIfWifiIsAvailable() {
-        if (Utils.isInternetAvailable(this)) {
+        if (Utils.isInternetAvailable(this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)) {
             Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
         } else {
             Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_LONG)
