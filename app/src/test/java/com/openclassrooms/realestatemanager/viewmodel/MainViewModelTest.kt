@@ -25,32 +25,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class MainViewModelTest {
     private val db: AppDatabase = Mockito.mock(AppDatabase::class.java)
     private val realtyDao = Mockito.mock(RealtyDao::class.java)
-    private val pictureDao = Mockito.mock(PictureDao::class.java)
     private val networkSchedulers: TestNetworkSchedulers = TestNetworkSchedulers()
     private var viewmodel = MainViewModel(db, networkSchedulers)
-
-    val realtyModel = RealtyModel(
-        50,
-        "",
-        500,
-        100,
-        1,
-        1,
-        1,
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        0.0,
-        0.0,
-        "",
-        true,
-        0,
-        0,
-        ""
-    )
 
     @Before
     fun setup() {

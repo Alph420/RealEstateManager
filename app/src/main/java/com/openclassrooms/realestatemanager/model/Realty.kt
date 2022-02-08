@@ -1,8 +1,5 @@
 package com.openclassrooms.realestatemanager.model
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-
 /**
  * Created by Julien Jennequin on 25/12/2021 17:15
  * Project : RealEstateManager

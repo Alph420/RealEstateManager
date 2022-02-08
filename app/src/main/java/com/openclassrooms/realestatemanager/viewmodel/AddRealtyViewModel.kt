@@ -6,7 +6,6 @@ import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.NetworkSchedulers
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Created by Julien Jennequin on 17/12/2021 10:03

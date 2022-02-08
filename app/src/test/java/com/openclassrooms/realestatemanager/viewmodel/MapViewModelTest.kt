@@ -28,9 +28,7 @@ class MapViewModelTest {
 
 
     private var locationClient = Mockito.mock(FusedLocationProviderClient::class.java)
-    private var task: Task<Location> = Mockito.mock(Task::class.java) as Task<Location>
     private var location = Mockito.mock(Location::class.java)
-    private var lastLocation = Mockito.mock(Task::class.java) as Task<Location>
 
     @Before
     fun setup() {

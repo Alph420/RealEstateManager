@@ -73,7 +73,6 @@ class RealtyDetailViewModelTest {
         "",
         emptyList()
     )
-    private val pictureList = emptyList<PicturesModel>()
 
     @Before
     fun setup() {

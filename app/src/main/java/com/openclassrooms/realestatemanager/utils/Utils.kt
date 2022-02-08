@@ -52,8 +52,8 @@ object Utils {
      * @param context
      * @return
      */
+    @Suppress("DEPRECATION")
     fun isInternetAvailable(connectivityManager: ConnectivityManager): Boolean {
-        //TODO IMPROVE THIS GET BY RETURN WHICH NETWORK IS USED
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val nw = connectivityManager.activeNetwork ?: return false
             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
@@ -184,7 +184,11 @@ object Utils {
 
     fun getDateFromString(date: String): Long {
         return if (date.isEmpty()) 0L
-        else SimpleDateFormat("dd/MM/yyyy").parse(date).time
+        else {
+            SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(date)?.let {
+                return it.time
+            } ?: 0L
+        }
     }
 }
 

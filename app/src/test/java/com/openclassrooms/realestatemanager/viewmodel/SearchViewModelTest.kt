@@ -59,7 +59,6 @@ class SearchViewModelTest {
         0,
         ""
     )
-    private val realty = realtyModel.toRealty(emptyList())
 
     val filter =
         FilterConstraint(
