@@ -280,7 +280,7 @@ class MainActivity : BaseActivity() {
 
 
     private fun checkIfWifiIsAvailable() {
-        setWifiObservable()
+        //setWifiObservable()
         if (Utils.isInternetAvailable(this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)) {
             Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
         } else {
