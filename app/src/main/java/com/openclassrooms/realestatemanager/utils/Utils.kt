@@ -6,17 +6,15 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.*
 import android.os.Build
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import java.io.ByteArrayOutputStream
-import java.lang.StringBuilder
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.math.roundToInt
 import android.provider.MediaStore.Images
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.model.RealtyModel
-import android.net.ConnectivityManager
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import java.io.ByteArrayOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.math.roundToInt
 
 
 /**
@@ -42,7 +40,7 @@ object Utils {
      * @return
      */
     fun getTodayDate(time: Long): String {
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
         return format.format(Date(time))
     }
 

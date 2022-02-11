@@ -20,23 +20,23 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import org.osmdroid.config.Configuration.*
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.utils.Utils
-import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
-import com.openclassrooms.realestatemanager.viewmodel.Injection
-import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
-import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.openclassrooms.realestatemanager.BuildConfig
-import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
 import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
+import com.openclassrooms.realestatemanager.viewmodel.Injection
+import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
+import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -282,9 +282,9 @@ class MainActivity : BaseActivity() {
     private fun checkIfWifiIsAvailable() {
         //setWifiObservable()
         if (Utils.isInternetAvailable(this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)) {
-            Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_LONG).show()
+            Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_LONG)
+            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -347,6 +347,7 @@ class MainActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        checkIfWifiIsAvailable()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             binding.map!!.onResume()
         }
