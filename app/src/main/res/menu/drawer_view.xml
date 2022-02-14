@@ -4,22 +4,22 @@
         <item
             android:id="@+id/searchItem"
             android:icon="@drawable/ic_search"
-            android:title="Search" />
+            android:title="@string/search_action_icon" />
         <item
             android:id="@+id/addItem"
             android:icon="@drawable/ic_add"
-            android:title="Add a realty" />
+            android:title="@string/add_action_icon" />
         <item
             android:id="@+id/mapItem"
             android:icon="@drawable/ic_near"
-            android:title="Map" />
+            android:title="@string/map_action_icon" />
         <item
             android:id="@+id/simulator"
             android:icon="@drawable/ic_simulator"
-            android:title="Simulator" />
+            android:title="@string/simulator_action_icon" />
         <item
             android:id="@+id/action_settings"
             android:icon="@drawable/ic_settings"
-            android:title="Settings" />
+            android:title="@string/settings_action_icon" />
     </group>
 </menu>

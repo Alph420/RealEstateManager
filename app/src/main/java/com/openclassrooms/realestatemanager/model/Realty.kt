@@ -1,8 +1,5 @@
 package com.openclassrooms.realestatemanager.model
 
-import androidx.room.ColumnInfo
-import androidx.room.PrimaryKey
-
 /**
  * Created by Julien Jennequin on 25/12/2021 17:15
  * Project : RealEstateManager
@@ -17,9 +14,13 @@ data class Realty(
      var bedRoom: Int,
      var description: String,
      var address: String,
+     var region: String,
+     var country: String,
+     var city: String,
+     var department: String,
      var longitude: Double,
      var latitude: Double,
-     var pointOfInterest: String,
+     var pointOfInterest: List<String>,
      var available: Boolean,
      var inMarketDate: Long,
      var outMarketDate: Long,

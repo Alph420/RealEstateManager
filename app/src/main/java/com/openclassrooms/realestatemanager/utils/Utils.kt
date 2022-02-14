@@ -1,31 +1,27 @@
 package com.openclassrooms.realestatemanager.utils
 
 import android.content.Context
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Address
 import android.location.Geocoder
-import android.net.Uri
-import android.net.wifi.WifiManager
-import androidx.room.TypeConverter
-import com.google.firebase.firestore.GeoPoint
+import android.net.*
+import android.os.Build
+import android.provider.MediaStore.Images
+import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.model.RealtyModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import java.io.ByteArrayOutputStream
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
-import android.provider.MediaStore.Images
-import android.provider.MediaStore
 
 
 /**
  * Created by Julien Jennequin on 02/12/2021 15:35
  * Project : RealEstateManager
  **/
-internal object Utils {
+object Utils {
 
     //region Don't touch
     /**
@@ -44,7 +40,7 @@ internal object Utils {
      * @return
      */
     fun getTodayDate(time: Long): String {
-        val format = SimpleDateFormat("dd/MM/yyyy")
+        val format = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
         return format.format(Date(time))
     }
 
@@ -54,9 +50,21 @@ internal object Utils {
      * @param context
      * @return
      */
-    fun isInternetAvailable(context: Context): Boolean {
-        val wifi = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return wifi.isWifiEnabled
+    @Suppress("DEPRECATION")
+    fun isInternetAvailable(connectivityManager: ConnectivityManager): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            return connectivityManager.activeNetworkInfo?.isConnected ?: false
+        }
     }
     //endregion
 
@@ -66,9 +74,8 @@ internal object Utils {
      * @return
      */
     fun convertEurosToDollars(euros: Int): Int {
-        return (euros * 1.131).roundToInt()
+        return (euros * 1.131).toInt()
     }
-
 
     fun formatPrice(price: Long): String {
         val priceText = StringBuilder()
@@ -138,49 +145,48 @@ internal object Utils {
         return priceText.toString()
     }
 
-    @TypeConverter
-    fun fromBitmap(bitmap: Bitmap): ByteArray {
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        return outputStream.toByteArray()
-    }
-
-    fun toBitmap(byteArray: ByteArray): Bitmap {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-    }
-
-    fun getLocationFromAddress(context: Context, strAddress: String): GeoPoint {
-        val realtyPosition: GeoPoint
-        if (Geocoder(context).getFromLocationName(strAddress, 5).size > 0) {
-            val location: Address = Geocoder(context).getFromLocationName(strAddress, 5)[0]
-            location.latitude
-            location.longitude
-
-            realtyPosition = GeoPoint(location.latitude, location.longitude)
-            return realtyPosition
+    fun getLocationFromAddress(geoCoder: Geocoder, realty: RealtyModel): RealtyModel {
+        if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
+            val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
+            realty.region = address.adminArea
+            realty.country = address.countryName
+            realty.city = address.locality
+            realty.department = address.subAdminArea
+            realty.longitude = address.longitude
+            realty.latitude = address.latitude
         }
-        return GeoPoint(0.0, 0.0)
+
+        return realty
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+    fun getLocationFromAddress(geoCoder: Geocoder, realty: Realty): Realty {
+        if (geoCoder.getFromLocationName(realty.address, 5).size > 0) {
+            val address: Address = geoCoder.getFromLocationName(realty.address, 5)[0]
+            realty.region = address.adminArea
+            realty.country = address.countryName
+            realty.city = address.locality
+            realty.department = address.subAdminArea
+            realty.longitude = address.longitude
+            realty.latitude = address.latitude
+        }
+
+        return realty
+    }
+
+    fun getImageUri(context: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path = Images.Media.insertImage(context.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
 
-    fun getRealPathFromURI(context: Context,uri: Uri): String {
-        var path = ""
-        if (context.contentResolver != null) {
-            val cursor: Cursor? =  context.contentResolver.query(uri, null, null, null, null)
-            if (cursor != null) {
-                cursor.moveToFirst()
-                val idx: Int = cursor.getColumnIndex(Images.ImageColumns.DATA)
-                path = cursor.getString(idx)
-                cursor.close()
-            }
+    fun getDateFromString(date: String): Long {
+        return if (date.isEmpty()) 0L
+        else {
+            SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).parse(date)?.let {
+                return it.time
+            } ?: 0L
         }
-        return path
     }
 }
 

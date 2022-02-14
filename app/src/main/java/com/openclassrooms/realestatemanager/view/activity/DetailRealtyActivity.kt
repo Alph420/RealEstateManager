@@ -1,4 +1,4 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,7 +7,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.openclassrooms.realestatemanager.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
 import org.osmdroid.config.Configuration.*
 import com.openclassrooms.realestatemanager.databinding.ActivityDetailBinding
 import com.openclassrooms.realestatemanager.model.PicturesModel
@@ -36,7 +37,7 @@ class DetailRealtyActivity : BaseActivity() {
     private lateinit var mMap: MapView
     private lateinit var realty: Realty
 
-    private var realtyId = ""
+    private var realtyId = 0
     private var picturesList = emptyList<PicturesModel>()
     //endregion
 
@@ -50,10 +51,7 @@ class DetailRealtyActivity : BaseActivity() {
 
         setContentView(binding.root)
 
-        realtyId = intent.extras?.let {
-            it.get(Constants().REALTY_ID_EXTRAS).toString()
-        }.toString()
-
+        realtyId = intent.extras?.getInt(Constants().REALTY_ID_EXTRAS) ?: 0
 
         initMap()
         initViewModel()
@@ -82,7 +80,7 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun initObservers() {
-        disposeBag += realtyDetailViewModel.getRealtyData(realtyId).subscribe(
+        disposeBag += realtyDetailViewModel.getRealtyById(realtyId).subscribe(
             { result ->
                 Log.d(TAG, result.toString())
                 realty = result
@@ -112,9 +110,9 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updatePictures() {
-        if(realty.pictures.isEmpty()){
+        if (realty.pictures.isEmpty()) {
             binding.emptyView.visibility = View.VISIBLE
-        }else{
+        } else {
             binding.emptyView.visibility = View.INVISIBLE
             mAdapter.dataList = realty.pictures
             mAdapter.notifyDataSetChanged()
@@ -122,12 +120,17 @@ class DetailRealtyActivity : BaseActivity() {
     }
 
     private fun updateView() {
-        binding.realtyDetailArea.text = realty.area.toString() + " m2"
+        binding.realtyDetailArea.text = realty.area.toString() + this.getString(R.string.m2)
         binding.realtyDetailRoom.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom.text = realty.bedRoom.toString()
         binding.realtyDetailDescription.text = realty.description
-        binding.realtyDetailLocationAddress.text = realty.address
+        binding.realtyDetailLocationAddress.text =
+            "${realty.address}, ${realty.city}, ${realty.region}, ${realty.department}, ${realty.country}"
+
+        binding.realtyDetailNearPlaces.text =
+            realty.pointOfInterest.toString().replace("[", "").replace("]", "").replace(", ", "\n")
+
         drawMarker()
         updatePictures()
     }
@@ -142,7 +145,7 @@ class DetailRealtyActivity : BaseActivity() {
             mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
             mMap.controller.setZoom(12.0)
         } else {
-            Toast.makeText(this, "Realty location not available", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, this.getString(R.string.location_error_msg), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -154,5 +157,10 @@ class DetailRealtyActivity : BaseActivity() {
     override fun onPause() {
         super.onPause()
         binding.map.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
     }
 }

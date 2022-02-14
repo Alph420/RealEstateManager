@@ -4,24 +4,22 @@ import androidx.lifecycle.ViewModel
 import com.openclassrooms.realestatemanager.database.AppDatabase
 import com.openclassrooms.realestatemanager.model.PicturesModel
 import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.model.RealtyModel
+import com.openclassrooms.realestatemanager.utils.NetworkSchedulers
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * Created by Julien Jennequin on 22/12/2021 12:05
  * Project : RealEstateManager
  **/
-class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
+class RealtyDetailViewModel(private val database: AppDatabase, private val networkSchedulers: NetworkSchedulers) : ViewModel() {
 
-    fun getRealtyData(realtyId: String): Single<Realty> =
+    fun getRealtyById(realtyId: Int): Observable<Realty> =
         database.realtyDao()
-            .getById(realtyId)
-            .subscribeOn(Schedulers.io())
+            .getRealtyById(realtyId)
             .flatMap { realty ->
-                getPictures(realty.id).map { listOfPath ->
+                getPictureById(realty.id).map { listOfPath ->
                     Realty(
                         realty.id,
                         realty.kind,
@@ -32,9 +30,13 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
                         realty.bedRoom,
                         realty.description,
                         realty.address,
+                        realty.region,
+                        realty.country,
+                        realty.city,
+                        realty.department,
                         realty.longitude,
                         realty.latitude,
-                        realty.pointOfInterest,
+                        realty.pointOfInterest.split(", "),
                         realty.available,
                         realty.inMarketDate,
                         realty.outMarketDate,
@@ -43,11 +45,13 @@ class RealtyDetailViewModel(private val database: AppDatabase) : ViewModel() {
                     )
                 }
             }
-            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(networkSchedulers.io)
+            .observeOn(networkSchedulers.main)
 
 
-    private fun getPictures(id: Int): Single<List<PicturesModel>> = database.pictureDao()
-        .getPictures(id)
-        .subscribeOn(Schedulers.io())
+     private fun getPictureById(id: Int): Observable<List<PicturesModel>> = database.pictureDao()
+        .getPicturesById(id)
+         .subscribeOn(networkSchedulers.io)
+         .observeOn(networkSchedulers.main)
 
 }

@@ -17,7 +17,7 @@ interface RealtyDao {
     fun getAllRealty(): Observable<List<RealtyModel>>
 
     @Query("SELECT * FROM RealtyModel WHERE id = :id")
-    fun getById(id: String): Single<RealtyModel>
+    fun getRealtyById(id: Int): Observable<RealtyModel>
 
     @Insert
     fun insertRealty(realty: RealtyModel): Single<Long>
@@ -25,6 +25,4 @@ interface RealtyDao {
     @Update
     fun updateRealty(realty: RealtyModel): Completable
 
-    @Delete
-    fun delete(user: RealtyModel)
 }

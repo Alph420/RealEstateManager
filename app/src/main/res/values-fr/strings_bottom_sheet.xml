@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fragment_sheet_price">Prix</string>
+    <string name="fragment_sheet_area">Surface</string>
+    <string name="fragment_sheet_room">Pièce</string>
+    <string name="fragment_sheet_bathroom">Salle de bain</string>
+    <string name="fragment_sheet_bedroom">Chambre</string>
+    <string name="fragment_sheet_pictures">Images</string>
+    <string name="fragment_sheet_kind">Genre</string>
+    <string name="fragment_sheet_city">Ville</string>
+    <string name="fragment_sheet_near_places">Endroits proches</string>
+    <string name="fragment_sheet_available">Disponible</string>
+    <string name="fragment_sheet_click_here">Cliquez ici</string>
+    <string name="fragment_sheet_date_of_availability">Date de disponibilité</string>
+    <string name="fragment_sheet_date_of_selling">Date de vente</string>
+    <string name="fragment_sheet_reset">Réinitialiser</string>
+    <string name="fragment_sheet_search">Rechercher</string>
+</resources>

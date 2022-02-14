@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--CLASS-->
+    <string name="add_field_required_error">Missing required field</string>
+
+
+    <!--DIALOG-->
+    <string name="add_dialog_positive_btn" translatable="false">OK</string>
+
+    <string name="add_dialog_title">Picture name</string>
+    <string name="add_dialog_negative_btn">Cancel</string>
+    <string name="add_dialog_error_msg">Each picture need description</string>
+    <string name="add_dialog_hint">Enter picture name</string>
+
+    <!--XML-->
+    <string name="add_realty_kind">Kind</string>
+    <string name="add_realty_price">Price</string>
+    <string name="add_realty_address">Address</string>
+    <string name="add_realty_area">Area size (m2)</string>
+    <string name="add_realty_bathroom">Bathroom</string>
+    <string name="add_realty_room">Room</string>
+    <string name="add_realty_bedroom">Bedroom</string>
+    <string name="add_realty_near_places">Near places</string>
+    <string name="add_realty_dates">Dates</string>
+    <string name="add_realty_date_of_avaibility">Date of avaibility</string>
+    <string name="add_realty_date_of_selling">Date of selling</string>
+    <string name="add_realty_estate_agent_owner">Estate agent owner</string>
+    <string name="add_realty_description">Description</string>
+    <string name="add_realty_available">Available</string>
+    <string name="add_realty_save">Save</string>
+
+
+</resources>

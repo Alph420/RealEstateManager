@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--CLASS-->
+    <string name="location_error_msg">Emplacement du bien immobilier non disponible</string>
+
+    <!--XML-->
+    <string name="detail_realty_media">Média</string>
+    <string name="detail_realty_no_data_available">Aucune donnée disponible</string>
+    <string name="detail_realty_description">Description</string>
+    <string name="detail_realty_surface">Surface:</string>
+    <string name="detail_realty_rooms">Chambres:</string>
+    <string name="detail_realty_bathrooms">Salles de bain:</string>
+    <string name="detail_realty_bedrooms">Chambres:</string>
+    <string name="detail_realty_near_places">Endroits proches</string>
+    <string name="detail_realty_location">Emplacement</string>
+    <string name="detail_realty_address">Adresse:</string>
+</resources>

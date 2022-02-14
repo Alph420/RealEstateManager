@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--CLASS-->
+    <string name="search_all_kind">All</string>
+    <string name="search_all_city">All</string>
+
+    <string name="dialog_positive_btn" translatable="false">OK</string>
+
+    <!--XML-->
+    <string name="search_realty_no_data_available">No Data available</string>
+
+</resources>

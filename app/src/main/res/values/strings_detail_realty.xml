@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--CLASS-->
+    <string name="location_error_msg">Realty location not available</string>
+
+
+    <!--XML-->
+    <string name="detail_realty_media">Media</string>
+    <string name="detail_realty_no_data_available">No Data available</string>
+    <string name="detail_realty_description">Description</string>
+    <string name="detail_realty_surface">Surface:</string>
+    <string name="detail_realty_rooms">Rooms:</string>
+    <string name="detail_realty_bathrooms">Bathrooms:</string>
+    <string name="detail_realty_bedrooms">Bedrooms:</string>
+    <string name="detail_realty_near_places">Near places</string>
+    <string name="detail_realty_location">Location</string>
+    <string name="detail_realty_address">Address:</string>
+
+
+</resources>

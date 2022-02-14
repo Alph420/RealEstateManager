@@ -1,6 +1,7 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,11 +22,15 @@ import org.osmdroid.views.overlay.Marker
 import androidx.core.app.ActivityCompat
 
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.location.LocationManagerCompat
 
 import androidx.lifecycle.Observer
+import com.google.android.gms.location.LocationServices
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.dialog.NoGpsDialog
+import com.openclassrooms.realestatemanager.view.dialog.NoGpsDialog
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
 /**
@@ -39,7 +44,6 @@ class MapActivity : BaseActivity() {
     private lateinit var mapViewModel: MapViewModel
     private lateinit var mMap: MapView
 
-    private var mLocation: GeoPoint = GeoPoint(0.0, 0.0)
     private var realtyList: List<RealtyModel> = emptyList()
     //endregion
 
@@ -54,7 +58,6 @@ class MapActivity : BaseActivity() {
         setContentView(binding.root)
 
         initViewModel()
-        initListeners()
         initObservers()
         initMap()
         checkPermission()
@@ -67,22 +70,19 @@ class MapActivity : BaseActivity() {
             ViewModelProvider(this, mViewModelFactory).get(MapViewModel::class.java)
     }
 
-    private fun initListeners() {
-
-
-    }
-
     private fun initObservers() {
-        disposeBag += mapViewModel.getAllRealty().subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realtyList = result
-                drawMarker()
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+        disposeBag += mapViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realtyList = result
+                    drawMarker()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
         val mLocationObserver: Observer<GeoPoint> = Observer {
             setUserMarker(it)
         }
@@ -108,7 +108,7 @@ class MapActivity : BaseActivity() {
             startMarker.title = " ${it.kind}, ${it.address}"
             mMap.overlays.add(startMarker)
 
-            startMarker.setOnMarkerClickListener { marker, mapView ->
+            startMarker.setOnMarkerClickListener { _, _ ->
                 val intent = Intent(binding.root.context, DetailRealtyActivity::class.java)
                 intent.putExtra(Constants().REALTY_ID_EXTRAS, (it.id))
                 startActivity(intent)
@@ -122,7 +122,7 @@ class MapActivity : BaseActivity() {
         userMarker.position = geoPoint
         userMarker.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_location, null)
 
-        userMarker.title = "Our last position"
+        userMarker.title = this.getString(R.string.map_last_location)
         mMap.overlays.add(userMarker)
     }
 
@@ -147,17 +147,18 @@ class MapActivity : BaseActivity() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             ) {
                 getLocation()
-            }else{
+            } else {
                 noLocationError()
             }
         }
     }
 
     private fun getLocation() {
-        if (mapViewModel.isLocationEnabled(this)) {
-            mapViewModel.getLastLocation(this)
+        if (isLocationEnabled(this)) {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            mapViewModel.getLastLocation(fusedLocationClient)
         } else {
-            Log.d("getLocation", "Permissions refused")
+            Log.d(TAG, "Permissions refused")
             noLocationError()
         }
 
@@ -168,4 +169,21 @@ class MapActivity : BaseActivity() {
         dialog.showForegroundGpsDialog()
     }
 
+    private fun isLocationEnabled(context: Context): Boolean {
+        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return false
+        }
+
+        return LocationManagerCompat.isLocationEnabled(locationManager)
+    }
 }

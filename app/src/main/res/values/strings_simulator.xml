@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--XML-->
+    <string name="simulator_amount_of_loan">Amount of loan</string>
+    <string name="simulator_interest_year">Interest year</string>
+    <string name="simulator_per_year">% PER YEAR</string>
+    <string name="simulator_in_total_you_will_repay">In total, you will repay</string>
+    <string name="simulator_per_month_you_repay">Per month you repay</string>
+</resources>

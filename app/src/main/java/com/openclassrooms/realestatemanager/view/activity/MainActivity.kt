@@ -1,32 +1,38 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.LEFT
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import org.osmdroid.config.Configuration.*
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.openclassrooms.realestatemanager.BuildConfig
 import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
+import com.openclassrooms.realestatemanager.model.PicturesModel
+import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.Utils
-import com.openclassrooms.realestatemanager.adapter.RealtyListAdapter
+import com.openclassrooms.realestatemanager.utils.plusAssign
+import com.openclassrooms.realestatemanager.view.adapter.PictureModelAdapter
+import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MainViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
-import androidx.recyclerview.widget.DividerItemDecoration
-import com.openclassrooms.realestatemanager.BuildConfig
-import com.openclassrooms.realestatemanager.databinding.ActivityMainBinding
-import com.openclassrooms.realestatemanager.model.Realty
-import com.openclassrooms.realestatemanager.utils.Constants
-import com.openclassrooms.realestatemanager.utils.plusAssign
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import org.osmdroid.config.Configuration.*
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -42,11 +48,13 @@ class MainActivity : BaseActivity() {
     //region PROPERTIES
     private lateinit var binding: ActivityMainBinding
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var adapter: RealtyListAdapter
+    private lateinit var realtyAdapter: RealtyListAdapter
+    private lateinit var pictureRealtyAdapter: PictureModelAdapter
     private lateinit var realty: Realty
     private lateinit var mMap: MapView
 
     private var realtyList: List<Realty> = emptyList()
+    private var picturesList = emptyList<PicturesModel>()
     private var empty = true
     //endregion
 
@@ -65,9 +73,10 @@ class MainActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
-        initRecyclerView()
+        initRealyRecyclerView()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             initMap()
+            initPictureRecyclerView()
         }
         checkIfWifiIsAvailable()
     }
@@ -87,7 +96,8 @@ class MainActivity : BaseActivity() {
         }
 
         R.id.searchItem -> {
-            //TODO  SearchRealty
+            startActivity(Intent(this, SearchActivity::class.java))
+
             true
         }
         R.id.simulator -> {
@@ -140,14 +150,17 @@ class MainActivity : BaseActivity() {
     private fun initListeners() {
         binding.topAppBar.setNavigationOnClickListener {
             if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                binding.drawerLayout.closeDrawer(LEFT); //CLOSE Nav Drawer!
+                binding.drawerLayout.closeDrawer(LEFT) //CLOSE Nav Drawer!
             } else {
-                binding.drawerLayout.openDrawer(LEFT); //OPEN Nav Drawer!
+                binding.drawerLayout.openDrawer(LEFT) //OPEN Nav Drawer!
             }
         }
 
         binding.nvView.setNavigationItemSelectedListener {
             when (it.itemId) {
+                R.id.searchItem -> {
+                    startActivity(Intent(this, SearchActivity::class.java))
+                }
                 R.id.addItem -> {
                     startActivity(Intent(this, AddRealtyActivity::class.java))
                 }
@@ -156,7 +169,6 @@ class MainActivity : BaseActivity() {
                 }
                 R.id.simulator -> {
                     startActivity(Intent(this, SimulatorActivity::class.java))
-
                 }
                 R.id.mapItem -> {
                     startActivity(Intent(this, MapActivity::class.java))
@@ -171,32 +183,30 @@ class MainActivity : BaseActivity() {
                 intent.putExtra(Constants().REALTY_ID_EXTRAS, realty.id)
                 startActivity(intent)
             }
+
+            binding.realtyDetailCenter!!.setOnClickListener {
+                mMap.controller.setCenter(GeoPoint(realty.latitude, realty.longitude))
+                mMap.controller.setZoom(14.0)
+            }
         }
 
     }
 
     private fun initObservers() {
-        disposeBag += mainViewModel.getAll().subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realtyList = result
-                updateView()
-                initDetailPart()
-                realtyList.forEach { realty ->
-                    disposeBag += mainViewModel.getPictures(realty.id).subscribe(
-                        { result ->
-                            realty.pictures = result
-                        },
-                        { error ->
-                            Log.e(TAG, error.message.toString())
-                        }
-                    )
+        disposeBag += mainViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realtyList = result
+                    updateView()
+                    initDetailPart()
+                    initDetailPart()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
                 }
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+            )
     }
 
     private fun initDetailPart() {
@@ -210,10 +220,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initRecyclerView() {
-        this.adapter = RealtyListAdapter(realtyList)
+    private fun initRealyRecyclerView() {
+        this.realtyAdapter = RealtyListAdapter(realtyList)
 
-        binding.realtyRecyclerView.adapter = this.adapter
+        binding.realtyRecyclerView.adapter = this.realtyAdapter
         binding.realtyRecyclerView.layoutManager = LinearLayoutManager(this)
         val dividerItemDecoration = DividerItemDecoration(
             binding.realtyRecyclerView.context,
@@ -221,7 +231,7 @@ class MainActivity : BaseActivity() {
         )
         binding.realtyRecyclerView.addItemDecoration(dividerItemDecoration)
 
-        adapter.setListener(object : RealtyListAdapter.ItemClickListener {
+        realtyAdapter.setListener(object : RealtyListAdapter.ItemClickListener {
             override fun onItemClick(position: Int) {
                 if (binding.root.tag == Constants().TAG_LARGE_MAIN_ACTIVITY) {
                     realty = realtyList[position]
@@ -234,17 +244,25 @@ class MainActivity : BaseActivity() {
                 }
             }
         })
+    }
 
+    private fun initPictureRecyclerView() {
+        this.pictureRealtyAdapter = PictureModelAdapter(picturesList)
 
+        binding.recyclerView!!.adapter = this.pictureRealtyAdapter
     }
 
     private fun setDataOfRetail() {
-        binding.realtyDetailArea!!.text = realty.area.toString() + " m2"
+        updatePictures()
+        binding.realtyDetailArea!!.text = realty.area.toString() + this.getString(R.string.m2)
         binding.realtyDetailRoom!!.text = realty.roomNumber.toString()
         binding.realtyDetailBathroom!!.text = realty.bathRoom.toString()
         binding.realtyDetailBedroom!!.text = realty.bedRoom.toString()
         binding.realtyDetailDescription!!.text = realty.description
-        binding.realtyDetailLocationAddress!!.text = realty.address
+        binding.realtyDetailLocationAddress!!.text =
+            "${realty.address}, ${realty.city}, ${realty.region}, ${realty.department}, ${realty.country}"
+        binding.realtyDetailNearPlaces!!.text =
+            realty.pointOfInterest.toString().replace("[", "").replace("]", "").replace(", ", "\n")
     }
 
     private fun drawMarker() {
@@ -258,18 +276,34 @@ class MainActivity : BaseActivity() {
 
 
     private fun checkIfWifiIsAvailable() {
-        if (Utils.isInternetAvailable(this)) {
-            Toast.makeText(this, "Wifi available", Toast.LENGTH_LONG).show()
+        if (Utils.isInternetAvailable(this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)) {
+            Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
     private fun updateView() {
-        adapter.dataList = realtyList
-        adapter.notifyDataSetChanged()
+        realtyAdapter.dataList = realtyList
+        realtyAdapter.notifyDataSetChanged()
+    }
+
+    private fun updatePictures() {
+        pictureRealtyAdapter.dataList = realty.pictures
+
+        if (realty.pictures.isEmpty()) {
+            binding.emptyView!!.visibility = View.VISIBLE
+        } else {
+            binding.emptyView!!.visibility = View.INVISIBLE
+        }
+        pictureRealtyAdapter.notifyDataSetChanged()
+
     }
 
     override fun onResume() {
         super.onResume()
+        checkIfWifiIsAvailable()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             binding.map!!.onResume()
         }
@@ -281,5 +315,4 @@ class MainActivity : BaseActivity() {
             binding.map!!.onPause()
         }
     }
-
 }

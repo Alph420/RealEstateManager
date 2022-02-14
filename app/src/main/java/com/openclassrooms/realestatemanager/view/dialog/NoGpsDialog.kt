@@ -1,7 +1,6 @@
-package com.openclassrooms.realestatemanager.dialog
+package com.openclassrooms.realestatemanager.view.dialog
 
 import android.R
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
@@ -12,7 +11,7 @@ import com.openclassrooms.realestatemanager.databinding.DialogNoGpsBinding
  * Created by Julien Jennequin on 25/12/2021 11:47
  * Project : RealEstateManager
  **/
-class NoGpsDialog(context: Context): androidx.appcompat.app.AlertDialog(context) {
+class NoGpsDialog(context: Context) : androidx.appcompat.app.AlertDialog(context) {
 
     fun showForegroundGpsDialog(): androidx.appcompat.app.AlertDialog {
         val rootView: DialogNoGpsBinding = DialogNoGpsBinding.inflate(layoutInflater)

@@ -40,11 +40,25 @@ class Notifications {
 
         val notificationManager = NotificationManagerCompat.from(applicationContext)
 
-        val builder: NotificationCompat.Builder = NotificationCompat.Builder(applicationContext, CHANNEL_ID.toString())
-            .setContentTitle("Your ${realty.kind} is added with success")
-            .setContentText("${realty.address}, ${realty.price}, is manage by ${realty.estateAgent} contact him for more detail. \n You can edit you realty if something need to be changed")
-            .setSmallIcon(R.drawable.ic_home)
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        val builder: NotificationCompat.Builder =
+            NotificationCompat.Builder(applicationContext, CHANNEL_ID.toString())
+                .setContentTitle(
+                    applicationContext.getString(
+                        R.string.notifications_title,
+                        realty.kind
+                    )
+                )
+                .setSmallIcon(R.drawable.ic_home)
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .bigText(
+                            applicationContext.getString(
+                                R.string.notification_content,
+                                realty.estateAgent
+                            )
+                        )
+                )
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         notificationManager.notify(1, builder.build())
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="genres">
+        <item>@string/kind_array_city_center</item>,
+        <item>@string/kind_array_restaurants</item>,
+        <item>@string/kind_array_subway</item>,
+        <item>@string/kind_array_superMarket</item>,
+        <item>@string/kind_array_school</item>,
+        <item>@string/kind_array_cinema</item>,
+        <item>@string/kind_array_pool</item>,
+        <item>@string/kind_array_hospital</item>,
+        <item>@string/kind_array_library</item>,
+        <item>@string/kind_array_park</item>,
+        <item>@string/kind_array_nightlife</item>,
+        <item>@string/kind_array_theater</item>,
+        <item>@string/kind_array_bank</item>,
+        <item>@string/kind_array_pharmacy</item>
+    </string-array>
+
+</resources>

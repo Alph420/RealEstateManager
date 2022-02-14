@@ -1,10 +1,9 @@
-package com.openclassrooms.realestatemanager.activity
+package com.openclassrooms.realestatemanager.view.activity
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.SeekBar
 import androidx.core.widget.doOnTextChanged
-import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivitySimulatorBinding
 import com.openclassrooms.realestatemanager.utils.Utils
 import kotlin.math.pow
@@ -37,14 +36,14 @@ class SimulatorActivity : BaseActivity() {
     }
 
     private fun initListener() {
-        binding.simulatorLoan.doOnTextChanged { text, start, before, count ->
+        binding.simulatorLoan.doOnTextChanged { text, _, _, _ ->
             if (!text.isNullOrEmpty()) {
                 amount = text.toString().toDouble()
                 calculate()
             }
         }
 
-        binding.simulatorInteresetRate.doOnTextChanged { text, start, before, count ->
+        binding.simulatorInteresetRate.doOnTextChanged { text, _, _, _ ->
             if (!text.isNullOrEmpty()) {
                 percentagePerYears = text.toString().toDouble() / 100
                 calculate()
@@ -70,7 +69,7 @@ class SimulatorActivity : BaseActivity() {
 
     private fun calculate() {
         // link of algo
-        // https://www.creditexpert.fr/credit-immobilier/calculer-mensualites/#:~:text=Avec%20%C2%AB%20m%20%C2%BB%20pour%20le%20montant,12))%5E%2Dn%5D.
+        // https://www.creditexpert.fr/credit-immobilier/calculer-mensualites/
         //m = [(M*t)/12] / [1-(1+(t/12))^-n]
 
         if (amount > 0 && percentagePerYears != 0.00 && term != 0.00) {
@@ -87,5 +86,10 @@ class SimulatorActivity : BaseActivity() {
             binding.simulatorMonthlyCount.text = "0"
             binding.simulatorTotalCount.text = "0"
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finish()
     }
 }
