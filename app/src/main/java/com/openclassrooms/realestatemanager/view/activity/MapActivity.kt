@@ -3,34 +3,32 @@ package com.openclassrooms.realestatemanager.view.activity
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import androidx.core.app.ActivityCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.location.LocationManagerCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.google.android.gms.location.LocationServices
+import com.openclassrooms.realestatemanager.R
 import com.openclassrooms.realestatemanager.databinding.ActivityMapBinding
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Constants
 import com.openclassrooms.realestatemanager.utils.plusAssign
+import com.openclassrooms.realestatemanager.view.dialog.NoGpsDialog
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.MapViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import androidx.core.app.ActivityCompat
-
-import android.content.pm.PackageManager
-import android.location.LocationManager
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.location.LocationManagerCompat
-
-import androidx.lifecycle.Observer
-import com.google.android.gms.location.LocationServices
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.view.dialog.NoGpsDialog
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
 /**
@@ -88,6 +86,11 @@ class MapActivity : BaseActivity() {
         }
 
         mapViewModel.mLocationLiveData.observe(this, mLocationObserver)
+
+        val mLocationObserverError: Observer<Boolean> = Observer {
+            if (it) noLocationError()
+        }
+        mapViewModel.mLocationErrorLiveData.observe(this, mLocationObserverError)
     }
 
     private fun initMap() {
@@ -155,13 +158,11 @@ class MapActivity : BaseActivity() {
 
     private fun getLocation() {
         if (isLocationEnabled(this)) {
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            mapViewModel.getLastLocation(fusedLocationClient)
+            mapViewModel.getLastLocation(LocationServices.getFusedLocationProviderClient(this))
         } else {
             Log.d(TAG, "Permissions refused")
             noLocationError()
         }
-
     }
 
     private fun noLocationError() {
