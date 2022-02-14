@@ -5,10 +5,6 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
-import android.net.NetworkRequest
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity.LEFT
@@ -280,51 +276,11 @@ class MainActivity : BaseActivity() {
 
 
     private fun checkIfWifiIsAvailable() {
-        //setWifiObservable()
         if (Utils.isInternetAvailable(this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager)) {
             Toast.makeText(this, this.getString(R.string.wifi_available), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, this.getString(R.string.wifi_not_available), Toast.LENGTH_SHORT)
                 .show()
-        }
-    }
-
-    private fun setWifiObservable() {
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .build()
-
-
-        val networkCallback = object : ConnectivityManager.NetworkCallback() {
-            // network is available for use
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-            }
-
-            // Network capabilities have changed for the network
-            override fun onCapabilitiesChanged(
-                network: Network,
-                networkCapabilities: NetworkCapabilities
-            ) {
-                super.onCapabilitiesChanged(network, networkCapabilities)
-/*                val hasCellular =
-                    networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
-                val hasWifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)*/
-
-                checkIfWifiIsAvailable()
-            }
-
-            // lost network connection
-            override fun onLost(network: Network) {
-                super.onLost(network)
-            }
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val connectivityManager = getSystemService(ConnectivityManager::class.java)
-            connectivityManager.requestNetwork(networkRequest, networkCallback)
         }
     }
 

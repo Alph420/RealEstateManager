@@ -1,5 +1,6 @@
 package com.openclassrooms.realestatemanager
 
+import android.view.KeyEvent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.withDecorView
@@ -17,6 +18,7 @@ import org.hamcrest.CoreMatchers.not
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Thread.sleep
 
 
 /**
@@ -32,20 +34,18 @@ class UtilsTest {
     val mActivityRule = ActivityTestRule(MainActivity::class.java)
     val device: UiDevice = UiDevice.getInstance(getInstrumentation())
 
-
     @Test
     fun test_toast_wifi() {
-        val screenHeight: Int = mActivityRule.activity.resources.displayMetrics.heightPixels
-        val screenWidth: Int =  mActivityRule.activity.resources.displayMetrics.widthPixels
-
         device.openQuickSettings()
-        if (UiObject(UiSelector().text("Wi-Fi")).exists()) {
-            UiObject(UiSelector().text("Wi-Fi")).click()
+        if (UiObject(UiSelector().text("Airplane mode")).exists()) {
+            UiObject(UiSelector().text("Airplane mode")).click()
+            sleep(2000)
             device.pressBack()
             device.pressBack()
-            device.pressRecentApps()
-            //TODO RETURN TO APP
-            device.click(screenWidth/2,screenHeight/2)
+            sleep(2000)
+
+            device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
+            device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
 
             onView(withText(R.string.wifi_available)).inRoot(
                 withDecorView(
@@ -53,7 +53,7 @@ class UtilsTest {
                 )
             ).check(
                 matches(isDisplayed())
-           )
+            )
         } else {
             test_toast_wifi_not_available()
         }
@@ -61,18 +61,15 @@ class UtilsTest {
 
     @Test
     fun test_toast_wifi_not_available() {
-        val screenHeight: Int = mActivityRule.activity.resources.displayMetrics.heightPixels
-        val screenWidth: Int =  mActivityRule.activity.resources.displayMetrics.widthPixels
         device.openQuickSettings()
 
+        if (UiObject(UiSelector().text("Wi-Fi")).exists()) {
+            UiObject(UiSelector().text("Wi-Fi")).click()
+            sleep(2000)
+            device.pressHome()
 
-        if (UiObject(UiSelector().text("AndroidWifi")).exists()) {
-            UiObject(UiSelector().text("AndroidWifi")).click()
-            device.pressBack()
-            device.pressBack()
-            device.pressRecentApps()
-            //TODO RETURN TO APP
-            device.click(screenWidth/2,screenHeight/2)
+            device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
+            device.pressKeyCode(KeyEvent.KEYCODE_APP_SWITCH)
 
             onView(withText(R.string.wifi_not_available)).inRoot(
                 withDecorView(
@@ -81,8 +78,6 @@ class UtilsTest {
             ).check(
                 matches(isDisplayed())
             )
-        } else {
-            test_toast_wifi()
         }
     }
 }
