@@ -2,22 +2,14 @@ package com.openclassrooms.realestatemanager.viewmodel
 
 import android.location.Address
 import android.location.Geocoder
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkCapabilities
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.verify
 import com.openclassrooms.realestatemanager.model.RealtyModel
 import com.openclassrooms.realestatemanager.utils.Utils
-import io.reactivex.rxjava3.core.Observable
-import junit.framework.Assert.assertFalse
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.junit.MockitoJUnitRunner
-import org.robolectric.util.Util
 import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.math.roundToInt
 
 /**
@@ -29,8 +21,6 @@ class UtilsTest {
 
     private val geoCoder = Mockito.mock(Geocoder::class.java)
     private val address = Mockito.mock(Address::class.java)
-    private val connectivityManager = Mockito.mock(ConnectivityManager::class.java)
-    private val networkCapabilities = Mockito.mock(NetworkCapabilities::class.java)
     private var utils = Utils
     private val realtyModel = RealtyModel(
         50,

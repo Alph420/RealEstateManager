@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.databinding.RealtyItemBinding
 import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.utils.Utils
 
 /**
  * Created by Julien Jennequin on 11/12/2021 10:34
@@ -70,6 +70,4 @@ class RealtyListAdapter(var dataList: List<Realty>) :
 
     class RealtyViewHolder(val itemRealtyBinding: RealtyItemBinding) :
         RecyclerView.ViewHolder(itemRealtyBinding.root)
-
-
 }

@@ -74,9 +74,7 @@ class SimulatorActivity : BaseActivity() {
 
         if (amount > 0 && percentagePerYears != 0.00 && term != 0.00) {
             val result =
-                ((amount * percentagePerYears) / 12) / (1 - (1 + (percentagePerYears / 12)).pow(
-                    -(term * 12)
-                ))
+                ((amount * percentagePerYears) / 12) / (1 - (1 + (percentagePerYears / 12)).pow(-(term * 12)))
 
             val total = result * (term * 12)
 

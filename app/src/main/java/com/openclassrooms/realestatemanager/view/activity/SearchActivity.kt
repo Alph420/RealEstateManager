@@ -1,29 +1,30 @@
 package com.openclassrooms.realestatemanager.view.activity
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
+import com.openclassrooms.realestatemanager.R
+import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
 import com.openclassrooms.realestatemanager.model.FilterConstraint
 import com.openclassrooms.realestatemanager.model.Realty
+import com.openclassrooms.realestatemanager.repository.RealtyRepository
 import com.openclassrooms.realestatemanager.utils.Constants
+import com.openclassrooms.realestatemanager.utils.Utils
 import com.openclassrooms.realestatemanager.utils.plusAssign
+import com.openclassrooms.realestatemanager.view.adapter.RealtyListAdapter
 import com.openclassrooms.realestatemanager.viewmodel.Injection
 import com.openclassrooms.realestatemanager.viewmodel.SearchViewModel
 import com.openclassrooms.realestatemanager.viewmodel.ViewModelFactory
-import android.app.Dialog
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import com.openclassrooms.realestatemanager.R
-import com.openclassrooms.realestatemanager.databinding.ActivitySearchBinding
-import com.openclassrooms.realestatemanager.utils.Utils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import java.util.*
 
@@ -39,6 +40,8 @@ class SearchActivity : BaseActivity() {
     private lateinit var kindAdapter: ArrayAdapter<String>
     private lateinit var cityAdapter: ArrayAdapter<String>
     private lateinit var searchViewModel: SearchViewModel
+
+    lateinit var realtyRepository: RealtyRepository
 
     private var interestPoints = StringBuilder()
 
@@ -136,7 +139,7 @@ class SearchActivity : BaseActivity() {
         binding.include.filterValidateSearch.setOnClickListener {
             bottomSheetBehaviour.state = BottomSheetBehavior.STATE_COLLAPSED
 
-            disposeBag += searchViewModel.realtyFilter(
+            disposeBag += searchViewModel.getFilteredRealty(
                 FilterConstraint(
                     binding.include.filterKind.selectedItem.toString(),
                     binding.include.filterCity.selectedItem.toString(),
@@ -198,16 +201,18 @@ class SearchActivity : BaseActivity() {
     }
 
     private fun iniObserver() {
-        disposeBag += searchViewModel.getAllRealty().subscribe(
-            { result ->
-                Log.d(TAG, result.toString())
-                realtyList = result
-                updateView()
-            },
-            { error ->
-                Log.e(TAG, error.message.toString())
-            }
-        )
+        disposeBag += searchViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    realtyList = result
+                    updateView()
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
     }
 
     private fun initRecyclerView() {
@@ -282,6 +287,7 @@ class SearchActivity : BaseActivity() {
 
 
         binding.include.filterCheckForAvailability.isChecked = false
+        binding.include.filterIsAvailable.isChecked = false
 
         binding.include.filterNearPlace.text = ""
         binding.include.filterInDate.text = ""
@@ -289,15 +295,26 @@ class SearchActivity : BaseActivity() {
 
         interestPointsList = emptyList()
 
-        refreshFilteredList(realtyList.toMutableList())
+        disposeBag += searchViewModel.getAllRealty()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { result ->
+                    Log.d(TAG, result.toString())
+                    refreshFilteredList(result)
+                },
+                { error ->
+                    Log.e(TAG, error.message.toString())
+                }
+            )
     }
 
-    private fun refreshFilteredList(filteredResult: MutableList<Realty>) {
+    private fun refreshFilteredList(filteredResult: List<Realty>) {
         if (filteredResult.isEmpty()) {
             binding.emptyView.visibility = View.VISIBLE
         } else {
             binding.emptyView.visibility = View.INVISIBLE
         }
+
         adapter.dataList = filteredResult
         adapter.notifyDataSetChanged()
     }
@@ -316,33 +333,32 @@ class SearchActivity : BaseActivity() {
         kind.add(this.getString(R.string.search_all_kind))
         city.add(this.getString(R.string.search_all_city))
 
+        //Add kind of realty in adapter list
         realtyList.forEach {
-            kind.add(it.kind.lowercase())
+            kind.add(it.kind)
             kindCheckedList.add(false)
         }
 
+        //Add city of realty in adapter list
         realtyList.forEach {
             if (it.city.isNotEmpty()) {
-                city.add(it.city.lowercase())
+                city.add(it.city)
                 cityCheckedList.add(false)
             }
         }
-
-        val kindDistinct = kind.toSet().toList()
-        val cityDistinct = city.toSet().toList()
 
         this.kindAdapter =
             ArrayAdapter(
                 this,
                 R.layout.support_simple_spinner_dropdown_item,
-                kindDistinct
+                kind.toSet().toList()
             )
 
         this.cityAdapter =
             ArrayAdapter(
                 this,
                 R.layout.support_simple_spinner_dropdown_item,
-                cityDistinct
+                city.toSet().toList()
             )
 
         binding.include.filterKind.adapter = kindAdapter

@@ -1,10 +1,8 @@
 package com.openclassrooms.realestatemanager.model
 
-import android.graphics.Bitmap
-import android.net.Uri
-import androidx.room.*
-import com.google.firebase.firestore.GeoPoint
-import java.sql.Date
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 /**
  * Created by Julien Jennequin on 10/12/2021 13:19
@@ -33,8 +31,8 @@ data class RealtyModel(
     @ColumnInfo(name = "out_market_date") var outMarketDate: Long,
     @ColumnInfo(name = "estate_agent") var estateAgent: String
 ) {
-     fun toRealty(pictureList:List<PicturesModel>):Realty {
-       return Realty(
+    fun toRealty(pictureList: List<PicturesModel>): Realty {
+        return Realty(
             this.id,
             this.kind,
             this.price,
@@ -55,7 +53,7 @@ data class RealtyModel(
             this.inMarketDate,
             this.outMarketDate,
             this.estateAgent,
-           pictureList
+            pictureList
         )
     }
 }

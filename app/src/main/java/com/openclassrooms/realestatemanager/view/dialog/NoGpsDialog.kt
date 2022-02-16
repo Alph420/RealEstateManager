@@ -18,6 +18,7 @@ class NoGpsDialog(context: Context) : androidx.appcompat.app.AlertDialog(context
         val dialog: androidx.appcompat.app.AlertDialog = MaterialAlertDialogBuilder(context)
             .setView(rootView.root.rootView)
             .show()
+
         rootView.btnSettings.setOnClickListener { v ->
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             context.startActivity(intent)

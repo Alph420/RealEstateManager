@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
         initViewModel()
         initListeners()
         initObservers()
-        initRealyRecyclerView()
+        initRealtyRecyclerView()
         if (binding.root.tag.equals(Constants().TAG_LARGE_MAIN_ACTIVITY)) {
             initMap()
             initPictureRecyclerView()
@@ -220,7 +220,7 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initRealyRecyclerView() {
+    private fun initRealtyRecyclerView() {
         this.realtyAdapter = RealtyListAdapter(realtyList)
 
         binding.realtyRecyclerView.adapter = this.realtyAdapter
