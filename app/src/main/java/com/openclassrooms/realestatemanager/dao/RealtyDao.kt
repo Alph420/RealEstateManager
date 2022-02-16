@@ -29,7 +29,7 @@ interface RealtyDao {
     fun updateRealty(realty: RealtyModel): Completable
 
     @Query(
-        """SELECT * FROM RealtyModel m
+        """SELECT * FROM RealtyModel realty
             WHERE kind IN(:kind)
             AND city IN(:city)
             AND available IN(:available)
@@ -45,8 +45,8 @@ interface RealtyDao {
             AND out_market_date <= :outMarketDate
             AND price >= :minPrice
             AND price <= :maxPrice
-            AND (SELECT COUNT(*) FROM PicturesModel WHERE realty_id = m.id) >= :minPictures
-            AND (SELECT COUNT(*) FROM PicturesModel WHERE realty_id = m.id) <= :maxPictures
+            AND (SELECT COUNT(*) FROM PicturesModel WHERE realty_id = realty.id) >= :minPictures
+            AND (SELECT COUNT(*) FROM PicturesModel WHERE realty_id = realty.id) <= :maxPictures
             COLLATE NOCASE
             """
     )
